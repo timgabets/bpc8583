@@ -1,7 +1,7 @@
 #py8583
 ###Python library implementing the ISO-8583 banking protocol
 
-This is an implementation of the de-facto protocol for banking applications, iso8583.
+Originally forked from [Alexandros Nikolopoulos' py8583 implementation](https://github.com/alxnik/py8583)
 
 #### Status:
 **Things working:**
