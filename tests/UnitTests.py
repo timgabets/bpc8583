@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import time
 import sys
@@ -7,8 +9,6 @@ import unittest
 sys.path.insert(0, os.path.abspath('..'))
 
 from py8583 import *
-
-
 
 class AsciiParse1987(unittest.TestCase):
     
