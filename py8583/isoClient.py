@@ -10,6 +10,11 @@ from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec
  
 def main(s):
+    pass
+    s.send(b'iddqd')
+    s.close()
+    print('Connection closed')
+    """
     while True:
         try:
             conn, addr = s.accept()
@@ -53,6 +58,7 @@ def main(s):
             print(ex)
             
         conn.close()
+    """
 
 
 def show_help(name):
@@ -84,11 +90,12 @@ if __name__ == '__main__':
             ip = arg
 
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((ip, port))   
-        s.listen(max_conn)
-        print('Listening on port {}'.format(port))
-        main(s)
+        s = None
+        for res in socket.getaddrinfo(ip, port, socket.AF_UNSPEC, socket.SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            s = socket.socket(af, socktype, proto)
+            s.connect(sa)
+            main(s)
     except OSError as msg:
-        print('Error starting server: {}'.format(msg))
+        print('Error connecting to {}:{} - {}'.format(ip, port, msg))
         sys.exit()
