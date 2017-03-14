@@ -1,7 +1,5 @@
-from py8583.py8583 import DT, LT, SpecError
-    
-
-            
+from ISO8583 import ISO8583, DT, LT, SpecError
+     
 class IsoSpec(object):
     __ValidContentTypes = ('a', 'n', 's', 'an', 'as', 'ns', 'ans', 'b', 'z')
     

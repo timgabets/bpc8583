@@ -5,13 +5,8 @@ import sys
 import struct
 import os
 
-#from py8583 import ISO8583, MemDump, Str2Bcd
-#import py8583
-from py8583 import py8583, py8583spec
-    
-#from py8583spec import IsoSpec1987BCD
-
-
+from ISO8583 import ISO8583
+from py8583spec import IsoSpec
 
 HOST = ''
 PORT = 5000

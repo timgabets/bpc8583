@@ -2,18 +2,24 @@ import binascii
 import struct
 from enum import Enum
 
-# Data Type enumeration
-class DT(Enum):
-    BCD     = 1
-    ASCII   = 2
-    BIN     = 3
-
 # Length Type enumeration
 class LT(Enum):
     FIXED   = 0
     LVAR    = 1
     LLVAR   = 2
     LLLVAR  = 3
+
+# Data Type enumeration
+class DT(Enum):
+    BCD     = 1
+    ASCII   = 2
+    BIN     = 3
+
+class SpecError(Exception):
+        def __init__(self, value):
+                self.str = value
+        def __str__(self):
+                return repr(self.str)
 
 def MemDump(Title, data):
     i = 1
