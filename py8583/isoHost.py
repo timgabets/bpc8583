@@ -24,22 +24,22 @@ def main(s):
                 conn.close()
                 continue
             
-            IsoPacket = ISO8583(data[2:], IsoSpec1987BCD())
+            IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
             
-            IsoPacket.PrintMessage()
+            IsoMessage.PrintMessage()
             
-            IsoPacket.MTI("0210")
+            IsoMessage.MTI("0210")
             
-            IsoPacket.Field(39, 1)
-            IsoPacket.FieldData(39, "00")
-            IsoPacket.Field(2, 0)
-            IsoPacket.Field(35, 0)
-            IsoPacket.Field(52, 0)
-            IsoPacket.Field(60, 0)
+            IsoMessage.Field(39, 1)
+            IsoMessage.FieldData(39, "00")
+            IsoMessage.Field(2, 0)
+            IsoMessage.Field(35, 0)
+            IsoMessage.Field(52, 0)
+            IsoMessage.Field(60, 0)
              
             print("\n\n\n")
-            IsoPacket.PrintMessage()
-            data = IsoPacket.BuildIso()
+            IsoMessage.PrintMessage()
+            data = IsoMessage.BuildIso()
             data = struct.pack("!H", len(data)) + data
              
             MemDump("Sending:", data)
