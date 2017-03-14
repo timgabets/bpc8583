@@ -6,17 +6,16 @@ import struct
 import os
 import getopt
 
-from ISO8583 import ISO8583
+from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec
  
 def main(s):
     while True:
         try:
-            print ('Waiting for connections')
             conn, addr = s.accept()
-            print ('Connected: ' + addr[0] + ':' + str(addr[1]))
+            print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
             data = conn.recv(4096)
-            MemDump("Received:", data)
+            MemDump("Data received:", data)
             
             Len = struct.unpack_from("!H", data[:2])[0]
             
