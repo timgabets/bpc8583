@@ -45,13 +45,14 @@ def main(s):
             MemDump("Sending:", data)
             conn.send(data)
             
-            
+        except KeyboardInterrupt:
+            print('Exit')
+            s.close()
+            sys.exit()
         except Exception as ex:
             print(ex)
             
         conn.close()
-    s.close()
-    sys.exit()
 
 
 def show_help(name):
