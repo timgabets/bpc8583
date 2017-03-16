@@ -83,8 +83,7 @@ class ISO8583:
     
     ValidContentTypes = ('a', 'n', 's', 'an', 'as', 'ns', 'ans', 'b', 'z')
     
-    
-    def __init__(self,IsoMsg = None, IsoSpec = None):
+    def __init__(self, IsoMsg = None, IsoSpec = None):
         
         self.strict = False
     
@@ -258,10 +257,6 @@ class ISO8583:
             if(field != 1 and self.Field(field) == 1):
                 p = self.ParseField(field, p)
     
-    
-    
-
-
 
     def BuildMTI(self):
         if(self.__IsoSpec.DataType('MTI') == DT.BCD):
@@ -383,9 +378,6 @@ class ISO8583:
         return self.__iso
     
     
-    
-
-        
     def Field(self, field, Value = None):
         if(Value == None):
             try:
@@ -445,7 +437,10 @@ class ISO8583:
 
 
     def PrintMessage(self):
-        print("MTI:    [{0}]".format(self.__MTI))
+        try:
+            print("MTI:    [{0}]".format(self.__MTI))
+        except AttributeError:
+            pass
         
         bitmapLine = "Fields: [ "
         for i in sorted(self.__Bitmap.keys()):
