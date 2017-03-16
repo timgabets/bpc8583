@@ -7,58 +7,28 @@ import os
 import getopt
 
 from ISO8583 import ISO8583, MemDump
-from py8583spec import IsoSpec
+from py8583spec import IsoSpec, IsoSpec1987BCD
  
 def main(s):
-    pass
-    s.send(b'iddqd')
+    IsoMessage = ISO8583(IsoSpec=IsoSpec1987BCD())            
+    IsoMessage.MTI("0210")
+            
+    IsoMessage.Field(39, 1)
+    IsoMessage.FieldData(39, "00")
+    IsoMessage.Field(2, 0)
+    IsoMessage.Field(35, 0)
+    IsoMessage.Field(52, 0)
+    IsoMessage.Field(60, 0)
+
+    IsoMessage.PrintMessage()
+
+    data = IsoMessage.BuildIso()
+    data = struct.pack("!H", len(data)) + data
+             
+    MemDump("Sending:", data)
+    s.send(data)
+
     s.close()
-    print('Connection closed')
-    """
-    while True:
-        try:
-            conn, addr = s.accept()
-            print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
-            data = conn.recv(4096)
-            MemDump("Data received:", data)
-            
-            Len = struct.unpack_from("!H", data[:2])[0]
-            
-            if(Len != len(data) - 2):
-                print("Invalid length {0} - {1}".format(Len, len(data) - 2))
-                conn.close()
-                continue
-            
-            IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
-            
-            IsoMessage.PrintMessage()
-            
-            IsoMessage.MTI("0210")
-            
-            IsoMessage.Field(39, 1)
-            IsoMessage.FieldData(39, "00")
-            IsoMessage.Field(2, 0)
-            IsoMessage.Field(35, 0)
-            IsoMessage.Field(52, 0)
-            IsoMessage.Field(60, 0)
-             
-            print("\n\n\n")
-            IsoMessage.PrintMessage()
-            data = IsoMessage.BuildIso()
-            data = struct.pack("!H", len(data)) + data
-             
-            MemDump("Sending:", data)
-            conn.send(data)
-            
-        except KeyboardInterrupt:
-            print('Exit')
-            s.close()
-            sys.exit()
-        except Exception as ex:
-            print(ex)
-            
-        conn.close()
-    """
 
 
 def show_help(name):
