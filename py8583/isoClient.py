@@ -12,10 +12,12 @@ from py8583spec import IsoSpec, IsoSpec1987BCD
 def main(s):
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BCD())            
     IsoMessage.MTI("0210")
-            
-    IsoMessage.Field(39, 1)
-    IsoMessage.FieldData(39, "00")
+        
     IsoMessage.Field(2, 0)
+    IsoMessage.Field(4, 1)
+    IsoMessage.FieldData(4, 10000)
+    #IsoMessage.Field(13, 1)
+    #IsoMessage.FieldData(13, '0316')
     IsoMessage.Field(35, 0)
     IsoMessage.Field(52, 0)
     IsoMessage.Field(60, 0)

@@ -379,6 +379,9 @@ class ISO8583:
     
     
     def Field(self, field, Value = None):
+        """
+        Add field to bitmap
+        """
         if(Value == None):
             try:
                 return self.__Bitmap[field]
@@ -391,6 +394,9 @@ class ISO8583:
             
 
     def FieldData(self, field, Value = None):
+        """
+        Add field data
+        """
         if(Value == None):
             try:
                 return self.__FieldData[field]
