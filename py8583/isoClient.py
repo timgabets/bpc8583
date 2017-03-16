@@ -20,7 +20,7 @@ def main(s):
     IsoMessage.Field(52, 0)
     IsoMessage.Field(60, 0)
 
-    IsoMessage.PrintMessage()
+    IsoMessage.Print()
 
     data = IsoMessage.BuildIso()
     data = struct.pack("!H", len(data)) + data

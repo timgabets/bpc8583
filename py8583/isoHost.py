@@ -7,7 +7,7 @@ import os
 import getopt
 
 from ISO8583 import ISO8583, MemDump
-from py8583spec import IsoSpec
+from py8583spec import IsoSpec, IsoSpec1987BCD
  
 def main(s):
     while True:

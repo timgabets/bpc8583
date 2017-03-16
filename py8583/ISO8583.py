@@ -437,6 +437,9 @@ class ISO8583:
 
 
     def PrintMessage(self):
+        self.Print()
+
+    def Print(self):
         try:
             print("MTI:    [{0}]".format(self.__MTI))
         except AttributeError:
