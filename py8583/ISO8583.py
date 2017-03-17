@@ -445,12 +445,13 @@ class ISO8583:
         self.Print()
 
     def Print(self):
+        print('\n\tParsed message:')
         try:
-            print("MTI:    [{0}]".format(self.__MTI))
+            print("\tMTI:    [{0}]".format(self.__MTI))
         except AttributeError:
             pass
         
-        bitmapLine = "Fields: [ "
+        bitmapLine = "\tFields: [ "
         for i in sorted(self.__Bitmap.keys()):
             if(i == 1): 
                 continue
@@ -473,4 +474,4 @@ class ISO8583:
                 if(self.ContentType(i) == 'n' and self.__IsoSpec.LengthType(i) == LT.FIXED):
                     FieldData = str(FieldData).zfill(self.__IsoSpec.MaxLength(i))
                     
-                print("\t{0:>3d} - {1: <41} : [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
+                print("\t\t{0:>3d} - {1: <41} : [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
