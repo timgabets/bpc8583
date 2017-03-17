@@ -17,6 +17,8 @@ def main(s):
     IsoMessage.Field(2, 0)
     IsoMessage.Field(4, 1)
     IsoMessage.FieldData(4, 10000)
+    IsoMessage.Field(12, 1)
+    IsoMessage.FieldData(12, 104956)
     IsoMessage.Field(13, 1)
     IsoMessage.FieldData(13, 1216)
     IsoMessage.Field(35, 0)
@@ -33,6 +35,8 @@ def main(s):
 
     data = s.recv(4096)
     trace('Data received: ', data)
+    IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
+    IsoMessage.Print()
 
     s.close()
 

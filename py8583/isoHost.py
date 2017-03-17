@@ -27,7 +27,7 @@ def main(s):
             
             IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
             
-            IsoMessage.PrintMessage()
+            IsoMessage.Print()
             
             IsoMessage.MTI("0210")
             
@@ -39,7 +39,7 @@ def main(s):
             IsoMessage.Field(60, 0)
              
             print("\n\n\n")
-            IsoMessage.PrintMessage()
+            IsoMessage.Print()
             data = IsoMessage.BuildIso()
             data = struct.pack("!H", len(data)) + data
              
