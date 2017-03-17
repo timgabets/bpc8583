@@ -43,6 +43,30 @@ def MemDump(Title, data):
     print(TheDump)
     
 
+def Dump(data):
+    """
+    Memdump with no title
+    """
+    i = 1
+
+    if( isinstance(data, bytes) == False ):
+        raise TypeError("Expected bytes for data")
+
+    dump = ""
+    
+    for c in data:
+        try: # python 3
+            dump += "{:02x} ".format(c) 
+        except: # python 2.x
+            dump += "{:02x} ".format(ord(c))
+        
+        if(i % 16 == 0):
+            dump += "\n"
+        i+=1
+       
+    return dump
+
+
 def Bcd2Str(bcd):
     return binascii.hexlify(bcd).decode('latin')
 
