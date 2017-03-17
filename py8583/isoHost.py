@@ -8,14 +8,15 @@ import getopt
 
 from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec, IsoSpec1987BCD
- 
+from isoTools import trace
+
 def main(s):
     while True:
         try:
             conn, addr = s.accept()
             print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
             data = conn.recv(4096)
-            MemDump("Data received:", data)
+            trace('Data received: ', data)
             
             Len = struct.unpack_from("!H", data[:2])[0]
             
@@ -42,8 +43,8 @@ def main(s):
             data = IsoMessage.BuildIso()
             data = struct.pack("!H", len(data)) + data
              
-            MemDump("Sending:", data)
             conn.send(data)
+            trace('Data sent:', data)
             
         except KeyboardInterrupt:
             print('Exit')

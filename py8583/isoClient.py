@@ -7,8 +7,9 @@ import os
 import getopt
 
 from ISO8583 import ISO8583, MemDump
+from isoTools import trace
 from py8583spec import IsoSpec, IsoSpec1987BCD
- 
+
 def main(s):
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BCD())            
     IsoMessage.MTI("0210")
@@ -27,8 +28,11 @@ def main(s):
     data = IsoMessage.BuildIso()
     data = struct.pack("!H", len(data)) + data
              
-    MemDump("Sending:", data)
+    trace('Data sent:', data)
     s.send(data)
+
+    data = s.recv(4096)
+    trace('Data received: ', data)
 
     s.close()
 
