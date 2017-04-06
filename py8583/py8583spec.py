@@ -95,16 +95,16 @@ class IsoSpec1987BPC(IsoSpec1987):
     Bitmap is BCD
     DataFields are also ASCII
     """
-    def SetDataTypes(self):
-        self.DataType('MTI', DT.BCD)
-        self.DataType(1, DT.BIN) # bitmap
-        
+    def SetDataTypes(self):        
+        self.DataType('MTI', DT.ASCII)
         for field in self.ContentTypes.keys():
             self.DataType(field, DT.ASCII)
             if(self.LengthType(field) != LT.FIXED):
                 self.LengthDataType(field, DT.ASCII)
 
-                
+        self.DataType(1, DT.BIN) # bitmap
+
+
 class IsoSpec1987BCD(IsoSpec1987):
     def SetDataTypes(self):
         self.DataType('MTI', DT.BCD)
@@ -174,21 +174,21 @@ Descriptions['1987'] = {
     38 : 'Authorization identification response' ,
     39 : 'Response code' ,
     40 : 'Service restriction code' ,
-    41 : 'Card acceptor terminal identification' ,
-    42 : 'Card acceptor identification code' ,
+    41 : 'Terminal ID' ,
+    42 : 'Merchant number' ,
     43 : 'Card acceptor name/location' ,
     44 : 'Additional response data' ,
     45 : 'Track 1 data' ,
-    46 : 'Additional data - ISO' ,
-    47 : 'Additional data - national' ,
+    46 : 'Amount, fees' ,
+    47 : 'Additional data' ,
     48 : 'Additional data - private' ,
     49 : 'Currency code, transaction' ,
     50 : 'Currency code, settlement' ,
     51 : 'Currency code, cardholder billing' ,
-    52 : 'Personal identification number data' ,
+    52 : 'PIN data' ,
     53 : 'Security related control information' ,
     54 : 'Additional amounts' ,
-    55 : 'Reserved ISO' ,
+    55 : 'ICC Sys Related Data' ,
     56 : 'Reserved ISO' ,
     57 : 'Reserved national' ,
     58 : 'Reserved national' ,
