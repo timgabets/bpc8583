@@ -47,6 +47,7 @@ class Terminal:
         except OSError as msg:
             print('Error connecting to {}:{} - {}'.format(self.host, self.port, msg))
             sys.exit()
+        print('Connected to {}:{}'.format(self.host, self.port))
 
 
     def send(self, data):

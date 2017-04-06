@@ -7,7 +7,7 @@ import os
 import getopt
 
 from ISO8583 import ISO8583, MemDump
-from py8583spec import IsoSpec, IsoSpec1987BCD
+from py8583spec import IsoSpec, IsoSpec1987BPC
 from isoTools import trace
 
 def main(s):
@@ -25,11 +25,11 @@ def main(s):
                 conn.close()
                 continue
             
-            IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
+            IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
             
             IsoMessage.Print()
             
-            IsoMessage.MTI("0210")
+            IsoMessage.MTI("0810")
             
             IsoMessage.Field(39, 1)
             IsoMessage.FieldData(39, "00")
