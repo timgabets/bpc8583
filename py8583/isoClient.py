@@ -9,7 +9,7 @@ import time
 import random
 
 from ISO8583 import ISO8583, MemDump
-from isoTools import trace
+from isoTools import trace, get_datetime
 from py8583spec import IsoSpec, IsoSpec1987BCD
 
 def send_balance_enquiry():
@@ -26,7 +26,7 @@ def send_balance_enquiry():
     IsoMessage.FieldData(4, 0)
 
     IsoMessage.Field(7, 1)
-    IsoMessage.FieldData(7, 405144842)
+    IsoMessage.FieldData(7, get_datetime())
 
     # System trace audit number 
     IsoMessage.Field(11, 1)
@@ -83,7 +83,7 @@ def send_echo_test():
     IsoMessage.FieldData(3, 990000)
 
     IsoMessage.Field(7, 1)
-    IsoMessage.FieldData(7, 405173126)
+    IsoMessage.FieldData(7, get_datetime())
 
     IsoMessage.Field(11, 1)
     IsoMessage.FieldData(11, random.randint(0, 999999))
@@ -105,11 +105,11 @@ def main(s):
     data = send_echo_test()
     data = struct.pack("!H", len(data)) + data
              
-    trace('Data sent:', data)
+    trace('{} bytes sent:'.format(len(data)), data)
     s.send(data)
 
     data = s.recv(4096)
-    trace('Data received: ', data)
+    trace('{} bytes received: '.format(len(data)), data)
     IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
     IsoMessage.Print()
 

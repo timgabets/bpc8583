@@ -1,4 +1,5 @@
 from time import gmtime, strftime
+from datetime import datetime
 
 def dump(data):
     """
@@ -23,10 +24,16 @@ def dump(data):
        
     return dump
 
- 
+
+def get_datetime():
+    """
+    Get current date and time (for ISO data fields)
+    """
+    return int(datetime.now().strftime("%d%m%H%M%S"))
+
 def get_timestamp(t=None):
     """
-    Get current timestamp
+    Get current timestamp for logging purposes
     TODO: get milliseconds
     """
     return strftime('%H:%M:%S', gmtime())
