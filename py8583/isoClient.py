@@ -10,10 +10,10 @@ import random
 
 from ISO8583 import ISO8583, MemDump
 from isoTools import trace, get_datetime
-from py8583spec import IsoSpec, IsoSpec1987BCD
+from py8583spec import IsoSpec, IsoSpec1987BCD, IsoSpec1987ASCII
 
 def send_balance_enquiry():
-    IsoMessage = ISO8583(IsoSpec=IsoSpec1987BCD())            
+    IsoMessage = ISO8583(IsoSpec=IsoSpec1987ASCII())            
     IsoMessage.MTI("0100")
         
     IsoMessage.Field(2 ,1)
@@ -67,7 +67,7 @@ def send_balance_enquiry():
 
 
 def send_echo_test():
-    IsoMessage = ISO8583(IsoSpec=IsoSpec1987BCD())            
+    IsoMessage = ISO8583(IsoSpec=IsoSpec1987ASCII())            
     IsoMessage.MTI("0800")
     """
     Send message '0800' to POS terminal (192.168.56.101:7785):
@@ -105,11 +105,11 @@ def main(s):
     data = send_echo_test()
     data = struct.pack("!H", len(data)) + data
              
-    trace('{} bytes sent:'.format(len(data)), data)
+    trace('>> {} bytes sent:'.format(len(data)), data)
     s.send(data)
 
     data = s.recv(4096)
-    trace('{} bytes received: '.format(len(data)), data)
+    trace('<< {} bytes received: '.format(len(data)), data)
     IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
     IsoMessage.Print()
 
