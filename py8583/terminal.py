@@ -1,8 +1,18 @@
 class Terminal:
-	def __init__(self):
-		self.terminal_id = '1000026'
-		self.merchant_id = '999999999999001'
+
+	def __init__(self, id=None, merchant=None):
+		if id:
+			self.terminal_id = id
+		else:
+			self.terminal_id = '10001337'
+
+		if merchant:
+			self.merchant_id = merchant
+		else:
+			self.merchant_id = '999999999999001'
+
 		self.currency = '643'
+
 
 	def get_terminal_id(self):
 		"""

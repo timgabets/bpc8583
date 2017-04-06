@@ -13,7 +13,7 @@ from isoTools import trace, get_datetime
 from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 
-def send_balance_enquiry(term):
+def balance_enquiry(term):
     """
     Balance Enguiry
     """
@@ -40,7 +40,7 @@ def send_balance_enquiry(term):
     return IsoMessage.BuildIso()
 
 
-def send_echo_test(term):
+def echo_test(term):
     """
     Echo
     """
@@ -57,9 +57,8 @@ def send_echo_test(term):
     return IsoMessage.BuildIso()
 
 
-def main(s):
-    t = Terminal()
-    data = send_echo_test(t)
+def main(s, t):
+    data = echo_test(t)
     data = struct.pack("!H", len(data)) + data
              
     trace('>> {} bytes sent:'.format(len(data)), data)
@@ -81,13 +80,17 @@ def show_help(name):
     print('ISO8583 message client')
     print('  -p, --port=[PORT]\t\tTCP port to connect to, 1337 by default')
     print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
+    print('  -t, --terminal=[ID]\t\tTerminal ID (used in DO41 ISO field, 10001337 by default)')
+    print('  -m, --merchant=[ID]\t\tMerchant ID (used in DO42 ISO field, 999999999999001 by default)')
 
 
 if __name__ == '__main__':
     ip = '127.0.0.1'
     port = 1337
+    terminal_id = None
+    merchant_id = None
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:', ['help', 'port=', 'server='])
+    optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:', ['help', 'port=', 'server=', 'terminal=', 'merchant='])
     for opt, arg in optlist:
         if opt in ('-h', '--help'):
             show_help(sys.argv[0])
@@ -101,13 +104,21 @@ if __name__ == '__main__':
         elif opt in ('-s', '--server'):
             ip = arg
 
+        elif opt in ('-t', '--terminal'):
+            terminal_id = arg
+
+        elif opt in ('-m', '--merchant'):
+            merchant_id = arg
+
     try:
-        s = None
+        sock = None
         for res in socket.getaddrinfo(ip, port, socket.AF_UNSPEC, socket.SOCK_STREAM):
             af, socktype, proto, canonname, sa = res
-            s = socket.socket(af, socktype, proto)
-            s.connect(sa)
-            main(s)
+            sock = socket.socket(af, socktype, proto)
+            sock.connect(sa)
     except OSError as msg:
         print('Error connecting to {}:{} - {}'.format(ip, port, msg))
         sys.exit()
+    
+    t = Terminal(id=terminal_id, merchant=merchant_id)
+    main(sock, t)
