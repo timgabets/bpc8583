@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import socket
 import sys
 import struct
 import os
@@ -57,19 +56,19 @@ def echo_test(term):
     return IsoMessage.BuildIso()
 
 
-def main(s, t):
-    data = echo_test(t)
+def main(term):
+    data = echo_test(term)
     data = struct.pack("!H", len(data)) + data
              
     trace('>> {} bytes sent:'.format(len(data)), data)
-    s.send(data)
+    term.send(data)
 
-    data = s.recv(4096)
+    data = term.recv()
     trace('<< {} bytes received: '.format(len(data)), data)
     IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
     IsoMessage.Print()
 
-    s.close()
+    term.close()
 
 
 def show_help(name):
@@ -85,8 +84,8 @@ def show_help(name):
 
 
 if __name__ == '__main__':
-    ip = '127.0.0.1'
-    port = 1337
+    ip = None
+    port = None
     terminal_id = None
     merchant_id = None
 
@@ -95,12 +94,10 @@ if __name__ == '__main__':
         if opt in ('-h', '--help'):
             show_help(sys.argv[0])
             sys.exit()
+
         elif opt in ('-p', '--port'):
-            try:
-                port = int(arg)
-            except ValueError:
-                print('Invalid TCP port: {}'.format(arg))
-                sys.exit()
+            port = arg
+
         elif opt in ('-s', '--server'):
             ip = arg
 
@@ -109,16 +106,6 @@ if __name__ == '__main__':
 
         elif opt in ('-m', '--merchant'):
             merchant_id = arg
-
-    try:
-        sock = None
-        for res in socket.getaddrinfo(ip, port, socket.AF_UNSPEC, socket.SOCK_STREAM):
-            af, socktype, proto, canonname, sa = res
-            sock = socket.socket(af, socktype, proto)
-            sock.connect(sa)
-    except OSError as msg:
-        print('Error connecting to {}:{} - {}'.format(ip, port, msg))
-        sys.exit()
     
-    t = Terminal(id=terminal_id, merchant=merchant_id)
-    main(sock, t)
+    term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
+    main(term)
