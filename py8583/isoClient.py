@@ -39,7 +39,7 @@ def balance_enquiry(term):
     return IsoMessage.BuildIso()
 
 
-def echo_test(term):
+def echo_test(terminal_id, merchant_id):
     """
     Echo
     """
@@ -49,15 +49,15 @@ def echo_test(term):
     IsoMessage.FieldData(3, 990000)
     IsoMessage.FieldData(7, get_datetime())
     IsoMessage.FieldData(11, random.randint(0, 999999))
-    IsoMessage.FieldData(41, term.get_terminal_id())
-    IsoMessage.FieldData(42, term.get_merchant_id())
+    IsoMessage.FieldData(41, terminal_id)
+    IsoMessage.FieldData(42, merchant_id)
 
     IsoMessage.Print()
     return IsoMessage.BuildIso()
 
 
 def main(term):
-    data = echo_test(term)
+    data = echo_test(term.get_terminal_id(), term.get_merchant_id())
     data = struct.pack("!H", len(data)) + data
              
     trace('>> {} bytes sent:'.format(len(data)), data)
@@ -65,7 +65,8 @@ def main(term):
 
     data = term.recv()
     trace('<< {} bytes received: '.format(len(data)), data)
-    IsoMessage = ISO8583(data[2:], IsoSpec1987BCD())
+    
+    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
     IsoMessage.Print()
 
     term.close()
