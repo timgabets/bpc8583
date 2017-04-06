@@ -16,7 +16,7 @@ def send_balance_enquiry():
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987ASCII())            
     IsoMessage.MTI("0100")
         
-    IsoMessage.SetBitmap([2, 3, 4, 7, 11, 12, 13, 22, 24, 25, 35, 41, 49])
+    #IsoMessage.SetBitmap([2, 3, 4, 7, 11, 12, 13, 22, 24, 25, 35, 41, 49])
 
     IsoMessage.FieldData(2, 5555011012400477)
     IsoMessage.FieldData(3, 310000)
@@ -43,7 +43,7 @@ def send_echo_test():
     #IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())       
     IsoMessage.MTI("0800")
 
-    IsoMessage.SetBitmap([3, 7, 11, 24, 41, 42])
+    #IsoMessage.SetBitmap([3, 7, 11, 24, 41, 42])
 
     IsoMessage.FieldData(3, 990000)
     IsoMessage.FieldData(7, get_datetime())

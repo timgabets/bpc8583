@@ -413,6 +413,7 @@ class ISO8583:
             if(len(str(Value)) > self.__IsoSpec.MaxLength(field)):
                 raise ValueError('Value length larger than field maximum ({0})'.format(self.__IsoSpec.MaxLength(field)))
             
+            self.Field(field, Value=1)
             self.__FieldData[field] = Value 
             
             
