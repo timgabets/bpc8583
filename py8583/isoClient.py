@@ -13,12 +13,13 @@ from isoTools import trace, get_datetime
 from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 
-def send_balance_enquiry():
+def send_balance_enquiry(term):
+    """
+    Balance Enguiry
+    """
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
     IsoMessage.MTI("0100")
         
-    #IsoMessage.SetBitmap([2, 3, 4, 7, 11, 12, 13, 22, 24, 25, 35, 41, 49])
-
     IsoMessage.FieldData(2, 5555011012400477)
     IsoMessage.FieldData(3, 310000)
     IsoMessage.FieldData(4, 0)
@@ -31,26 +32,26 @@ def send_balance_enquiry():
     IsoMessage.FieldData(24, 100)
     IsoMessage.FieldData(25, 0)
     IsoMessage.FieldData(35, '4290011012400477=18091011872300000720')
-    IsoMessage.FieldData(41, 'P0000001')
-    IsoMessage.FieldData(42, '999999999999001')
-    IsoMessage.FieldData(49, '643')
+    IsoMessage.FieldData(41, term.get_terminal_id())
+    IsoMessage.FieldData(42, term.get_merchant_id())    
+    IsoMessage.FieldData(49, term.get_currency_code())
 
     IsoMessage.Print()
     return IsoMessage.BuildIso()
 
 
-def send_echo_test(t):
+def send_echo_test(term):
+    """
+    Echo
+    """
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
     IsoMessage.MTI("0800")
-
-    #IsoMessage.SetBitmap([3, 7, 11, 24, 41, 42])
 
     IsoMessage.FieldData(3, 990000)
     IsoMessage.FieldData(7, get_datetime())
     IsoMessage.FieldData(11, random.randint(0, 999999))
-    IsoMessage.FieldData(24, 831)
-    IsoMessage.FieldData(41, t.get_terminal_id())
-    IsoMessage.FieldData(42, '999999999999001')
+    IsoMessage.FieldData(41, term.get_terminal_id())
+    IsoMessage.FieldData(42, term.get_merchant_id())
 
     IsoMessage.Print()
     return IsoMessage.BuildIso()
