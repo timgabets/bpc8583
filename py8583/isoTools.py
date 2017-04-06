@@ -11,17 +11,30 @@ def dump(data):
         raise TypeError("Expected bytes for data")
 
     dump = '\t'
+    dump_ascii = ''
+    padding = '        '
     
     for c in data:
         try: # python 3
             dump += '{:02x} '.format(c) 
+                
         except: # python 2.x
             dump += '{:02x} '.format(ord(c))
-        
+            if c >= ' ' and c < '~':
+                dump_ascii += c
+            else:
+                dump_ascii += '.'
+
         if(i % 16 == 0):
-            dump += '\n\t'
+            dump = dump + padding + dump_ascii + '\n\t'
+            dump_ascii = ''
         i+=1
        
+    if dump_ascii:
+        for i in range(16 - len(dump_ascii)):
+            padding += '   '
+        dump = dump + padding + dump_ascii + '\n\t'
+
     return dump
 
 
