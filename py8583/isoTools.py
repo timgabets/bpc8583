@@ -1,4 +1,4 @@
-from time import gmtime, strftime
+from time import strftime
 from datetime import datetime
 
 def dump(data):
@@ -36,7 +36,7 @@ def get_timestamp(t=None):
     Get current timestamp for logging purposes
     TODO: get milliseconds
     """
-    return strftime('%H:%M:%S', gmtime())
+    return datetime.now().strftime("%H:%M:%S:%f")
 
 
 def trace(title, data):
