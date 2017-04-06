@@ -11,6 +11,7 @@ import random
 from ISO8583 import ISO8583, MemDump
 from isoTools import trace, get_datetime
 from py8583spec import IsoSpec, IsoSpec1987BPC
+from terminal import Terminal
 
 def send_balance_enquiry():
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
@@ -38,7 +39,7 @@ def send_balance_enquiry():
     return IsoMessage.BuildIso()
 
 
-def send_echo_test():
+def send_echo_test(t):
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
     IsoMessage.MTI("0800")
 
@@ -48,7 +49,7 @@ def send_echo_test():
     IsoMessage.FieldData(7, get_datetime())
     IsoMessage.FieldData(11, random.randint(0, 999999))
     IsoMessage.FieldData(24, 831)
-    IsoMessage.FieldData(41, '1000026')
+    IsoMessage.FieldData(41, t.get_terminal_id())
     IsoMessage.FieldData(42, '999999999999001')
 
     IsoMessage.Print()
@@ -56,7 +57,8 @@ def send_echo_test():
 
 
 def main(s):
-    data = send_echo_test()
+    t = Terminal()
+    data = send_echo_test(t)
     data = struct.pack("!H", len(data)) + data
              
     trace('>> {} bytes sent:'.format(len(data)), data)
