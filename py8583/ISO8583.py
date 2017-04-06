@@ -389,7 +389,15 @@ class ISO8583:
         elif(Value == 1 or Value == 0):
             self.__Bitmap[field] = Value
         else:
-            raise ValueError 
+            raise ValueError
+
+
+    def SetBitmap(self, fields):
+        """
+        Set the message bitmap with the value from fields array
+        """
+        for field in fields:
+            self.Field(field, Value=1)
             
 
     def FieldData(self, field, Value = None):

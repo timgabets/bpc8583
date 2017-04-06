@@ -74,6 +74,7 @@ class IsoSpec1987(IsoSpec):
         self.Descriptions = Descriptions['1987']
     def SetContentTypes(self):
         self.ContentTypes = ContentTypes['1987']
+
         
 class IsoSpec1987ASCII(IsoSpec1987):
     def SetDataTypes(self):
@@ -84,11 +85,30 @@ class IsoSpec1987ASCII(IsoSpec1987):
             self.DataType(field, DT.ASCII)
             if(self.LengthType(field) != LT.FIXED):
                 self.LengthDataType(field, DT.ASCII)
+
+
+class IsoSpec1987BPC(IsoSpec1987):
+    """
+    A BPC's flavour of ISO8583 
+
+    MTI is ASCII
+    Bitmap is BCD
+    DataFields are also ASCII
+    """
+    def SetDataTypes(self):
+        self.DataType('MTI', DT.BCD)
+        self.DataType(1, DT.BIN) # bitmap
+        
+        for field in self.ContentTypes.keys():
+            self.DataType(field, DT.ASCII)
+            if(self.LengthType(field) != LT.FIXED):
+                self.LengthDataType(field, DT.ASCII)
+
                 
 class IsoSpec1987BCD(IsoSpec1987):
     def SetDataTypes(self):
         self.DataType('MTI', DT.BCD)
-        self.DataType(1, DT.BIN) # bitmap 
+        self.DataType(1, DT.BIN) # bitmap
         
         # Most popular BCD implementations use the reserved/private fields
         # as binary, so we have to set them as such in contrast to the ISO spec
