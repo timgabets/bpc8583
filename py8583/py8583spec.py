@@ -95,7 +95,61 @@ class IsoSpec1987BPC(IsoSpec1987):
     Bitmap is BCD
     DataFields are also ASCII
     """
-    def SetDataTypes(self):        
+    RespCodeDescriptions = {
+        '000': 'APPROVED',
+        '001': 'HONR W/ID:',
+        '005': 'UNABLE TO PROCESS',
+        '005': 'RECONCILATION ERROR',
+        '100': 'WORM CARD',
+        '100': 'CARD DECLINED',
+        '101': 'EXPIRED CARD',
+        '101': 'DATES UNEQUAL',
+        '103': 'BAD ISSUE DATE',
+        '103': 'CALL ISSUER',
+        '104': 'CAPTURE CARD SPEC',
+        '106': 'DENY PIN CAPTURE',
+        '106': 'PIN-TRIES EXCEED',
+        '107': 'CALL ISSUER',
+        '109': 'INVALID TERMINAL',
+        '109': 'INVALID MERCHANT',
+        '110': 'INVALID AMOUNT',
+        '111': 'INVALID CARD',
+        '111': 'NO CHECKING ACCT.',
+        '111': 'NO CARD RECORD',
+        '116': 'INSUFFICIENT FUNDS',
+        '117': 'INCORRECT PIN',
+        '119': 'SECURITY VIOLATION',
+        '120': 'NOT ALLOWED',
+        '120': 'SECURITY VIOLATN',
+        '121': 'EXCDS WDRWL LIMT',
+        '121': 'REQ AMOUNT RANGE',
+        '123': 'EXCDS WDRWL LIMT',
+        '123': 'EXCDS WDRWL LTMT',
+        '125': 'INVALID CARD',
+        '202': 'INVALID CARD',
+        '203': 'PICK-UP CARD',
+        '204': 'CARD DECLINED',
+        '204': 'PICK-UP CARD',
+        '208': 'PICK-UP CARD',
+        '209': 'PICK-UP CARD',
+        '902': 'INVALID TRANS',
+        '902': 'INVALID TRANS.',
+        '902': 'RE-ENTER TRANS.',
+        '903': 'RE-ENTER TRANS.',
+        '904': 'FORMAT ERROR',
+        '907': 'HOST NOT AVAIL.',
+        '909': 'INVALID TRANS.',
+        '909': 'CALL ISSUER',
+        '910': 'HOST NOT AVAIL.',
+        '913': 'INVALID TRANS',
+        '914': 'ORIG TRANS NOT FOUND',
+        '920': 'PIN ERROR',
+        '940': 'CAPTURE CARD SPEC',
+    }
+
+    def SetDataTypes(self):
+        """
+        """
         self.DataType('MTI', DT.ASCII)
         for field in self.ContentTypes.keys():
             self.DataType(field, DT.ASCII)
@@ -103,6 +157,12 @@ class IsoSpec1987BPC(IsoSpec1987):
                 self.LengthDataType(field, DT.ASCII)
 
         self.DataType(1, DT.BIN) # bitmap
+
+
+    def RespCodeDescription(self, response_code):
+        """
+        """
+        return self.RespCodeDescriptions[response_code ]
 
 
 class IsoSpec1987BCD(IsoSpec1987):
