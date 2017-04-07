@@ -483,7 +483,7 @@ class ISO8583:
                 if(self.ContentType(i) == 'n' and self.__IsoSpec.LengthType(i) == LT.FIXED):
                     FieldData = str(FieldData).zfill(self.__IsoSpec.MaxLength(i))
                 if i == 39:
-                    print("\t\t{0:>3d} - {1: <41} [{2}]\t[{3}]".format(i, self.__IsoSpec.Description(i), FieldData, self.__IsoSpec.RespCodeDescription(FieldData)))
+                    print("\t\t{0:>3d} - {1: <41} [{2}]\t\t\t[{3}]".format(i, self.__IsoSpec.Description(i), FieldData, self.__IsoSpec.RespCodeDescription(FieldData)))
                 else:
                     print("\t\t{0:>3d} - {1: <41} [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
 
