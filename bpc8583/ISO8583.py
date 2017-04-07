@@ -354,8 +354,8 @@ class ISO8583:
             
         if(ContentType == 'z'):
             data = data.replace("=", "D")
-            if(len(data) % 2 == 1):
-                data = data + 'F'
+            #if(len(data) % 2 == 1):
+            #    data = data + 'F'
         
         if(DataType == DT.ASCII):
             self.__iso += data.encode('latin')
