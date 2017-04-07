@@ -49,7 +49,7 @@ def get_timestamp(t=None):
     Get current timestamp for logging purposes
     TODO: get milliseconds
     """
-    return datetime.now().strftime("%H:%M:%S:%f")
+    return datetime.now().strftime("%H:%M:%S.%f")
 
 
 def trace(title, data):
