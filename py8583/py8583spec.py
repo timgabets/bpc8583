@@ -266,6 +266,10 @@ Descriptions['1987'] = {
     
 ContentTypes = {}
 
+"""
+Notes:
+ * In BPC's flavour of ISO8583, DE 39 has the length of 3, not 2
+"""
 ContentTypes['1987'] = {
     1 :   { 'ContentType':'b',     'MaxLen': 8,   'LenType': LT.FIXED },
     2 :   { 'ContentType':'n',     'MaxLen': 19,  'LenType': LT.LLVAR },
@@ -305,7 +309,7 @@ ContentTypes['1987'] = {
     36 :  { 'ContentType':'n',     'MaxLen': 104, 'LenType': LT.LLLVAR},
     37 :  { 'ContentType':'an',    'MaxLen': 12,  'LenType': LT.FIXED },
     38 :  { 'ContentType':'an',    'MaxLen': 6,   'LenType': LT.FIXED },
-    39 :  { 'ContentType':'an',    'MaxLen': 2,   'LenType': LT.FIXED },
+    39 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED },
     40 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED },
     41 :  { 'ContentType':'ans',   'MaxLen': 8,   'LenType': LT.FIXED },
     42 :  { 'ContentType':'ans',   'MaxLen': 15,  'LenType': LT.FIXED },

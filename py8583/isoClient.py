@@ -65,7 +65,7 @@ def main(term):
 
     data = term.recv()
     trace('<< {} bytes received: '.format(len(data)), data)
-    
+
     IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
     IsoMessage.Print()
 
@@ -80,8 +80,8 @@ def show_help(name):
     print('ISO8583 message client')
     print('  -p, --port=[PORT]\t\tTCP port to connect to, 1337 by default')
     print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
-    print('  -t, --terminal=[ID]\t\tTerminal ID (used in DO41 ISO field, 10001337 by default)')
-    print('  -m, --merchant=[ID]\t\tMerchant ID (used in DO42 ISO field, 999999999999001 by default)')
+    print('  -t, --terminal=[ID]\t\tTerminal ID (used in DE 41 ISO field, 10001337 by default)')
+    print('  -m, --merchant=[ID]\t\tMerchant ID (used in DE 42 ISO field, 999999999999001 by default)')
 
 
 if __name__ == '__main__':
