@@ -1,5 +1,6 @@
 import socket
 import sys
+from isoTools import trace, get_datetime
 
 class Terminal:
 
@@ -53,13 +54,16 @@ class Terminal:
     def send(self, data):
         """
         """
+        trace('>> {} bytes sent:'.format(len(data)), data)
         return self.sock.send(data)
 
 
     def recv(self):
         """
         """
-        return self.sock.recv(4096)
+        data = self.sock.recv(4096)
+        trace('<< {} bytes received: '.format(len(data)), data)
+        return data
 
     def close(self):
         """
