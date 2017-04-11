@@ -28,7 +28,6 @@ def balance_enquiry(card, terminal_id, merchant_id, currency_code):
     IsoMessage.FieldData(12, 104956)
     IsoMessage.FieldData(13, 1216)
     IsoMessage.FieldData(22, 20)
-    IsoMessage.FieldData(22, 20)
     IsoMessage.FieldData(24, 100)
     IsoMessage.FieldData(25, 0)
     IsoMessage.FieldData(35, card.get_track2())
