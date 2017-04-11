@@ -9,7 +9,7 @@ from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 from card import Card
-from transactions import Transaction, echo_test, balance_inquiry, manual_purchase
+from transactions import Transaction, echo_test
 
 
 def show_available_transactions():
@@ -26,14 +26,13 @@ def main(term, card):
         trxn = ''
         data = ''
         if trxn_type == 'e':
-            #data = echo_test(term.get_terminal_id(), term.get_merchant_id())
-            trxn = Transaction('echo', card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+            trxn = Transaction('echo', card, term)
     
         elif trxn_type == 'b':
-            trxn = Transaction('balance', card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+            trxn = Transaction('balance', card, term)
     
         elif trxn_type == 'p':
-            trxn = Transaction('purchase', card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+            trxn = Transaction('purchase', card, term)
 
         elif trxn_type == 'q':
             break
