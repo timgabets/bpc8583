@@ -12,12 +12,15 @@ class Transaction():
         IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
 
         if type == 'echo':
-            # ECHO
+            """
+            """
             IsoMessage.MTI("0800")
 
             IsoMessage.FieldData(3, 990000)
 
-        elif type == 'balance': 
+        elif type == 'balance':
+            """
+            """
             IsoMessage.MTI("0100")
             
             IsoMessage.FieldData(2, card.get_card_number())
@@ -30,7 +33,9 @@ class Transaction():
             IsoMessage.FieldData(25, 0)
             IsoMessage.FieldData(35, card.get_track2())
 
-        elif type == 'purchase': 
+        elif type == 'purchase':
+            """
+            """
             IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
             IsoMessage.MTI("0200")
         
@@ -57,13 +62,3 @@ class Transaction():
 
     def get_data(self):
         return struct.pack("!H", len(self.data)) + self.data
-
-
-def echo_test(terminal_id, merchant_id):
-    """
-    Echo
-    """
-    
-
-    IsoMessage.Print()
-    return IsoMessage.BuildIso()

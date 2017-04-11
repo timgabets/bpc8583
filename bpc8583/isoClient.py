@@ -9,7 +9,7 @@ from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 from card import Card
-from transactions import Transaction, echo_test
+from transaction import Transaction
 
 
 def show_available_transactions():
