@@ -33,6 +33,10 @@ def main(term, card):
     
         elif trxn_type == 'p':
             data = manual_purchase(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+
+        elif trxn_type == 'q':
+            break
+            
         else:
             print('Unknown transaction. Availbale transactions are:')
             show_available_transactions()
