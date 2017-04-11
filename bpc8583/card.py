@@ -22,15 +22,23 @@ class Card:
 		else:
 			self.discretionary_data = '1872300000720'
 
+
 	def get_card_number(self):
 		"""
 		"""
 		return int(self.pan)
 
+
+	def get_expiry_date(self):
+		"""
+		"""
+		return self.expiry_date
+
 	def get_track2(self):
 		"""
 		"""
 		return self.pan + '=' + self.expiry_date + self.service_code + self.discretionary_data
+
 
 	def get_sequence_number(self):
 		"""
