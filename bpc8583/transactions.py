@@ -13,7 +13,7 @@ def echo_test(terminal_id, merchant_id):
 
     IsoMessage.FieldData(3, 990000)
     IsoMessage.FieldData(7, get_datetime())
-    IsoMessage.FieldData(11, random.randint(0, 999999))
+    IsoMessage.FieldData(11, get_stan())
     IsoMessage.FieldData(41, terminal_id)
     IsoMessage.FieldData(42, merchant_id)
 
@@ -60,8 +60,8 @@ def manual_purchase(card, terminal_id, merchant_id, currency_code):
     IsoMessage.FieldData(7, get_datetime())
     IsoMessage.FieldData(11, get_stan())
     IsoMessage.FieldData(12, get_datetime_with_year())
-    IsoMessage.FieldData(14, card.get_expiry_date())
-    IsoMessage.FieldData(22, 16)
+    #IsoMessage.FieldData(14, card.get_expiry_date())
+    IsoMessage.FieldData(22, 20)
     IsoMessage.FieldData(24, 100)
     IsoMessage.FieldData(25, 0)
     IsoMessage.FieldData(41, terminal_id)

@@ -13,39 +13,39 @@ from card import Card
 from transactions import echo_test, balance_inquiry, manual_purchase
 
 
+def show_available_transactions():
+    print('e: echo')
+    print('b: balance inquiry')
+    print('p: manual purchase')
+
 def main(term, card):
-    """
-    # ECHO
-    data = echo_test(term.get_terminal_id(), term.get_merchant_id())
-    data = struct.pack("!H", len(data)) + data
-             
-    term.send(data)
-    data = term.recv()
+    show_available_transactions()
 
-    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-    IsoMessage.Print()
-
-    # BENQ
-    data = balance_inquiry(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
-    data = struct.pack("!H", len(data)) + data
-             
-    term.send(data)
-    data = term.recv()
-
-    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-    IsoMessage.Print()
-    """
-
-    # Purchase
-    data = manual_purchase(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
-    data = struct.pack("!H", len(data)) + data
-             
-    term.send(data)
-    data = term.recv()
-
-    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-    IsoMessage.Print()
-
+    while True:
+        trxn_type = raw_input('\nEnter transaction to send: ')
+    
+        data = ''
+        if trxn_type == 'e':
+            data = echo_test(term.get_terminal_id(), term.get_merchant_id())
+    
+        elif trxn_type == 'b':
+            data = balance_inquiry(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+    
+        elif trxn_type == 'p':
+            data = manual_purchase(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+        else:
+            print('Unknown transaction. Availbale transactions are:')
+            show_available_transactions()
+            continue
+            
+        if data:
+            data = struct.pack("!H", len(data)) + data
+            term.send(data)
+            data = term.recv()
+    
+            IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+            IsoMessage.Print()
+    
     term.close()
 
 
