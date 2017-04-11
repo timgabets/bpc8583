@@ -17,6 +17,8 @@ class Transaction():
             IsoMessage.MTI("0800")
 
             IsoMessage.FieldData(3, 990000)
+            IsoMessage.FieldData(12, get_datetime_with_year())
+            
 
         elif type == 'balance':
             """

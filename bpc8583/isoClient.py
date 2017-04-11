@@ -17,11 +17,22 @@ def show_available_transactions():
     print('b: balance inquiry')
     print('p: manual purchase')
 
+
+def user_input(hint):
+    """
+    python-version-independent wrapper to raw_input()/input()
+    """
+    if sys.version[0] != '3':
+        return raw_input(hint)
+    else:
+        return input(hint)
+
+
 def main(term, card):
     show_available_transactions()
 
     while True:
-        trxn_type = raw_input('\nEnter transaction to send: ')
+        trxn_type = user_input('\nEnter transaction to send: ')
     
         trxn = ''
         data = ''
@@ -32,7 +43,7 @@ def main(term, card):
             trxn = Transaction('balance', card, term)
     
         elif trxn_type == 'p':
-            amount = raw_input('Enter transaction amount: ')
+            amount = user_input('Enter transaction amount: ')
             trxn = Transaction('purchase', card, term, amount=amount)
 
         elif trxn_type == 'q':
