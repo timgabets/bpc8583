@@ -6,7 +6,7 @@ from py8583spec import IsoSpec, IsoSpec1987BPC
 from datetime import datetime
 
 class Transaction():
-    def __init__(self, type, card, term):
+    def __init__(self, type, card, term, amount=None):
         """
         """
         IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
@@ -41,7 +41,7 @@ class Transaction():
         
             IsoMessage.FieldData(2, card.get_card_number())
             IsoMessage.FieldData(3, 000000)
-            IsoMessage.FieldData(4, 55000)
+            IsoMessage.FieldData(4, int(amount))
             IsoMessage.FieldData(12, get_datetime_with_year())
             IsoMessage.FieldData(22, 20)
             IsoMessage.FieldData(24, 100)

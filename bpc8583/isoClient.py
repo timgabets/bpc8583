@@ -32,7 +32,8 @@ def main(term, card):
             trxn = Transaction('balance', card, term)
     
         elif trxn_type == 'p':
-            trxn = Transaction('purchase', card, term)
+            amount = raw_input('Enter transaction amount: ')
+            trxn = Transaction('purchase', card, term, amount=amount)
 
         elif trxn_type == 'q':
             break
