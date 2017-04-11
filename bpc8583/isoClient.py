@@ -11,15 +11,16 @@ from ISO8583 import ISO8583, MemDump
 from isoTools import trace, get_datetime
 from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
+from card import Card
 
-def balance_enquiry(terminal_id, merchant_id, currency_code):
+def balance_enquiry(card, terminal_id, merchant_id, currency_code):
     """
     Balance Enguiry
     """
     IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
     IsoMessage.MTI("0100")
         
-    IsoMessage.FieldData(2, 5678011012400477)
+    IsoMessage.FieldData(2, card.get_card_number())
     IsoMessage.FieldData(3, 310000)
     IsoMessage.FieldData(4, 0)
     IsoMessage.FieldData(7, get_datetime())
@@ -30,10 +31,10 @@ def balance_enquiry(terminal_id, merchant_id, currency_code):
     IsoMessage.FieldData(22, 20)
     IsoMessage.FieldData(24, 100)
     IsoMessage.FieldData(25, 0)
-    IsoMessage.FieldData(35, '5678011012400477=18091011872300000720')
+    IsoMessage.FieldData(35, card.get_track2())
     IsoMessage.FieldData(41, terminal_id)
     IsoMessage.FieldData(42, merchant_id)
-    IsoMessage.FieldData(49, currency_code)
+    #IsoMessage.FieldData(49, currency_code)
 
     IsoMessage.Print()
     return IsoMessage.BuildIso()
@@ -56,7 +57,7 @@ def echo_test(terminal_id, merchant_id):
     return IsoMessage.BuildIso()
 
 
-def main(term):
+def main(term, card):
     """
     # ECHO
     data = echo_test(term.get_terminal_id(), term.get_merchant_id())
@@ -70,7 +71,7 @@ def main(term):
     """
 
     # BENQ
-    data = balance_enquiry(term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+    data = balance_enquiry(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
     data = struct.pack("!H", len(data)) + data
              
     term.send(data)
@@ -119,4 +120,5 @@ if __name__ == '__main__':
             merchant_id = arg
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
-    main(term)
+    card = Card()
+    main(term, card)
