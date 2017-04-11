@@ -1,3 +1,5 @@
+import random
+
 from time import strftime
 from datetime import datetime
 
@@ -58,6 +60,13 @@ def get_timestamp(t=None):
     TODO: get milliseconds
     """
     return datetime.now().strftime("%H:%M:%S.%f")
+
+
+def get_stan():
+    """
+    Get random systems trace audit number
+    """
+    return random.randint(0, 999999)
 
 
 def trace(title, data):

@@ -10,7 +10,7 @@ from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 from card import Card
-from transactions import echo_test, balance_inquiry
+from transactions import echo_test, balance_inquiry, manual_purchase
 
 
 def main(term, card):
@@ -24,10 +24,20 @@ def main(term, card):
 
     IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
     IsoMessage.Print()
-    """
 
     # BENQ
     data = balance_inquiry(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
+    data = struct.pack("!H", len(data)) + data
+             
+    term.send(data)
+    data = term.recv()
+
+    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+    IsoMessage.Print()
+    """
+
+    # Purchase
+    data = manual_purchase(card, term.get_terminal_id(), term.get_merchant_id(), term.get_currency_code())
     data = struct.pack("!H", len(data)) + data
              
     term.send(data)

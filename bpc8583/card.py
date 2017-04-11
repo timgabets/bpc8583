@@ -32,7 +32,7 @@ class Card:
 	def get_expiry_date(self):
 		"""
 		"""
-		return self.expiry_date
+		return int(self.expiry_date)
 
 	def get_track2(self):
 		"""
