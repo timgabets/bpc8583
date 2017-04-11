@@ -44,6 +44,14 @@ def get_datetime():
     """
     return int(datetime.now().strftime("%d%m%H%M%S"))
 
+
+def get_datetime_with_year():
+    """
+    Get current time (for ISO data fields)
+    """
+    return int(datetime.now().strftime("%y%m%d%H%M%S"))
+
+
 def get_timestamp(t=None):
     """
     Get current timestamp for logging purposes
