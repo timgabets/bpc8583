@@ -37,7 +37,7 @@ class Terminal:
         else:
             self.merchant_id = '999999999999001'
 
-        self.currency = '643'
+        self.currency = '840'
 
         try:
             self.sock = None
