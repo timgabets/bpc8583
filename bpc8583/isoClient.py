@@ -29,6 +29,7 @@ def user_input(hint):
 
 
 def main(term, card):
+    term.connect()
     show_available_transactions()
 
     while True:

@@ -41,6 +41,10 @@ class Terminal:
 
         self.currency = '643'
 
+
+    def connect(self):
+        """
+        """
         try:
             self.sock = None
             for res in socket.getaddrinfo(self.host, self.port, socket.AF_UNSPEC, socket.SOCK_STREAM):
