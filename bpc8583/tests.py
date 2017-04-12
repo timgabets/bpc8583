@@ -20,10 +20,10 @@ class TestTerminal(unittest.TestCase):
         self.assertEqual(self.term.get_pinblock('1234', ''), None)
 
     def test_get_pinblock_length_4(self):
-        self.assertEqual(self.term.get_pinblock('1234', '4000001234562000'), '041234FFFFFFFFFF')
+        self.assertEqual(self.term.get_pinblock('1234', '4000001234562000'), b'041274ffffedcba9')
 
     def test_get_pinblock_length_5(self):
-        self.assertEqual(self.term.get_pinblock('92389', '4000001234562000'), '0592389FFFFFFFFF')
+        self.assertEqual(self.term.get_pinblock('92389', '4000001234562000'), b'0592789fffedcba9')
 
         
 if __name__ == '__main__':

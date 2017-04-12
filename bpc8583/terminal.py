@@ -104,7 +104,12 @@ class Terminal:
         block1 = '0' + str(len(PIN)) + str(PIN)
         while len(block1) < 16:
             block1 += 'F'
-        return block1
+        block2 = '0000' + PAN[:12]
+
+        raw_message = bytes.fromhex(block1)
+        raw_key = bytes.fromhex(block2)
+        result = ''.join(["{0:#0{1}x}".format((i ^ j), 4)[2:] for i, j in zip(raw_message, raw_key)])
+        return bytes(result, encoding='utf-8')
 
 
     def get_encrypted_pin(self, clear_pin):
