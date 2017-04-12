@@ -60,7 +60,7 @@ class Transaction():
         IsoMessage.FieldData(42, term.get_merchant_id())
         IsoMessage.FieldData(49, term.get_currency_code())
         if PIN:
-            IsoMessage.FieldData(52, term.get_encrypted_pin(PIN))
+            IsoMessage.FieldData(52, term.get_encrypted_pin(PIN, card.get_card_number()))
 
         IsoMessage.Print()
         self.data = IsoMessage.BuildIso()

@@ -25,6 +25,8 @@ class TestTerminal(unittest.TestCase):
     def test_get_pinblock_length_5(self):
         self.assertEqual(self.term.get_pinblock('92389', '4000001234562000'), b'0592789fffedcba9')
 
-        
+    def test_get_encrypted_pin(self):
+        self.assertEqual(self.term.get_encrypted_pin('92389', '4000001234562000'), '0592789fffedcba9')
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,5 @@
 import socket
+import struct
 import sys
 from isoTools import trace, get_datetime
 
@@ -112,13 +113,14 @@ class Terminal:
         return bytes(result, encoding='utf-8')
 
 
-    def get_encrypted_pin(self, clear_pin):
+    def get_encrypted_pin(self, clear_pin, card_number):
         """
         TODO
         """
         if self.pinblock_format == '01':
-
-            return 'ABCDEF09'
+            pinblock = self.get_pinblock(clear_pin, card_number)
+            #return int.from_bytes(pinblock, byteorder='big')
+            return pinblock.decode("utf-8") 
         else:
             print('Unsupported PIN Block format')
             return ''
