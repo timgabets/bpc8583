@@ -43,8 +43,13 @@ def main(term, card):
             trxn = Transaction('balance', card, term)
     
         elif trxn_type == 'p':
-            amount = user_input('Enter transaction amount: ')
-            trxn = Transaction('purchase', card, term, amount=amount)
+            default_amount = 1000
+            amount = user_input('Enter transaction amount ({} by default): '.format(default_amount))
+            if not amount:
+                amount = default_amount
+
+            PIN = user_input('Enter PIN: ')
+            trxn = Transaction('purchase', card, term, amount=amount, PIN=PIN)
 
         elif trxn_type == 'q':
             break

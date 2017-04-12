@@ -87,3 +87,17 @@ class Terminal:
         """
         """
         return self.currency
+
+    def get_encrypted_pin(self, PIN):
+        """
+        TODO
+        """
+        return 'ABCDEF09'
+
+    def get_pos_entry_mode(self):
+        """
+        """
+        pan_and_date_entry_mode = '90'
+        pin_entry_capability = '1'
+        return int(pan_and_date_entry_mode + pin_entry_capability)
+
