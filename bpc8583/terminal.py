@@ -8,6 +8,8 @@ class Terminal:
         """
         Terminal initialization
         """
+        self.pinblock_format = '01'
+        self.key = b'0000000000000000'
 
         # Host to connect to
         if host:
@@ -88,11 +90,20 @@ class Terminal:
         """
         return self.currency
 
-    def get_encrypted_pin(self, PIN):
+
+    def get_pinblock(self):
+        pass
+
+    def get_encrypted_pin(self, clear_pin):
         """
         TODO
         """
-        return 'ABCDEF09'
+        if self.pinblock_format == '01':
+
+            return 'ABCDEF09'
+        else:
+            print('Unsupported PIN Block format')
+            return ''
 
     def get_pos_entry_mode(self):
         """
@@ -100,4 +111,5 @@ class Terminal:
         pan_and_date_entry_mode = '90'
         pin_entry_capability = '1'
         return int(pan_and_date_entry_mode + pin_entry_capability)
+
 
