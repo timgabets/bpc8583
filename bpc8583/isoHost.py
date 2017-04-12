@@ -16,7 +16,7 @@ def main(s):
             conn, addr = s.accept()
             print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
             data = conn.recv(4096)
-            trace('Data received: ', data)
+            trace('<< {} bytes received: '.format(len(data)), data)
             
             Len = struct.unpack_from("!H", data[:2])[0]
             
@@ -29,31 +29,29 @@ def main(s):
             
             IsoMessage.Print()
             
-            IsoMessage.MTI("0810")
+            IsoMessage.MTI('0810')
             
             IsoMessage.Field(39, 1)
-            IsoMessage.FieldData(39, "00")
+            IsoMessage.FieldData(39, '000')
             IsoMessage.Field(2, 0)
             IsoMessage.Field(35, 0)
             IsoMessage.Field(52, 0)
             IsoMessage.Field(60, 0)
              
-            print("\n\n\n")
+            print("\n")
             IsoMessage.Print()
             data = IsoMessage.BuildIso()
             data = struct.pack("!H", len(data)) + data
-             
+            
             conn.send(data)
-            trace('Data sent:', data)
+            trace('>> {} bytes sent:'.format(len(data)), data)
             
         except KeyboardInterrupt:
             print('Exit')
             s.close()
             sys.exit()
-        except Exception as ex:
-            print(ex)
             
-        conn.close()
+    conn.close()
 
 
 def show_help(name):
