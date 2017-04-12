@@ -95,16 +95,16 @@ class Terminal:
         return self.currency
 
 
-    def get_pinblock(self, PIN):
+    def get_pinblock(self, PIN, PAN):
         """
         """
-        if not PIN:
+        if not PIN or not PAN:
             return None
 
-        pinblock = '0' + str(len(PIN)) + str(PIN)
-        while len(pinblock) < 16:
-            pinblock += 'F'
-        return pinblock
+        block1 = '0' + str(len(PIN)) + str(PIN)
+        while len(block1) < 16:
+            block1 += 'F'
+        return block1
 
 
     def get_encrypted_pin(self, clear_pin):
