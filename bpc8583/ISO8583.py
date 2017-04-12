@@ -439,6 +439,12 @@ class ISO8583:
             self.__MTI = MTI
 
 
+    def get_MTI(self):
+        """
+        """
+        return self.__MTI
+
+
     def Description(self, field, Description = None):
         return self.__IsoSpec.Description(field, Description)
     

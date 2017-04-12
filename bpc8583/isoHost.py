@@ -8,7 +8,7 @@ import getopt
 
 from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec, IsoSpec1987BPC
-from isoTools import trace
+from isoTools import trace, get_response
 
 def main(s):
     while True:
@@ -30,7 +30,7 @@ def main(s):
                 IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
                 IsoMessage.Print()
                 
-                IsoMessage.MTI('0810')
+                IsoMessage.MTI(get_response(IsoMessage.get_MTI()))
                 
                 IsoMessage.Field(39, 1)
                 IsoMessage.FieldData(39, '000')
@@ -51,10 +51,10 @@ def main(s):
                 s.close()
                 sys.exit()
 
-            except:
-                conn.close()
-                print('Connection closed')
-                break   
+            #except:
+            #    conn.close()
+            #    print('Connection closed')
+            #    break   
 
 def show_help(name):
     """

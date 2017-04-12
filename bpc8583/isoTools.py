@@ -73,3 +73,10 @@ def trace(title, data):
     """
     """
     print('\n{} {}\n{}'.format(get_timestamp(), title, dump(data)))
+
+
+def get_response(code):
+    """
+    Return xx1x response for xx0x codes (e.g. 0810 for 0800)
+    """
+    return code[:-2] + '1' + code[-1]
