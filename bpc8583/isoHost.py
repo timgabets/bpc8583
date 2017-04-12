@@ -12,47 +12,49 @@ from isoTools import trace
 
 def main(s):
     while True:
-        try:
-            conn, addr = s.accept()
-            print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
-            data = conn.recv(4096)
-            trace('<< {} bytes received: '.format(len(data)), data)
-            
-            Len = struct.unpack_from("!H", data[:2])[0]
-            
-            if(Len != len(data) - 2):
-                print("Invalid length {0} - {1}".format(Len, len(data) - 2))
-                conn.close()
-                continue
-            
-            IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-            
-            IsoMessage.Print()
-            
-            IsoMessage.MTI('0810')
-            
-            IsoMessage.Field(39, 1)
-            IsoMessage.FieldData(39, '000')
-            IsoMessage.Field(2, 0)
-            IsoMessage.Field(35, 0)
-            IsoMessage.Field(52, 0)
-            IsoMessage.Field(60, 0)
-             
-            print("\n")
-            IsoMessage.Print()
-            data = IsoMessage.BuildIso()
-            data = struct.pack("!H", len(data)) + data
-            
-            conn.send(data)
-            trace('>> {} bytes sent:'.format(len(data)), data)
-            
-        except KeyboardInterrupt:
-            print('Exit')
-            s.close()
-            sys.exit()
-            
-    conn.close()
+        conn, addr = s.accept()
+        print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
 
+        while True:
+            try:
+                data = conn.recv(4096)
+                trace('<< {} bytes received: '.format(len(data)), data)
+                    
+                Len = struct.unpack_from("!H", data[:2])[0]
+                
+                if(Len != len(data) - 2):
+                    print("Invalid length {0} - {1}".format(Len, len(data) - 2))
+                    conn.close()
+                    continue
+                
+                IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+                IsoMessage.Print()
+                
+                IsoMessage.MTI('0810')
+                
+                IsoMessage.Field(39, 1)
+                IsoMessage.FieldData(39, '000')
+                IsoMessage.Field(2, 0)
+                IsoMessage.Field(35, 0)
+                IsoMessage.Field(52, 0)
+                IsoMessage.Field(60, 0)
+                 
+                IsoMessage.Print()
+                data = IsoMessage.BuildIso()
+                data = struct.pack("!H", len(data)) + data
+                
+                conn.send(data)
+                trace('>> {} bytes sent:'.format(len(data)), data)
+
+            except KeyboardInterrupt:
+                print('Exit')
+                s.close()
+                sys.exit()
+
+            except:
+                conn.close()
+                print('Connection closed')
+                break   
 
 def show_help(name):
     """
