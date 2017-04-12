@@ -96,7 +96,16 @@ class Terminal:
 
 
     def get_pinblock(self, PIN):
-        pass
+        """
+        """
+        if not PIN:
+            return None
+
+        pinblock = '0' + str(len(PIN)) + str(PIN)
+        while len(pinblock) < 16:
+            pinblock += 'F'
+        return pinblock
+
 
     def get_encrypted_pin(self, clear_pin):
         """

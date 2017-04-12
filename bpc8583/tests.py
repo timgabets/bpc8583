@@ -13,8 +13,15 @@ class TestTerminal(unittest.TestCase):
     def setUp(self):
         self.term = Terminal()
 
-    def test_get_pinblock(self):
-        self.assertEqual(self.term.get_pinblock('1234'), 'FOO')
+    def test_get_pinblock_empty_pin(self):
+        self.assertEqual(self.term.get_pinblock(''), None)
 
+    def test_get_pinblock_length_4(self):
+        self.assertEqual(self.term.get_pinblock('1234'), '041234FFFFFFFFFF')
+
+    def test_get_pinblock_length_5(self):
+        self.assertEqual(self.term.get_pinblock('92389'), '0592389FFFFFFFFF')
+
+        
 if __name__ == '__main__':
     unittest.main()
