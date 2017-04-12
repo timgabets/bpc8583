@@ -95,7 +95,7 @@ class Terminal:
         return self.currency
 
 
-    def get_pinblock(self):
+    def get_pinblock(self, PIN):
         pass
 
     def get_encrypted_pin(self, clear_pin):
