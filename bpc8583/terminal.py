@@ -107,7 +107,7 @@ class Terminal:
         self.key = bytes.fromhex(key_value)
 
 
-    def get_pinblock(self, __PIN, __PAN):
+    def _get_pinblock(self, __PIN, __PAN):
         """
         """
         PIN = str(__PIN)
@@ -139,7 +139,7 @@ class Terminal:
 
         if self.pinblock_format == '01':
             cipher = DES3.new(self.key, DES3.MODE_ECB)
-            pinblock = bytes.fromhex(self.get_pinblock(clear_pin, card_number))
+            pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
             encrypted_pinblock = cipher.encrypt(pinblock)
             return binascii.hexlify(encrypted_pinblock).decode('utf-8')
 
