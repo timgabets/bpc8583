@@ -7,6 +7,7 @@ from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 from card import Card
 from transaction import Transaction
+from isoTools import get_response
 
 class TestTerminal(unittest.TestCase):
 
@@ -42,6 +43,24 @@ class TestTerminal(unittest.TestCase):
 
     def test_get_encrypted_pin(self):
         self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), '11E7C600A7E2988B')
+
+
+class TestIsoTools(unittest.TestCase):
+    
+    """
+    get_response()
+    """
+    def test_get_response_empty_code(self):
+        self.assertEqual(get_response(''), None)
+
+    def test_get_response_0100(self):
+        self.assertEqual(get_response('0100'), '0110')
+
+    def test_get_response_100(self):
+        self.assertEqual(get_response('100'), '110')
+
+    def test_get_response_passed_as_integer(self):
+        self.assertEqual(get_response(200), '210')
 
 if __name__ == '__main__':
     unittest.main()
