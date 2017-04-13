@@ -19,6 +19,12 @@ class TestTerminal(unittest.TestCase):
     def test_get_pinblock_empty_pan(self):
         self.assertEqual(self.term.get_pinblock('1234', ''), None)
 
+    def test_get_pinblock_pin_passed_as_int(self):
+        self.assertEqual(self.term.get_pinblock(1234, '4000001234562000'), b'041274ffffedcba9')
+
+    def test_get_pinblock_cardnumber_passed_as_int(self):
+        self.assertEqual(self.term.get_pinblock('1234', 4000001234562000), b'041274ffffedcba9')    
+
     def test_get_pinblock_length_4(self):
         self.assertEqual(self.term.get_pinblock('1234', '4000001234562000'), b'041274ffffedcba9')
 
