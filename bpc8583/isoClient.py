@@ -29,7 +29,7 @@ def user_input(hint):
         return input(hint)
 
 
-def interactive(term, card):
+def run_interactive(term, card):
     """
     Run transactions interactively (by asking user which transaction to run)
     """
@@ -78,16 +78,28 @@ def interactive(term, card):
     term.close()
 
 
+def run_non_interactive(term, card, transactions):
+    """
+    """
+    term.connect()
+    for trxn in transactions:
+        trxn.trace()
+        term.send(trxn.get_data())
+        data = term.recv()
+    
+        IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+        IsoMessage.Print()
+
+    term.close()
+
+
 def main(term, card, transactions=None):
     """
     """
     if transactions:
-        term.connect()
-        for trxn in transactions:
-            pass
-        term.close()
+        run_non_interactive(term, card, transactions)
     else:
-       interactive(term, card) 
+       run_interactive(term, card) 
 
 
 def show_help(name):
@@ -109,18 +121,18 @@ def parse_transactions_file(filename, term, card):
     trxn_root = trxn_tree.getroot()
     for trxn in trxn_root:
         print('=======')
-        trxn_details = trxn.attrib
-        print(trxn_details)
+        t = Transaction(trxn.attrib['type'], card, term)
+        t.set_description(trxn.attrib['description'])
+
         for attrib in trxn:
             print(attrib.tag, attrib.text)
-            #if attrib.tag == 'amount':
-            #    amount = attrib.text
-            #elif attrib.tag == 'currency':
-            #    currency = attrib.text
+            if attrib.tag == 'amount':
+                t.set_amount(attrib.text)
+            elif attrib.tag == 'expected_response':
+                t.set_expected(attrib.text)
 
-            #t = Transaction('echo', card, term)
+        transactions.append(t)
 
-    sys.exit()
     return transactions
 
 
