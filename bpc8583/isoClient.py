@@ -4,6 +4,7 @@ import sys
 import os
 import getopt
 import time
+import xml.etree.ElementTree as ET
 
 from ISO8583 import ISO8583, MemDump
 from py8583spec import IsoSpec, IsoSpec1987BPC
@@ -42,9 +43,12 @@ def interactive(term, card):
         data = ''
         if trxn_type == 'e':
             trxn = Transaction('echo', card, term)
+            trxn.trace()
     
         elif trxn_type == 'b':
             trxn = Transaction('balance', card, term)
+            trxn.set_PIN(user_input('Enter PIN: '))
+            trxn.trace()
     
         elif trxn_type == 'p':
             default_amount = 1000
@@ -52,8 +56,10 @@ def interactive(term, card):
             if not amount:
                 amount = default_amount
 
-            PIN = user_input('Enter PIN: ')
-            trxn = Transaction('purchase', card, term, amount=amount, PIN=PIN)
+            trxn = Transaction('purchase', card, term)
+            trxn.set_PIN(user_input('Enter PIN: '))
+            trxn.set_amount(amount)
+            trxn.trace()
 
         elif trxn_type == 'q':
             break
@@ -97,8 +103,24 @@ def show_help(name):
     print('  -f, --file=[file.xml]\t\tUse transaction data from the given XML-file')
 
 
-def parse_transactions_file(filename):
+def parse_transactions_file(filename, term, card):
     transactions = []
+    trxn_tree = ET.parse(filename)
+    trxn_root = trxn_tree.getroot()
+    for trxn in trxn_root:
+        print('=======')
+        trxn_details = trxn.attrib
+        print(trxn_details)
+        for attrib in trxn:
+            print(attrib.tag, attrib.text)
+            #if attrib.tag == 'amount':
+            #    amount = attrib.text
+            #elif attrib.tag == 'currency':
+            #    currency = attrib.text
+
+            #t = Transaction('echo', card, term)
+
+    sys.exit()
     return transactions
 
 
@@ -107,6 +129,7 @@ if __name__ == '__main__':
     port = None
     terminal_id = None
     merchant_id = None
+    trxn_file = None
     transactions = None
 
     try:
@@ -129,10 +152,7 @@ if __name__ == '__main__':
                 merchant_id = arg
 
             elif opt in ('-f', '--file'):
-                transactions = parse_transactions_file(arg)
-                if not transactions:
-                    print('Error parsing {} file'.format(arg))
-                    sys.exit()
+                trxn_file = arg
 
     except getopt.GetoptError:
         show_help(sys.argv[0])
@@ -140,4 +160,6 @@ if __name__ == '__main__':
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
     card = Card()
+    if trxn_file:
+        transactions = parse_transactions_file(arg, term, card)
     main(term, card, transactions)
