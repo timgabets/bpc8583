@@ -124,7 +124,6 @@ class Terminal:
             block1 += 'F'
         block2 = '0000' + PAN[:12]
 
-        # TODO: fix in python2
         raw_message = bytes.fromhex(block1)
         raw_key = bytes.fromhex(block2)
         result = ''.join(["{0:#0{1}x}".format((i ^ j), 4)[2:] for i, j in zip(raw_message, raw_key)])
