@@ -126,7 +126,13 @@ def parse_transactions_file(filename, term, card):
     trxn_tree = ET.parse(filename)
     trxn_root = trxn_tree.getroot()
     for trxn in trxn_root:
-        t = Transaction(trxn.attrib['type'], card, term)
+        t = None
+        try:
+            t = Transaction(trxn.attrib['type'], card, term)
+        except KeyError:
+            print('Error parsing {}: transaction type is not set'.format(filename))
+            sys.exit()
+
         try:
             t.set_description(trxn.attrib['description'])
         except KeyError:
