@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions>
+	<trxn type='purchase' description='10 RUB purchase with PIN'>
+		<amount>1000</amount>
+		<currency>RUB</currency>
+		<pin>1234</pin>
+		<expected_response>000</expected_response>
+	</trxn>
+
+	<trxn type='purchase' description='10 RUB purchase without PIN'>
+		<amount>1000</amount>
+		<currency>RUB</currency>
+		<expected_response>920</expected_response>
+	</trxn>
+</transactions>
