@@ -87,23 +87,28 @@ if __name__ == '__main__':
     terminal_id = None
     merchant_id = None
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:', ['help', 'port=', 'server=', 'terminal=', 'merchant='])
-    for opt, arg in optlist:
-        if opt in ('-h', '--help'):
-            show_help(sys.argv[0])
-            sys.exit()
+    try:
+        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:', ['help', 'port=', 'server=', 'terminal=', 'merchant='])
+        for opt, arg in optlist:
+            if opt in ('-h', '--help'):
+                show_help(sys.argv[0])
+                sys.exit()
+    
+            elif opt in ('-p', '--port'):
+                port = arg
+    
+            elif opt in ('-s', '--server'):
+                ip = arg
+    
+            elif opt in ('-t', '--terminal'):
+                terminal_id = arg
+    
+            elif opt in ('-m', '--merchant'):
+                merchant_id = arg
 
-        elif opt in ('-p', '--port'):
-            port = arg
-
-        elif opt in ('-s', '--server'):
-            ip = arg
-
-        elif opt in ('-t', '--terminal'):
-            terminal_id = arg
-
-        elif opt in ('-m', '--merchant'):
-            merchant_id = arg
+    except getopt.GetoptError:
+        show_help(sys.argv[0])
+        sys.exit()
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
     card = Card()
