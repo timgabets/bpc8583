@@ -15,7 +15,7 @@ class Transaction():
         self.description = None
         self.expected_response_code = None
 
-        if type == 'echo':
+        if type.lower() == 'echo':
             """
             """
             self.IsoMessage.MTI("0800")
@@ -24,7 +24,7 @@ class Transaction():
             self.IsoMessage.FieldData(12, get_datetime_with_year())
 
 
-        elif type == 'balance':
+        elif type.lower() == 'balance':
             """
             """
             self.IsoMessage.MTI("0100")
@@ -39,7 +39,7 @@ class Transaction():
             self.IsoMessage.FieldData(25, 0)
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
-        elif type == 'purchase':
+        elif type.lower() == 'purchase':
             """
             """
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
