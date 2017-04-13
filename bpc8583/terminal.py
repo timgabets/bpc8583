@@ -125,7 +125,7 @@ class Terminal:
         raw_message = bytes.fromhex(block1)
         raw_key = bytes.fromhex(block2)
         result = ''.join(["{0:#0{1}x}".format((i ^ j), 4)[2:] for i, j in zip(raw_message, raw_key)])
-        #return bytes(result, encoding='utf-8')
+
         return result
 
 
@@ -141,7 +141,7 @@ class Terminal:
             cipher = DES3.new(self.key, DES3.MODE_ECB)
             pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
             encrypted_pinblock = cipher.encrypt(pinblock)
-            return binascii.hexlify(encrypted_pinblock).decode('utf-8')
+            return binascii.hexlify(encrypted_pinblock).decode('utf-8').upper()
 
         else:
             print('Unsupported PIN Block format')

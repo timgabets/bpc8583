@@ -41,7 +41,7 @@ class TestTerminal(unittest.TestCase):
     """
 
     def test_get_encrypted_pin(self):
-        self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), '11e7c600a7e2988b')
+        self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), '11E7C600A7E2988B')
 
 if __name__ == '__main__':
     unittest.main()
