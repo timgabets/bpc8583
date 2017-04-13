@@ -55,7 +55,8 @@ class Transaction():
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
         else:
-            return
+            print('Unknown transaction type: {}'.format(_type))
+            return None
     
         # Common message fields:
         self.IsoMessage.FieldData(7, get_datetime())
