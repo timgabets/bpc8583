@@ -92,7 +92,7 @@ def run_non_interactive(term, card, transactions):
         if trxn.get_expected() == IsoMessage.FieldData(39):
             trace_passed(trxn.get_description())
         else:
-            trace_failed(trxn.get_description(), trxn.get_expected(), IsoMessage.FieldData(39), 'iddqd')
+            trace_failed(trxn.get_description(), trxn.get_expected(), IsoMessage.FieldData(39))
             trxn.trace(header='Request')
             IsoMessage.Print(header='Response')
 

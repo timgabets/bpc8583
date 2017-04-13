@@ -57,7 +57,6 @@ def get_datetime_with_year():
 def get_timestamp(t=None):
     """
     Get current timestamp for logging purposes
-    TODO: get milliseconds
     """
     return datetime.now().strftime("%H:%M:%S.%f")
 
@@ -95,7 +94,7 @@ def trace_passed(description):
     print("{}\t| {}{}[\033[32mPASSED\033[0m]".format(get_timestamp(), description[:46], padding))
 
 
-def trace_failed(description, expected, actual_response, actual_response_description):
+def trace_failed(description, expected, actual_response):
     """
     """
     padding = ''
