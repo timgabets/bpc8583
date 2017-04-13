@@ -79,6 +79,7 @@ class Terminal:
     def close(self):
         """
         """
+        print('Disconnected from {}'.format(self.host))
         self.sock.close()
 
 
