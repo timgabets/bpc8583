@@ -1,7 +1,11 @@
 import socket
 import struct
 import sys
+import binascii
+
 from isoTools import trace, get_datetime
+from Crypto.Cipher import DES3
+
 
 class Terminal:
 
@@ -10,7 +14,7 @@ class Terminal:
         Terminal initialization
         """
         self.pinblock_format = '01'
-        self.key = b'0000000000000000'
+        self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
 
         # Host to connect to
         if host:
@@ -114,17 +118,21 @@ class Terminal:
         raw_message = bytes.fromhex(block1)
         raw_key = bytes.fromhex(block2)
         result = ''.join(["{0:#0{1}x}".format((i ^ j), 4)[2:] for i, j in zip(raw_message, raw_key)])
-        return bytes(result, encoding='utf-8')
+        #return bytes(result, encoding='utf-8')
+        return result
 
 
     def get_encrypted_pin(self, clear_pin, card_number):
         """
-        TODO
         """
         if self.pinblock_format == '01':
-            pinblock = self.get_pinblock(clear_pin, card_number)
+            cipher = DES3.new(self.key, DES3.MODE_ECB)
+            pinblock = bytes.fromhex(self.get_pinblock(clear_pin, card_number))
+            result = cipher.encrypt(pinblock)
+            return binascii.hexlify(result)
+
             #return int.from_bytes(pinblock, byteorder='big')
-            return pinblock.decode("utf-8") 
+            return pinblock.decode("utf-8")
         else:
             print('Unsupported PIN Block format')
             return ''

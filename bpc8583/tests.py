@@ -13,6 +13,10 @@ class TestTerminal(unittest.TestCase):
     def setUp(self):
         self.term = Terminal()
 
+    """
+    terminal.get_pinblock()
+    """
+
     def test_get_pinblock_empty_pin(self):
         self.assertEqual(self.term.get_pinblock('', '4000001234562000'), None)
 
@@ -20,19 +24,22 @@ class TestTerminal(unittest.TestCase):
         self.assertEqual(self.term.get_pinblock('1234', ''), None)
 
     def test_get_pinblock_pin_passed_as_int(self):
-        self.assertEqual(self.term.get_pinblock(1234, '4000001234562000'), b'041274ffffedcba9')
+        self.assertEqual(self.term.get_pinblock(1234, '4000001234562000'), '041274ffffedcba9')
 
     def test_get_pinblock_cardnumber_passed_as_int(self):
-        self.assertEqual(self.term.get_pinblock('1234', 4000001234562000), b'041274ffffedcba9')    
+        self.assertEqual(self.term.get_pinblock('1234', 4000001234562000), '041274ffffedcba9')    
 
     def test_get_pinblock_length_4(self):
-        self.assertEqual(self.term.get_pinblock('1234', '4000001234562000'), b'041274ffffedcba9')
+        self.assertEqual(self.term.get_pinblock('1234', '4000001234562000'), '041274ffffedcba9')
 
     def test_get_pinblock_length_5(self):
-        self.assertEqual(self.term.get_pinblock('92389', '4000001234562000'), b'0592789fffedcba9')
+        self.assertEqual(self.term.get_pinblock('92389', '4000001234562000'), '0592789fffedcba9')
 
+    """
+    terminal.get_encrypted_pin()
+    """
     def test_get_encrypted_pin(self):
-        self.assertEqual(self.term.get_encrypted_pin('92389', '4000001234562000'), '0592789fffedcba9')
+        self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), b'11e7c600a7e2988b')
 
 if __name__ == '__main__':
     unittest.main()
