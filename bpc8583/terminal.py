@@ -151,7 +151,7 @@ class Terminal:
         """
         """
         pan_and_date_entry_mode = '90'
-        pin_entry_capability = '1'
+        pin_entry_capability = '0'
         return int(pan_and_date_entry_mode + pin_entry_capability)
 
 
