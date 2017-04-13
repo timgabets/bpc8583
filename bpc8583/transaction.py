@@ -30,7 +30,7 @@ class Transaction():
             """
             self.IsoMessage.MTI("0100")
             
-            self.IsoMessage.FieldData(2, card.get_card_number())
+            self.IsoMessage.FieldData(2, self.card.get_card_number())
             self.IsoMessage.FieldData(3, 310000)
             self.IsoMessage.FieldData(4, 0)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
