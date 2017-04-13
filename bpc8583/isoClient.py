@@ -132,6 +132,8 @@ def parse_transactions_file(filename, term, card):
         for attrib in trxn:
             if attrib.tag == 'amount':
                 t.set_amount(attrib.text)
+            if attrib.tag == 'pin':
+                t.set_PIN(attrib.text)
             elif attrib.tag == 'expected_response':
                 t.set_expected(attrib.text)
 
