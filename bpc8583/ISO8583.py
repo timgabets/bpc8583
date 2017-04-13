@@ -459,8 +459,12 @@ class ISO8583:
         self.Print()
 
 
-    def Print(self):
-        print('\n\tParsed message:')
+    def Print(self, header=None):
+        if header:
+            print('\n\t{}:'.format(header))
+        else:
+            print('\n\tParsed message:')
+
         try:
             print("\tMTI:    [{0}]".format(self.__MTI))
         except AttributeError:

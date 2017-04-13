@@ -79,10 +79,10 @@ class Transaction():
         self.data = self.IsoMessage.BuildIso()
 
 
-    def trace(self):
+    def trace(self, header=None):
         """
         """
-        self.IsoMessage.Print()
+        self.IsoMessage.Print(header=header)
 
 
     def set_description(self, description):

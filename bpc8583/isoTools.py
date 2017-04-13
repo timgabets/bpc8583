@@ -85,10 +85,10 @@ def get_response(code):
 def trace_passed(description):
     """
     """
-    print("{}\t{} [\033[32mPASSED\033[0m]".format(get_timestamp(), description))
+    print("{}\t| {} [\033[32mPASSED\033[0m]".format(get_timestamp(), description))
 
 
 def trace_failed(description, expected, actual_response, actual_response_description):
     """
     """
-    print('{}\t{} [\033[31mFAILED\033[0m]'.format(get_timestamp(), description))
+    print('{}\t| {} [\033[31mFAILED\033[0m]'.format(get_timestamp(), description))
