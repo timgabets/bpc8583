@@ -114,4 +114,9 @@ class Transaction():
         """
         self.expected_response_code = expected_response
 
+    def get_expected(self):
+        """
+        """
+        return self.expected_response_code
+
 
