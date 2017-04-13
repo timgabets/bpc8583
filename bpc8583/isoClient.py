@@ -28,7 +28,10 @@ def user_input(hint):
         return input(hint)
 
 
-def main(term, card):
+def interactive(term, card):
+    """
+    Run transactions interactively (by asking user which transaction to run)
+    """
     term.connect()
     show_available_transactions()
 
@@ -69,6 +72,18 @@ def main(term, card):
     term.close()
 
 
+def main(term, card, transactions=None):
+    """
+    """
+    if transactions:
+        term.connect()
+        for trxn in transactions:
+            pass
+        term.close()
+    else:
+       interactive(term, card) 
+
+
 def show_help(name):
     """
     Show help and basic usage
@@ -79,6 +94,12 @@ def show_help(name):
     print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
     print('  -t, --terminal=[ID]\t\tTerminal ID (used in DE 41 ISO field, 10001337 by default)')
     print('  -m, --merchant=[ID]\t\tMerchant ID (used in DE 42 ISO field, 999999999999001 by default)')
+    print('  -f, --file=[file.xml]\t\tUse transaction data from the given XML-file')
+
+
+def parse_transactions_file(filename):
+    transactions = []
+    return transactions
 
 
 if __name__ == '__main__':
@@ -86,9 +107,10 @@ if __name__ == '__main__':
     port = None
     terminal_id = None
     merchant_id = None
+    transactions = None
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:', ['help', 'port=', 'server=', 'terminal=', 'merchant='])
+        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:f:', ['help', 'port=', 'server=', 'terminal=', 'merchant=', 'file='])
         for opt, arg in optlist:
             if opt in ('-h', '--help'):
                 show_help(sys.argv[0])
@@ -106,10 +128,16 @@ if __name__ == '__main__':
             elif opt in ('-m', '--merchant'):
                 merchant_id = arg
 
+            elif opt in ('-f', '--file'):
+                transactions = parse_transactions_file(arg)
+                if not transactions:
+                    print('Error parsing {} file'.format(arg))
+                    sys.exit()
+
     except getopt.GetoptError:
         show_help(sys.argv[0])
         sys.exit()
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
     card = Card()
-    main(term, card)
+    main(term, card, transactions)
