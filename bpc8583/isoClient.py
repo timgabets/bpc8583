@@ -11,7 +11,7 @@ from py8583spec import IsoSpec, IsoSpec1987BPC
 from terminal import Terminal
 from card import Card
 from transaction import Transaction
-
+from isoTools import trace_passed, trace_failed
 
 def show_available_transactions():
     print('e: echo')
@@ -89,6 +89,12 @@ def run_non_interactive(term, card, transactions):
     
         IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
         IsoMessage.Print()
+
+        # Checking response code
+        if trxn.get_expected() == IsoMessage.FieldData(39):
+            trace_passed(trxn.get_description())
+        else:
+            trace_failed(trxn.get_description(), trxn.get_expected(), IsoMessage.FieldData(39), 'iddqd')
 
     term.close()
 

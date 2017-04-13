@@ -91,6 +91,12 @@ class Transaction():
         self.description = description
 
 
+    def get_description(self):
+        """
+        """
+        return self.description
+
+
     def set_PIN(self, PIN):
         """
         """
@@ -113,6 +119,7 @@ class Transaction():
         Expected outcome of the transaction
         """
         self.expected_response_code = expected_response
+
 
     def get_expected(self):
         """

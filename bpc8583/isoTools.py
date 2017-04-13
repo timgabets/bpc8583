@@ -80,3 +80,18 @@ def get_response(code):
     Return xx1x response for xx0x codes (e.g. 0810 for 0800)
     """
     return code[:-2] + '1' + code[-1]
+
+
+def trace_passed(description):
+    """
+    """
+    print("{} [\033[32mPASSED\033[0m]".format(description))
+
+
+def trace_failed(description, expected, actual_response, actual_response_description):
+    """
+    """
+    print('{} [\033[31mFAILED\033[0m]'.format(description))
+    print('Expected {} response, {} [{}] received instead'.format(expected, actual_response, actual_response_description))
+
+
