@@ -13,6 +13,7 @@ class Transaction():
         self.card = card
         self.term = term
         self.description = None
+        self.expected_response_code = None
 
         if type == 'echo':
             """
@@ -105,4 +106,12 @@ class Transaction():
         if amount:
             self.IsoMessage.FieldData(4, int(amount))
             self.rebuild()
+
+
+    def set_expected(self, expected_response):
+        """
+        Expected outcome of the transaction
+        """
+        self.expected_response_code = expected_response
+
 
