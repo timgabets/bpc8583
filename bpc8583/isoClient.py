@@ -83,18 +83,18 @@ def run_non_interactive(term, card, transactions):
     """
     term.connect()
     for trxn in transactions:
-        trxn.trace()
-        term.send(trxn.get_data())
-        data = term.recv()
+        term.send(trxn.get_data(), show_trace=False)
+        data = term.recv(show_trace=False)
     
         IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-        IsoMessage.Print()
 
         # Checking response code
         if trxn.get_expected() == IsoMessage.FieldData(39):
             trace_passed(trxn.get_description())
         else:
             trace_failed(trxn.get_description(), trxn.get_expected(), IsoMessage.FieldData(39), 'iddqd')
+            trxn.trace()
+            IsoMessage.Print()
 
     term.close()
 
@@ -126,12 +126,10 @@ def parse_transactions_file(filename, term, card):
     trxn_tree = ET.parse(filename)
     trxn_root = trxn_tree.getroot()
     for trxn in trxn_root:
-        print('=======')
         t = Transaction(trxn.attrib['type'], card, term)
         t.set_description(trxn.attrib['description'])
 
         for attrib in trxn:
-            print(attrib.tag, attrib.text)
             if attrib.tag == 'amount':
                 t.set_amount(attrib.text)
             elif attrib.tag == 'expected_response':

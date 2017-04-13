@@ -62,18 +62,20 @@ class Terminal:
         print('Connected to {}:{}'.format(self.host, self.port))
 
 
-    def send(self, data):
+    def send(self, data, show_trace=True):
         """
         """
-        trace('>> {} bytes sent:'.format(len(data)), data)
+        if show_trace:
+            trace('>> {} bytes sent:'.format(len(data)), data)
         return self.sock.send(data)
 
 
-    def recv(self):
+    def recv(self, show_trace=True):
         """
         """
         data = self.sock.recv(4096)
-        trace('<< {} bytes received: '.format(len(data)), data)
+        if show_trace:
+            trace('<< {} bytes received: '.format(len(data)), data)
         return data
 
     def close(self):
