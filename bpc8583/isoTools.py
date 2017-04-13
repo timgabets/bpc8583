@@ -97,4 +97,4 @@ def trace_failed(description, expected, actual_response, actual_response_descrip
     padding = ''
     for i in range(48 - len(description)):
         padding += ' '
-    print('{}\t| {}{}[\033[31mFAILED\033[0m]'.format(get_timestamp(), description[:48], padding))
+    print('\n{}\t| {}{}[\033[31mFAILED\033[0m]'.format(get_timestamp(), description[:48], padding))

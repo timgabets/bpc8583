@@ -127,7 +127,10 @@ def parse_transactions_file(filename, term, card):
     trxn_root = trxn_tree.getroot()
     for trxn in trxn_root:
         t = Transaction(trxn.attrib['type'], card, term)
-        t.set_description(trxn.attrib['description'])
+        try:
+            t.set_description(trxn.attrib['description'])
+        except KeyError:
+            pass
 
         for attrib in trxn:
             if attrib.tag.lower() == 'amount':

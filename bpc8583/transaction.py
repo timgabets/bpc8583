@@ -6,16 +6,17 @@ from py8583spec import IsoSpec, IsoSpec1987BPC
 from datetime import datetime
 
 class Transaction():
-    def __init__(self, type, card, term):
+    def __init__(self, _type, _card, _term):
         """
         """
         self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
-        self.card = card
-        self.term = term
-        self.description = None
+        self.card = _card
+        self.term = _term
+        self.type = _type.lower()
+        self.description = ''
         self.expected_response_code = None
 
-        if type.lower() == 'echo':
+        if self.type == 'echo':
             """
             """
             self.IsoMessage.MTI("0800")
@@ -24,7 +25,7 @@ class Transaction():
             self.IsoMessage.FieldData(12, get_datetime_with_year())
 
 
-        elif type.lower() == 'balance':
+        elif self.type == 'balance':
             """
             """
             self.IsoMessage.MTI("0100")
@@ -39,7 +40,7 @@ class Transaction():
             self.IsoMessage.FieldData(25, 0)
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
-        elif type.lower() == 'purchase':
+        elif self.type == 'purchase':
             """
             """
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
@@ -94,7 +95,11 @@ class Transaction():
     def get_description(self):
         """
         """
-        return self.description
+        if self.description:
+            return self.description
+        else:
+            return self.type + ' ' + str(self.IsoMessage.FieldData(11))
+
 
 
     def set_PIN(self, PIN):

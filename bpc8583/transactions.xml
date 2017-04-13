@@ -12,4 +12,11 @@
 		<currency>RUB</currency>
 		<expected_response>920</expected_response>
 	</trxn>
+
+	<trxn type='purchase'>
+		<amount>1000</amount>
+		<currency>RUB</currency>
+		<expected_response>920</expected_response>
+	</trxn>
+
 </transactions>
