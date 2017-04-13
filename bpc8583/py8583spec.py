@@ -383,7 +383,7 @@ ContentTypes['1987'] = {
     49 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED },
     50 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED },
     51 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED },
-    52 :  { 'ContentType':'b',     'MaxLen': 8,   'LenType': LT.FIXED },
+    52 :  { 'ContentType':'b',     'MaxLen': 16,   'LenType': LT.FIXED },
     53 :  { 'ContentType':'n',     'MaxLen': 16,  'LenType': LT.FIXED },
     54 :  { 'ContentType':'an',    'MaxLen': 120, 'LenType': LT.LLLVAR},
     55 :  { 'ContentType':'ans',   'MaxLen': 999, 'LenType': LT.LLLVAR},
