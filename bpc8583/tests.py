@@ -12,6 +12,7 @@ class TestTerminal(unittest.TestCase):
 
     def setUp(self):
         self.term = Terminal()
+        self.term.set_key('deadbeef deadbeef deadbeef deadbeef')
 
     """
     terminal.get_pinblock()
@@ -38,8 +39,9 @@ class TestTerminal(unittest.TestCase):
     """
     terminal.get_encrypted_pin()
     """
+
     def test_get_encrypted_pin(self):
-        self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), b'11e7c600a7e2988b')
+        self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), '11e7c600a7e2988b')
 
 if __name__ == '__main__':
     unittest.main()

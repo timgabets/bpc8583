@@ -100,6 +100,13 @@ class Terminal:
         return self.currency
 
 
+    def set_terminal_key(self, key_value):
+        """
+        Set the terminal key. The key_value is a hex string
+        """
+        self.key = bytes.fromhex(key_value)
+
+
     def get_pinblock(self, __PIN, __PAN):
         """
         """
@@ -124,15 +131,18 @@ class Terminal:
 
     def get_encrypted_pin(self, clear_pin, card_number):
         """
+        Get PIN block in ISO 0 format, encrypted with the terminal key
         """
+        if not self.key:
+            print('Terminal key is not set')
+            return ''
+
         if self.pinblock_format == '01':
             cipher = DES3.new(self.key, DES3.MODE_ECB)
             pinblock = bytes.fromhex(self.get_pinblock(clear_pin, card_number))
-            result = cipher.encrypt(pinblock)
-            return binascii.hexlify(result)
+            encrypted_pinblock = cipher.encrypt(pinblock)
+            return binascii.hexlify(encrypted_pinblock).decode('utf-8')
 
-            #return int.from_bytes(pinblock, byteorder='big')
-            return pinblock.decode("utf-8")
         else:
             print('Unsupported PIN Block format')
             return ''
