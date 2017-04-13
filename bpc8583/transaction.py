@@ -12,6 +12,7 @@ class Transaction():
         self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
         self.card = card
         self.term = term
+        self.description = None
 
         if type == 'echo':
             """
@@ -83,6 +84,12 @@ class Transaction():
         self.IsoMessage.Print()
 
 
+    def set_description(self, description):
+        """
+        """
+        self.description = description
+
+
     def set_PIN(self, PIN):
         """
         """
@@ -99,5 +106,3 @@ class Transaction():
             self.IsoMessage.FieldData(4, int(amount))
             self.rebuild()
 
-
-        
