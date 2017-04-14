@@ -97,7 +97,7 @@ def trace_passed(description, show_colored_description=False):
         print("{}\t| {}{}[\033[32mPASSED\033[0m]".format(get_timestamp(), description[:46], padding))
 
 
-def trace_failed(description, expected, actual_response, show_colored_description=False):
+def trace_failed(description, actual_response, show_colored_description=False):
     """
     """
     padding = ''

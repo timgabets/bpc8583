@@ -139,12 +139,6 @@ class Transaction():
         return True
 
 
-    def get_expected(self):
-        """
-        """
-        return self.expected_response_code
-
-
     def is_response_expected(self, actual_response_code):
         """
         """

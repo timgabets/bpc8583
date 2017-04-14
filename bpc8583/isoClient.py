@@ -95,7 +95,7 @@ def run_non_interactive(term, card, transactions, verbosity):
                 trxn.trace(header='Request')
                 IsoMessage.Print(header='Response')    
         else:
-            trace_failed(trxn.get_description(), trxn.get_expected(), IsoMessage.FieldData(39), show_colored_description=verbosity)
+            trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=verbosity)
             trxn.trace(header='Request')
             IsoMessage.Print(header='Response')
 
