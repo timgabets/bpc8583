@@ -461,9 +461,9 @@ class ISO8583:
 
     def Print(self, header=None):
         if header:
-            print('\n\t{}:'.format(header))
+            print('\t{}:'.format(header))
         else:
-            print('\n\tParsed message:')
+            print('\tParsed message:')
 
         try:
             print("\tMTI:    [{0}]".format(self.__MTI))
@@ -497,3 +497,4 @@ class ISO8583:
                 else:
                     print("\t\t{0:>3d} - {1: <41} [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
 
+        print('\n')
