@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transactions>
+<!--
+-->
 	<trxn type='balance' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
 		<expected_response>000</expected_response>
@@ -8,17 +10,31 @@
 	<trxn type='balance' description='Balance Inquiry without PIN declined'>
 		<expected_response>920</expected_response>
 	</trxn>
+	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
+		<amount>9000</amount>
+		<currency>RUB</currency>
+		<PIN>1234</PIN>
+		<expected_response>005</expected_response>
+	</trxn>
 
-	<trxn type='purchase' description='10 RUB purchase with PIN approved'>
-		<amount>1000</amount>
+	<trxn type='purchase' description='110 RUB purchase with PIN approved'>
+		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 		<expected_response>000</expected_response>
 	</trxn>
 
-	<trxn type='purchase' description='10 RUB purchase without PIN declined'>
-		<amount>1000</amount>
+	<trxn type='purchase' description='90 RUB purchase without PIN declined'>
+		<amount>9000</amount>
 		<currency>RUB</currency>
 		<expected_response>920</expected_response>
 	</trxn>
+
+	<trxn type='purchase' description='110 RUB purchase without PIN declined'>
+		<amount>11000</amount>
+		<currency>RUB</currency>
+		<expected_response>920</expected_response>
+	</trxn>
+<!--
+-->
 </transactions>
