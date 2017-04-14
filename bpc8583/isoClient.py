@@ -165,7 +165,7 @@ if __name__ == '__main__':
     transactions = None
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'vhp:s:t:m:f:', ['verbose', 'help', 'port=', 'server=', 'terminal=', 'merchant=', 'file='])
+        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:f:v', ['help', 'port=', 'server=', 'terminal=', 'merchant=', 'file=', 'verbose'])
         for opt, arg in optlist:
             if opt in ('-v', '--verbose'):
                 verbosity = True
@@ -194,7 +194,7 @@ if __name__ == '__main__':
         sys.exit()
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
-    card = Card()
+    card = Card()    
     if trxn_file:
-        transactions = parse_transactions_file(arg, term, card)
+        transactions = parse_transactions_file(trxn_file, term, card)
     main(term, card, transactions, verbosity)
