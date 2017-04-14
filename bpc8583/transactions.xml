@@ -4,6 +4,8 @@
 	If there is no <response_action> or <response_code> in <trxn>, it is assummed that the transaction is expected to be successfull (response_code = 000)
 -->
 <transactions>
+<!--
+-->
 	<trxn type='balance' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
 	</trxn>
@@ -14,7 +16,7 @@
 		<amount>9000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
-		<response_code>005</response_code>
+		<response_code>110</response_code>
 	</trxn>
 
 	<trxn type='purchase' description='110 RUB purchase with PIN approved'>
