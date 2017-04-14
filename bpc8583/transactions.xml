@@ -4,36 +4,37 @@
 -->
 	<trxn type='balance' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
-		<expected_response>000</expected_response>
+		<response_code>000</response_code>
+		<response_action>APPROVE</response_action>
 	</trxn>
 
 	<trxn type='balance' description='Balance Inquiry without PIN approved'>
-		<expected_response>000</expected_response>
+		<response_code>000</response_code>
 	</trxn>
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
-		<expected_response>005</expected_response>
+		<response_code>005</response_code>
 	</trxn>
 
 	<trxn type='purchase' description='110 RUB purchase with PIN approved'>
 		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
-		<expected_response>000</expected_response>
+		<response_code>000</response_code>
 	</trxn>
 
 	<trxn type='purchase' description='90 RUB purchase without PIN declined'>
 		<amount>9000</amount>
 		<currency>RUB</currency>
-		<expected_response>920</expected_response>
+		<response_code>920</response_code>
 	</trxn>
 
 	<trxn type='purchase' description='110 RUB purchase without PIN declined'>
 		<amount>11000</amount>
 		<currency>RUB</currency>
-		<expected_response>920</expected_response>
+		<response_code>920</response_code>
 	</trxn>
 <!--
 -->

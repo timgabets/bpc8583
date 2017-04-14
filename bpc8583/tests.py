@@ -62,5 +62,66 @@ class TestIsoTools(unittest.TestCase):
     def test_get_response_passed_as_integer(self):
         self.assertEqual(get_response(200), '210')
 
+class TestTransactionClass(unittest.TestCase):
+
+    def setUp(self):
+        self.term = Terminal()
+        self.card = Card()
+        self.trxn = Transaction('echo', self.card, self.term)
+
+
+    """
+    trxn.set_expected_action()
+    """
+    def test_set_expected_action_approve(self):
+        self.assertEqual(self.trxn.set_expected_action('approve'), True)
+        self.assertEqual(self.trxn.expected_response_action, 'APPROVE')
+
+    def test_set_expected_action_decline(self):
+        self.assertEqual(self.trxn.set_expected_action('decline'), True)
+        self.assertEqual(self.trxn.expected_response_action, 'DECLINE')
+
+    def test_set_expected_action_mixed_case(self):
+        self.assertEqual(self.trxn.set_expected_action('ApPrOVe'), True)
+        self.assertEqual(self.trxn.expected_response_action, 'APPROVE')
+
+    def test_set_expected_action_empty(self):
+        self.assertEqual(self.trxn.set_expected_action(''), False)
+        self.assertEqual(self.trxn.expected_response_action, None)
+
+    def test_set_expected_action_unknown(self):
+        self.assertEqual(self.trxn.set_expected_action('no reason to decline'), False)
+        self.assertEqual(self.trxn.expected_response_action, None)
+
+    """
+    trxn.is_response_expected()
+    """
+    def test_is_response_expected_resp_codes_resp_action_are_not_set(self):
+        self.assertEqual(self.trxn.is_response_expected('000'), None)
+
+    def test_is_response_expected_resp_codes_equal(self):
+        self.trxn.set_expected_code('000')
+        self.assertEqual(self.trxn.is_response_expected('000'), True)
+
+    def test_is_response_expected_resp_codes_not_equal(self):
+        self.trxn.set_expected_code('999')
+        self.assertEqual(self.trxn.is_response_expected('000'), False)
+
+    def test_is_response_expected_resp_action_APPROVED_resp_code_000(self):
+        self.trxn.set_expected_action('APPROVED')
+        self.assertEqual(self.trxn.is_response_expected('000'), True)
+
+    def test_is_response_expected_resp_action_APPROVED_resp_code_999(self):
+        self.trxn.set_expected_action('APPROVED')
+        self.assertEqual(self.trxn.is_response_expected('999'), False)
+
+    def test_is_response_expected_resp_action_DECLINED_resp_code_000(self):
+        self.trxn.set_expected_action('DECLINED')
+        self.assertEqual(self.trxn.is_response_expected('000'), False)
+
+    def test_is_response_expected_resp_action_DECLINED_resp_code_999(self):
+        self.trxn.set_expected_action('DECLINED')
+        self.assertEqual(self.trxn.is_response_expected('777'), True)
+
 if __name__ == '__main__':
     unittest.main()

@@ -6,15 +6,16 @@ from py8583spec import IsoSpec, IsoSpec1987BPC
 from datetime import datetime
 
 class Transaction():
-    def __init__(self, _type, _card, _term):
+    def __init__(self, type, card, term):
         """
         """
         self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
-        self.card = _card
-        self.term = _term
-        self.type = _type.lower()
+        self.card = card
+        self.term = term
+        self.type = type.lower()
         self.description = ''
         self.expected_response_code = None
+        self.expected_response_action = None
 
         if self.type == 'echo':
             """
@@ -120,16 +121,57 @@ class Transaction():
             self.rebuild()
 
 
-    def set_expected(self, expected_response):
+    def set_expected_code(self, expected_response_code):
         """
-        Expected outcome of the transaction
+        Expected response code of the transaction
         """
-        self.expected_response_code = expected_response
+        self.expected_response_code = expected_response_code
+
+
+    def set_expected_action(self, expected_response_action):
+        """
+        Expected outcome of the transaction ('APPROVED' or 'DECLINED')
+        """
+        if expected_response_action.upper() not in ['APPROVED', 'APPROVE', 'DECLINED', 'DECLINE']:
+            return False
+
+        self.expected_response_action = expected_response_action.upper()
+        return True
 
 
     def get_expected(self):
         """
         """
         return self.expected_response_code
+
+
+    def is_response_expected(self, actual_response_code):
+        """
+        """
+        if self.expected_response_action in ['APPROVED', 'APPROVE']:
+            if int(actual_response_code) == 0:
+                return True
+            else:
+                return False
+
+        elif self.expected_response_action in ['DECLINED', 'DECLINE']:
+            if int(actual_response_code) != 0:
+                return True
+            else:
+                return False
+        else:
+            # no response action available, compare the response codes:
+            if self.expected_response_code:
+                if self.expected_response_code == actual_response_code:
+                    return True
+                else:
+                    return False
+            else:
+                # neither response action, nor response code are set
+                return None
+
+        return True
+
+
 
 

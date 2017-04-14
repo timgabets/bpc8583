@@ -147,8 +147,11 @@ def parse_transactions_file(filename, term, card):
                 t.set_amount(attrib.text)
             if attrib.tag.lower() == 'pin':
                 t.set_PIN(attrib.text)
-            elif attrib.tag.lower() == 'expected_response':
-                t.set_expected(attrib.text)
+            elif attrib.tag.lower() == 'response_code':
+                t.set_expected_code(attrib.text)
+            elif attrib.tag.lower() == 'response_action':
+                if not t.set_expected_action(attrib.text):
+                    print('Unknown response action: {}'.format(attrib.text))
 
         transactions.append(t)
 
