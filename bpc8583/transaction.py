@@ -14,7 +14,7 @@ class Transaction():
         self.term = term
         self.type = type.lower()
         self.description = ''
-        self.expected_response_code = None
+        self.expected_response_code = '000'
         self.expected_response_action = None
 
         if self.type == 'echo':

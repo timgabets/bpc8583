@@ -89,7 +89,7 @@ def run_non_interactive(term, card, transactions, verbosity):
         IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
 
         # Checking response code
-        if trxn.get_expected() == IsoMessage.FieldData(39):
+        if trxn.is_response_expected(IsoMessage.FieldData(39)):
             trace_passed(trxn.get_description(), show_colored_description=verbosity)
             if verbosity:
                 trxn.trace(header='Request')

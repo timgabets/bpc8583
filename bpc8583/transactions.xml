@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<transactions>
 <!--
+	<response_action>: may be one of APPROVE,APPROVED, DECLINE or DECLINED.
+	If there is no <response_action> or <response_code> in <trxn>, it is assummed that the transaction is expected to be successfull (response_code = 000)
 -->
+<transactions>
 	<trxn type='balance' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
-		<response_code>000</response_code>
-		<response_action>APPROVE</response_action>
 	</trxn>
 
-	<trxn type='balance' description='Balance Inquiry without PIN approved'>
-		<response_code>000</response_code>
-	</trxn>
+	<trxn type='balance' description='Balance Inquiry without PIN approved'/>
+
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
 		<currency>RUB</currency>
@@ -22,7 +21,6 @@
 		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
-		<response_code>000</response_code>
 	</trxn>
 
 	<trxn type='purchase' description='90 RUB purchase without PIN declined'>

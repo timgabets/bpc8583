@@ -97,7 +97,7 @@ class TestTransactionClass(unittest.TestCase):
     trxn.is_response_expected()
     """
     def test_is_response_expected_resp_codes_resp_action_are_not_set(self):
-        self.assertEqual(self.trxn.is_response_expected('000'), None)
+        self.assertEqual(self.trxn.is_response_expected('000'), True)
 
     def test_is_response_expected_resp_codes_equal(self):
         self.trxn.set_expected_code('000')
