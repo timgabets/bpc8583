@@ -7,8 +7,8 @@
 		<expected_response>000</expected_response>
 	</trxn>
 
-	<trxn type='balance' description='Balance Inquiry without PIN declined'>
-		<expected_response>920</expected_response>
+	<trxn type='balance' description='Balance Inquiry without PIN approved'>
+		<expected_response>000</expected_response>
 	</trxn>
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
