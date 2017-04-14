@@ -29,7 +29,7 @@ def user_input(hint):
         return input(hint)
 
 
-def run_interactive(term, card):
+def run_interactive(term, card, verbosity):
     """
     Run transactions interactively (by asking user which transaction to run)
     """
@@ -69,8 +69,8 @@ def run_interactive(term, card):
             show_available_transactions()
             continue
             
-        term.send(trxn.get_data())
-        data = term.recv()
+        term.send(trxn.get_data(), show_trace=verbosity)
+        data = term.recv(show_trace=verbosity)
     
         IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
         IsoMessage.Print()
@@ -78,19 +78,22 @@ def run_interactive(term, card):
     term.close()
 
 
-def run_non_interactive(term, card, transactions):
+def run_non_interactive(term, card, transactions, verbosity):
     """
     """
     term.connect()
     for trxn in transactions:
         term.send(trxn.get_data(), show_trace=False)
+
         data = term.recv(show_trace=False)
-    
         IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
 
         # Checking response code
         if trxn.get_expected() == IsoMessage.FieldData(39):
             trace_passed(trxn.get_description())
+            if verbosity:
+                trxn.trace(header='Request')
+                IsoMessage.Print(header='Response')    
         else:
             trace_failed(trxn.get_description(), trxn.get_expected(), IsoMessage.FieldData(39))
             trxn.trace(header='Request')
@@ -99,13 +102,13 @@ def run_non_interactive(term, card, transactions):
     term.close()
 
 
-def main(term, card, transactions=None):
+def main(term, card, transactions=None, verbosity=None):
     """
     """
     if transactions:
-        run_non_interactive(term, card, transactions)
+        run_non_interactive(term, card, transactions, verbosity)
     else:
-       run_interactive(term, card) 
+       run_interactive(term, card, verbosity) 
 
 
 def show_help(name):
@@ -114,6 +117,7 @@ def show_help(name):
     """
     print('Usage: python3 {} [OPTIONS]... '.format(name))
     print('ISO8583 message client')
+    print('  -v, --verbose\t\tRun transactions verbosely')
     print('  -p, --port=[PORT]\t\tTCP port to connect to, 1337 by default')
     print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
     print('  -t, --terminal=[ID]\t\tTerminal ID (used in DE 41 ISO field, 10001337 by default)')
@@ -152,6 +156,7 @@ def parse_transactions_file(filename, term, card):
 
 
 if __name__ == '__main__':
+    verbosity = False
     ip = None
     port = None
     terminal_id = None
@@ -160,8 +165,11 @@ if __name__ == '__main__':
     transactions = None
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:f:', ['help', 'port=', 'server=', 'terminal=', 'merchant=', 'file='])
+        optlist, args = getopt.getopt(sys.argv[1:], 'vhp:s:t:m:f:', ['verbose', 'help', 'port=', 'server=', 'terminal=', 'merchant=', 'file='])
         for opt, arg in optlist:
+            if opt in ('-v', '--verbose'):
+                verbosity = True
+
             if opt in ('-h', '--help'):
                 show_help(sys.argv[0])
                 sys.exit()
@@ -189,4 +197,4 @@ if __name__ == '__main__':
     card = Card()
     if trxn_file:
         transactions = parse_transactions_file(arg, term, card)
-    main(term, card, transactions)
+    main(term, card, transactions, verbosity)
