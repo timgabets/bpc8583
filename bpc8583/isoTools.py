@@ -85,19 +85,25 @@ def get_response(_code):
         return None
 
 
-def trace_passed(description):
+def trace_passed(description, show_colored_description=False):
     """
     """
     padding = ''
     for i in range(46 - len(description)):
         padding += ' '
-    print("{}\t| {}{}[\033[32mPASSED\033[0m]".format(get_timestamp(), description[:46], padding))
+    if show_colored_description:
+        print("{}\t| \033[32m{}\033[0m{}[\033[32mPASSED\033[0m]".format(get_timestamp(), description[:46], padding))
+    else:
+        print("{}\t| {}{}[\033[32mPASSED\033[0m]".format(get_timestamp(), description[:46], padding))
 
 
-def trace_failed(description, expected, actual_response):
+def trace_failed(description, expected, actual_response, show_colored_description=False):
     """
     """
     padding = ''
     for i in range(46 - len(description)):
         padding += ' '
-    print('{}\t| {}{}[\033[31mFAILED\033[0m]'.format(get_timestamp(), description[:46], padding))
+    if show_colored_description:
+        print('{}\t| \033[31m{}\033[0m{}[\033[31mFAILED\033[0m]'.format(get_timestamp(), description[:46], padding))
+    else:
+        print('{}\t| {}{}[\033[31mFAILED\033[0m]'.format(get_timestamp(), description[:46], padding))
