@@ -154,9 +154,20 @@ class TestCardClass(unittest.TestCase):
         self.pan = '4444555566667777'
         self.expiry_date = '1120'
         self.service_code = '101'
-        self.discretionary_data = '1872300000720'
+        self.PVV_key_index = '1'
+        self.PVV = '8723'
+        self.CVV = '000'
+        self.discretionary_data1 = '00'
+        self.discretionary_data2 = '720'
 
-        self.card = Card(pan=self.pan, expiry_date=self.expiry_date, service_code=self.service_code, discretionary_data=self.discretionary_data)
+        self.card = Card(pan=self.pan, 
+            expiry_date=self.expiry_date, 
+            service_code=self.service_code, 
+            pvvki=self.PVV_key_index,
+            PVV=self.PVV,
+            CVV=self.CVV,
+            discretionary_data1=self.discretionary_data1, 
+            discretionary_data2=self.discretionary_data2)
 
     def test_get_track2(self):
         self.assertEqual(self.card.get_track2(), '4444555566667777=11201011872300000720')

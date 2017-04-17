@@ -1,5 +1,5 @@
 class Card:
-	def __init__(self, pan=None, expiry_date=None, service_code=None, discretionary_data=None):
+	def __init__(self, pan=None, expiry_date=None, service_code=None, pvvki=None, PVV=None, CVV=None, discretionary_data1=None, discretionary_data2=None):
 		"""
 		"""
 		if pan:
@@ -8,19 +8,39 @@ class Card:
 			self.pan = '8990011234567890'
 
 		if expiry_date:
-			self.expiry_date = expiry_date
+			self.expiry_date = str(expiry_date)
 		else:
 			self.expiry_date = '1809'
 
 		if service_code:
-			self.service_code = service_code
+			self.service_code = str(service_code)
 		else:
 			self.service_code = '101'
 
-		if discretionary_data:
-			self.discretionary_data = discretionary_data
+		if pvvki:
+			self.PVV_key_index = str(pvvki)
 		else:
-			self.discretionary_data = '1872300000720'
+			self.PVV_key_index = '1'
+
+		if PVV:
+			self.PVV = str(PVV)
+		else:
+			self.PVV = '8723'
+
+		if CVV:
+			self.CVV = str(CVV)
+		else:
+			self.CVV = '000'
+
+		if discretionary_data1:
+			self.discretionary_data1 = str(discretionary_data1)
+		else:
+			self.discretionary_data1 = '00'
+
+		if discretionary_data2:
+			self.discretionary_data2 = str(discretionary_data2)
+		else:
+			self.discretionary_data2 = '720'
 
 
 	def get_card_number(self):
@@ -38,7 +58,7 @@ class Card:
 	def get_track2(self):
 		"""
 		"""
-		return self.pan + '=' + self.expiry_date + self.service_code + self.discretionary_data
+		return self.pan + '=' + self.expiry_date + self.service_code + self.PVV_key_index + self.PVV + self.CVV + self.discretionary_data1 + self.discretionary_data2
 
 
 	def get_sequence_number(self):

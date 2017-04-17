@@ -96,12 +96,12 @@ class Transaction():
 
     def get_description(self):
         """
+        Get transaction description (for logging purposes)
         """
         if self.description:
             return self.description
         else:
             return self.type + ' ' + str(self.IsoMessage.FieldData(11))
-
 
 
     def set_PIN(self, PIN):
