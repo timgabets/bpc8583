@@ -13,103 +13,6 @@ from card import Card
 from transaction import Transaction
 from isoTools import trace_passed, trace_failed
 
-def show_available_transactions():
-    print('e: echo')
-    print('b: balance inquiry')
-    print('p: manual purchase')
-
-
-def user_input(hint):
-    """
-    python-version-independent wrapper to raw_input()/input()
-    """
-    if sys.version[0] != '3':
-        return raw_input(hint)
-    else:
-        return input(hint)
-
-
-def run_interactive(term, card, verbosity):
-    """
-    Run transactions interactively (by asking user which transaction to run)
-    """
-    term.connect()
-    show_available_transactions()
-
-    while True:
-        trxn_type = user_input('\nEnter transaction to send: ')
-    
-        trxn = ''
-        data = ''
-        if trxn_type == 'e':
-            trxn = Transaction('echo', card, term)
-            trxn.trace()
-    
-        elif trxn_type == 'b':
-            trxn = Transaction('balance', card, term)
-            trxn.set_PIN(user_input('Enter PIN: '))
-            trxn.trace()
-    
-        elif trxn_type == 'p':
-            default_amount = 1000
-            amount = user_input('Enter transaction amount ({} by default): '.format(default_amount))
-            if not amount:
-                amount = default_amount
-
-            trxn = Transaction('purchase', card, term)
-            trxn.set_PIN(user_input('Enter PIN: '))
-            trxn.set_amount(amount)
-            trxn.trace()
-
-        elif trxn_type == 'q':
-            break
-
-        else:
-            print('Unknown transaction. Availbale transactions are:')
-            show_available_transactions()
-            continue
-            
-        term.send(trxn.get_data(), show_trace=verbosity)
-        data = term.recv(show_trace=verbosity)
-    
-        IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-        IsoMessage.Print()
-    
-    term.close()
-
-
-def run_non_interactive(term, card, transactions, verbosity):
-    """
-    """
-    term.connect()
-    for trxn in transactions:
-        term.send(trxn.get_data(), show_trace=False)
-
-        data = term.recv(show_trace=False)
-        IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-
-        # Checking response code
-        if trxn.is_response_expected(IsoMessage.FieldData(39)):
-            trace_passed(trxn.get_description(), show_colored_description=verbosity)
-            if verbosity:
-                trxn.trace(header='Request')
-                IsoMessage.Print(header='Response')    
-        else:
-            trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=verbosity)
-            trxn.trace(header='Request')
-            IsoMessage.Print(header='Response')
-
-    term.close()
-
-
-def main(term, card, transactions=None, verbosity=None):
-    """
-    """
-    if transactions:
-        run_non_interactive(term, card, transactions, verbosity)
-    else:
-       run_interactive(term, card, verbosity) 
-
 
 def show_help(name):
     """
@@ -158,6 +61,120 @@ def parse_transactions_file(filename, term, card):
     return transactions
 
 
+class isoClient:
+
+    def __init__(self, term, card, transactions=None):
+        self.term = term
+        self.card = card
+        self.transactions = transactions
+
+
+    def set_verbosity_level(self, verbosity_level):
+        """
+        """
+        self.verbosity = verbosity_level
+
+
+    def run(self):
+        """
+        """
+        if self.transactions:
+            self._run_non_interactive()
+        else:
+            self._run_interactive() 
+
+
+    def _run_non_interactive(self):
+        """
+        """
+        self.term.connect()
+        for trxn in self.transactions:
+            self.term.send(trxn.get_data(), show_trace=False)
+    
+            data = self.term.recv(show_trace=False)
+            IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+    
+            # Checking response code
+            if trxn.is_response_expected(IsoMessage.FieldData(39)):
+                trace_passed(trxn.get_description(), show_colored_description=verbosity)
+                if verbosity:
+                    trxn.trace(header='Request')
+                    IsoMessage.Print(header='Response')    
+            else:
+                trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=verbosity)
+                trxn.trace(header='Request')
+                IsoMessage.Print(header='Response')
+    
+        self.term.close()
+
+
+    def _user_input(self, hint):
+        """
+        python-version-independent wrapper to raw_input()/input()
+        """
+        if sys.version[0] != '3':
+            return raw_input(hint)
+        else:
+            return input(hint)
+
+
+    def _show_available_transactions(self):
+        """
+        """
+        print('e: echo')
+        print('b: balance inquiry')
+        print('p: manual purchase')
+
+
+    def _run_interactive(self):
+        """
+        Run transactions interactively (by asking user which transaction to run)
+        """
+        self.term.connect()
+        self._show_available_transactions()
+
+        while True:
+            trxn_type = self._user_input('\nEnter transaction to send: ')
+        
+            trxn = ''
+            data = ''
+            if trxn_type == 'e':
+                trxn = Transaction('echo', self.card, self.term)
+                trxn.trace()
+        
+            elif trxn_type == 'b':
+                trxn = Transaction('balance', self.card, self.term)
+                trxn.set_PIN(self._user_input('Enter PIN: '))
+                trxn.trace()
+        
+            elif trxn_type == 'p':
+                default_amount = 1000
+                amount = self._user_input('Enter transaction amount ({} by default): '.format(default_amount))
+                if not amount:
+                    amount = default_amount
+
+                trxn = Transaction('purchase', self.card, self.term)
+                trxn.set_PIN(self._user_input('Enter PIN: '))
+                trxn.set_amount(amount)
+                trxn.trace()
+
+            elif trxn_type == 'q':
+                break
+
+            else:
+                print('Unknown transaction. Availbale transactions are:')
+                self._show_available_transactions()
+                continue
+                
+            self.term.send(trxn.get_data(), show_trace=verbosity)
+            data = self.term.recv(show_trace=verbosity)
+        
+            IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+            IsoMessage.Print()
+        
+        self.term.close()
+
+
 if __name__ == '__main__':
     verbosity = False
     ip = None
@@ -200,4 +217,7 @@ if __name__ == '__main__':
     card = Card()    
     if trxn_file:
         transactions = parse_transactions_file(trxn_file, term, card)
-    main(term, card, transactions, verbosity)
+
+    pos = isoClient(term, card, transactions)
+    pos.set_verbosity_level(verbosity)
+    pos.run()
