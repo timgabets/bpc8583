@@ -108,8 +108,10 @@ class Transaction():
         """
         """
         if PIN:
-            self.IsoMessage.FieldData(52, self.term.get_encrypted_pin(PIN, self.card.get_card_number()))
-            self.rebuild()
+            encrypted_pinblock = self.term.get_encrypted_pin(PIN, self.card.get_card_number())
+            if encrypted_pinblock:
+                self.IsoMessage.FieldData(52, encrypted_pinblock)
+                self.rebuild()
 
 
     def set_amount(self, amount):

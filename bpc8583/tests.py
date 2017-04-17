@@ -40,8 +40,16 @@ class TestTerminal(unittest.TestCase):
     """
     terminal.get_encrypted_pin()
     """
+    def test_get_encrypted_pin_empty_pin_empty_cardnumber(self):
+        self.assertEqual(self.term.get_encrypted_pin('', ''), '')
 
-    def test_get_encrypted_pin(self):
+    def test_get_encrypted_pin_invalid_pin(self):
+        self.assertEqual(self.term.get_encrypted_pin('iddqd', '4000001234562000'), '')
+
+    def test_get_encrypted_pin_invalid_cardnumber(self):
+        self.assertEqual(self.term.get_encrypted_pin('1234', 'iddqd'), '')
+
+    def test_get_encrypted_pin_valid_digits(self):
         self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), '11E7C600A7E2988B')
 
 

@@ -114,7 +114,7 @@ class isoClient:
                 break
 
             else:
-                print('Unknown transaction. Availbale transactions are:')
+                print('Unknown transaction. Available transactions are:')
                 self._show_available_transactions()
                 continue
                 

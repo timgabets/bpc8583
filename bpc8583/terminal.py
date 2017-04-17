@@ -124,8 +124,12 @@ class Terminal:
             block1 += 'F'
         block2 = '0000' + PAN[:12]
 
-        raw_message = bytes.fromhex(block1)
-        raw_key = bytes.fromhex(block2)
+        try:
+            raw_message = bytes.fromhex(block1)
+            raw_key = bytes.fromhex(block2)
+        except ValueError:
+            return ''
+
         result = ''.join(["{0:#0{1}x}".format((i ^ j), 4)[2:] for i, j in zip(raw_message, raw_key)])
 
         return result
@@ -141,7 +145,11 @@ class Terminal:
 
         if self.pinblock_format == '01':
             cipher = DES3.new(self.key, DES3.MODE_ECB)
-            pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
+            try:
+                pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
+            except TypeError:
+                return ''
+
             encrypted_pinblock = cipher.encrypt(pinblock)
             return binascii.hexlify(encrypted_pinblock).decode('utf-8').upper()
 
