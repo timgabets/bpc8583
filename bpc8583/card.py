@@ -3,7 +3,7 @@ class Card:
 		"""
 		"""
 		if pan:
-			self.pan = pan
+			self.pan = str(pan)
 		else:
 			self.pan = '8990011234567890'
 
