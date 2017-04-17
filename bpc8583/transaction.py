@@ -119,7 +119,10 @@ class Transaction():
         Set transaction amount
         """
         if amount:
-            self.IsoMessage.FieldData(4, int(amount))
+            try:
+                self.IsoMessage.FieldData(4, int(amount))
+            except ValueError:
+                self.IsoMessage.FieldData(4, 0)
             self.rebuild()
 
 
