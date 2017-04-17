@@ -14,55 +14,7 @@ from transaction import Transaction
 from isoTools import trace_passed, trace_failed
 
 
-def show_help(name):
-    """
-    Show help and basic usage
-    """
-    print('Usage: python3 {} [OPTIONS]... '.format(name))
-    print('ISO8583 message client')
-    print('  -v, --verbose\t\tRun transactions verbosely')
-    print('  -p, --port=[PORT]\t\tTCP port to connect to, 1337 by default')
-    print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
-    print('  -t, --terminal=[ID]\t\tTerminal ID (used in DE 41 ISO field, 10001337 by default)')
-    print('  -m, --merchant=[ID]\t\tMerchant ID (used in DE 42 ISO field, 999999999999001 by default)')
-    print('  -f, --file=[file.xml]\t\tUse transaction data from the given XML-file')
-
-
-def parse_transactions_file(filename, term, card):
-    transactions = []
-    trxn_tree = ET.parse(filename)
-    trxn_root = trxn_tree.getroot()
-    for trxn in trxn_root:
-        t = None
-        try:
-            t = Transaction(trxn.attrib['type'], card, term)
-        except KeyError:
-            print('Error parsing {}: transaction type is not set'.format(filename))
-            sys.exit()
-
-        try:
-            t.set_description(trxn.attrib['description'])
-        except KeyError:
-            pass
-
-        for attrib in trxn:
-            if attrib.tag.lower() == 'amount':
-                t.set_amount(attrib.text)
-            if attrib.tag.lower() == 'pin':
-                t.set_PIN(attrib.text)
-            elif attrib.tag.lower() == 'response_code':
-                t.set_expected_code(attrib.text)
-            elif attrib.tag.lower() == 'response_action':
-                if not t.set_expected_action(attrib.text):
-                    print('Unknown response action: {}'.format(attrib.text))
-
-        transactions.append(t)
-
-    return transactions
-
-
 class isoClient:
-
     def __init__(self, term, card, transactions=None):
         self.term = term
         self.card = card
@@ -173,6 +125,54 @@ class isoClient:
             IsoMessage.Print()
         
         self.term.close()
+
+
+def parse_transactions_file(filename, term, card):
+    """
+    """
+    transactions = []
+    trxn_tree = ET.parse(filename)
+    trxn_root = trxn_tree.getroot()
+    for trxn in trxn_root:
+        t = None
+        try:
+            t = Transaction(trxn.attrib['type'], card, term)
+        except KeyError:
+            print('Error parsing {}: transaction type is not set'.format(filename))
+            sys.exit()
+
+        try:
+            t.set_description(trxn.attrib['description'])
+        except KeyError:
+            pass
+
+        for attrib in trxn:
+            if attrib.tag.lower() == 'amount':
+                t.set_amount(attrib.text)
+            if attrib.tag.lower() == 'pin':
+                t.set_PIN(attrib.text)
+            elif attrib.tag.lower() == 'response_code':
+                t.set_expected_code(attrib.text)
+            elif attrib.tag.lower() == 'response_action':
+                if not t.set_expected_action(attrib.text):
+                    print('Unknown response action: {}'.format(attrib.text))
+
+        transactions.append(t)
+    return transactions
+
+
+def show_help(name):
+    """
+    Show help and basic usage
+    """
+    print('Usage: python3 {} [OPTIONS]... '.format(name))
+    print('ISO8583 message client')
+    print('  -v, --verbose\t\tRun transactions verbosely')
+    print('  -p, --port=[PORT]\t\tTCP port to connect to, 1337 by default')
+    print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
+    print('  -t, --terminal=[ID]\t\tTerminal ID (used in DE 41 ISO field, 10001337 by default)')
+    print('  -m, --merchant=[ID]\t\tMerchant ID (used in DE 42 ISO field, 999999999999001 by default)')
+    print('  -f, --file=[file.xml]\t\tUse transaction data from the given XML-file')
 
 
 if __name__ == '__main__':
