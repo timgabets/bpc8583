@@ -22,16 +22,17 @@ def dump(data):
                 
         except: # python 2.x
             dump += '{:02x} '.format(ord(c))
-            if c >= ' ' and c < '~':
-                dump_ascii += c
-            else:
-                dump_ascii += '.'
+            
+        if chr(c) >= ' ' and chr(c) < '~':
+            dump_ascii += chr(c)
+        else:
+            dump_ascii += '.'
 
         if(i % 16 == 0):
             dump = dump + padding + dump_ascii + '\n\t'
             dump_ascii = ''
         i+=1
-       
+
     if dump_ascii:
         for i in range(16 - len(dump_ascii)):
             padding += '   '
@@ -71,7 +72,7 @@ def get_stan():
 def trace(title, data):
     """
     """
-    print('\n{} {}\n{}'.format(get_timestamp(), title, dump(data)))
+    print('{} {}\n{}\n'.format(get_timestamp(), title, dump(data)))
 
 
 def get_response(_code):
