@@ -123,5 +123,25 @@ class TestTransactionClass(unittest.TestCase):
         self.trxn.set_expected_action('DECLINED')
         self.assertEqual(self.trxn.is_response_expected('777'), True)
 
+
+class TestCardClass(unittest.TestCase):
+
+    def setUp(self):
+        self.pan = '4444555566667777'
+        self.expiry_date = '1120'
+        self.service_code = '101'
+        self.discretionary_data = '1872300000720'
+
+        self.card = Card(pan=self.pan, expiry_date=self.expiry_date, service_code=self.service_code, discretionary_data=self.discretionary_data)
+
+    def test_get_track2(self):
+        self.assertEqual(self.card.get_track2(), '4444555566667777=11201011872300000720')
+
+    def test_get_expiry_date(self):
+        self.assertEqual(self.card.get_expiry_date(), 1120)
+
+    def test_get_card_number(self):
+        self.assertEqual(self.card.get_card_number(), 4444555566667777)        
+
 if __name__ == '__main__':
     unittest.main()
