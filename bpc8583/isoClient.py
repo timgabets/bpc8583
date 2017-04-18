@@ -12,6 +12,7 @@ from terminal import Terminal
 from card import Card
 from transaction import Transaction
 from isoTools import trace_passed, trace_failed
+from collections import OrderedDict
 
 
 class isoClient:
@@ -127,10 +128,17 @@ class isoClient:
         self.term.close()
 
 
-def parse_transaction_item(trxn, term, card):
+def parse_transaction_item(trxn, term, cards):
     """
     """
     t = None
+    card = None
+
+    try:
+        card = cards[trxn.attrib['card']]
+    except:
+        card = cards['8990011234567890']
+
     try:
         t = Transaction(trxn.attrib['type'], card, term)
     except KeyError:
@@ -157,6 +165,8 @@ def parse_transaction_item(trxn, term, card):
 
 
 def parse_card_data(card):
+    """
+    """
     pan = None
     expiry_date = None
     service_code = None
@@ -184,7 +194,7 @@ def parse_card_data(card):
     return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV)
             
 
-def parse_data_file(filename, term, card):
+def parse_data_file(filename, term):
     """
     """
     data_tree = ET.parse(filename)
@@ -195,12 +205,17 @@ def parse_data_file(filename, term, card):
         if item.tag == 'card':
             c = parse_card_data(item)
             if c:
-                cards[c.get_card_number()] = c
+                cards[str(c.get_card_number())] = c
+
+    if not cards:
+        # No <card> items in transaction file:
+        card = Card()
+        cards[str(card.get_card_number())] = card
 
     transactions = []
     for item in data_root:
         if item.tag == 'trxn':
-            t = parse_transaction_item(item, term, card)
+            t = parse_transaction_item(item, term, cards)
             if t:
                 transactions.append(t)
 
@@ -260,10 +275,10 @@ if __name__ == '__main__':
         sys.exit()
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
-    card = Card()    
     if data_file:
-        transactions = parse_data_file(data_file, term, card)
+        transactions = parse_data_file(data_file, term)
 
+    card = Card()
     pos = isoClient(term, card, transactions)
     pos.set_verbosity_level(verbosity)
     pos.run()
