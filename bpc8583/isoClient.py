@@ -137,7 +137,9 @@ def parse_transaction_item(trxn, term, cards):
     try:
         card = cards[trxn.attrib['card']]
     except:
-        card = cards['8990011234567890']
+        for key, value in cards.items():
+            card = value
+            break        
 
     try:
         t = Transaction(trxn.attrib['type'], card, term)
@@ -200,7 +202,7 @@ def parse_data_file(filename, term):
     data_tree = ET.parse(filename)
     data_root = data_tree.getroot()
 
-    cards = {}
+    cards = OrderedDict()
     for item in data_root:
         if item.tag == 'card':
             c = parse_card_data(item)
