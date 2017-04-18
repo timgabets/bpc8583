@@ -151,12 +151,12 @@ class TestTransactionClass(unittest.TestCase):
 class TestCardClass(unittest.TestCase):
 
     def setUp(self):
-        self.pan = 4444555566667777
-        self.expiry_date = 1120
-        self.service_code = 101
+        self.pan = '4444555566667777'
+        self.expiry_date = '1120'
+        self.service_code = '101'
         self.PVV_key_index = 1
-        self.PVV = 8723
-        self.CVV = 000
+        self.PVV = '8723'
+        self.CVV = '000'
         self.discretionary_data = '00720'
 
         self.card = Card(pan=self.pan, 
