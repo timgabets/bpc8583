@@ -4,6 +4,9 @@
 	If there is no <response_action> or <response_code> in <trxn>, it is assummed that the transaction is expected to be successfull (response_code = 000)
 -->
 <data>
+	<!--
+		The first card is used as a default card for transaction with no card='' attribute specified
+	-->
 	<card>
 		<pan>8990011234567890</pan>
 		<expiry_date>1809</expiry_date>
@@ -13,26 +16,24 @@
 		<CVV>000</CVV>
 		<discr_data>00720</discr_data>
 	</card>
-
 	<card>
 		<pan>4444555534567890</pan>
-		<expiry_date>1809</expiry_date>
+		<expiry_date>1119</expiry_date>
 		<service_code>101</service_code>
 		<PVVKi>1</PVVKi>
-		<PVV>8723</PVV>
-		<CVV>000</CVV>
-		<discr_data>00720</discr_data>
+		<PVV>8456</PVV>
+		<CVV>334</CVV>
+		<discr_data>00860</discr_data>
 	</card>
 <!--
-
+-->
 	<trxn type='balance' card='8990011234567890' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
 	</trxn>
 
 	<trxn type='balance' description='Balance Inquiry without PIN approved'/>
--->
 
-	<trxn type='purchase' card='8990011234567890' description='90 RUB purchase with PIN declined'>
+	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>

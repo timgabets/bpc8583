@@ -193,7 +193,7 @@ def parse_card_data(card):
         elif attrib.tag.lower() == 'discr_data':
             discr_data = attrib.text
 
-    return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV)
+    return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV, discretionary_data=discr_data)
             
 
 def parse_data_file(filename, term):
@@ -280,7 +280,6 @@ if __name__ == '__main__':
     if data_file:
         transactions = parse_data_file(data_file, term)
 
-    card = Card()
-    pos = isoClient(term, card, transactions)
+    pos = isoClient(term, Card(), transactions)
     pos.set_verbosity_level(verbosity)
     pos.run()
