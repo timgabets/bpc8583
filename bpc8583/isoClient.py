@@ -205,12 +205,12 @@ def parse_data_file(filename, term):
         if item.tag == 'card':
             c = parse_card_data(item)
             if c:
-                cards[str(c.get_card_number())] = c
+                cards[c.get_str_card_number()] = c
 
     if not cards:
         # No <card> items in transaction file:
-        card = Card()
-        cards[str(card.get_card_number())] = card
+        c = Card()
+        cards[c.get_str_card_number()] = c
 
     transactions = []
     for item in data_root:

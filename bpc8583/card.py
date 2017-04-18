@@ -48,7 +48,19 @@ class Card:
 	def get_card_number(self):
 		"""
 		"""
+		return self.get_int_card_number()
+
+
+	def get_int_card_number(self):
+		"""
+		"""
 		return int(self.pan)
+
+
+	def get_str_card_number(self):
+		"""
+		"""
+		return self.pan
 
 
 	def get_expiry_date(self):
