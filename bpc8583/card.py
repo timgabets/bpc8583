@@ -42,6 +42,8 @@ class Card:
 		else:
 			self.discretionary_data2 = '720'
 
+		print('Card {} created'.format(self.pan)) 
+
 
 	def get_card_number(self):
 		"""

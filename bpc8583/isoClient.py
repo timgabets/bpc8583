@@ -156,13 +156,48 @@ def parse_transaction_item(trxn, term, card):
     return t
 
 
+def parse_card_data(card):
+    pan = None
+    expiry_date = None
+    service_code = None
+    PVVKi = None
+    PVV = None
+    CVV = None
+    discr_data = None
+
+    for attrib in card:
+        if attrib.tag.lower() == 'pan':
+            pan = attrib.text
+        if attrib.tag.lower() == 'expiry_date':
+            expiry_date = attrib.text
+        elif attrib.tag.lower() == 'service_code':
+            service_code = attrib.text
+        elif attrib.tag.lower() == 'pvvki':
+            PVVKi = attrib.text
+        elif attrib.tag.lower() == 'pvv':
+            PVV = attrib.text
+        elif attrib.tag.lower() == 'cvv':
+            CVV = attrib.text
+        elif attrib.tag.lower() == 'discr_data':
+            discr_data = attrib.text
+
+    return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV)
+            
 
 def parse_data_file(filename, term, card):
     """
     """
-    transactions = []
     data_tree = ET.parse(filename)
     data_root = data_tree.getroot()
+
+    cards = {}
+    for item in data_root:
+        if item.tag == 'card':
+            c = parse_card_data(item)
+            if c:
+                cards[c.get_card_number()] = c
+
+    transactions = []
     for item in data_root:
         if item.tag == 'trxn':
             t = parse_transaction_item(item, term, card)
