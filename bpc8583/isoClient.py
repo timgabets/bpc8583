@@ -127,7 +127,7 @@ class isoClient:
         self.term.close()
 
 
-def parse_transaction_data(trxn):
+def parse_transaction_item(trxn, term, card):
     """
     """
     t = None
@@ -161,11 +161,11 @@ def parse_data_file(filename, term, card):
     """
     """
     transactions = []
-    trxn_tree = ET.parse(filename)
-    trxn_root = trxn_tree.getroot()
-    for trxn in trxn_root:
-        if trxn.tag == 'trxn':
-            t = parse_transaction_data(trxn)
+    data_tree = ET.parse(filename)
+    data_root = data_tree.getroot()
+    for item in data_root:
+        if item.tag == 'trxn':
+            t = parse_transaction_item(item, term, card)
             if t:
                 transactions.append(t)
 
