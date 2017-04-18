@@ -127,37 +127,48 @@ class isoClient:
         self.term.close()
 
 
-def parse_transactions_file(filename, term, card):
+def parse_transaction_data(trxn):
+    """
+    """
+    t = None
+    try:
+        t = Transaction(trxn.attrib['type'], card, term)
+    except KeyError:
+        print('Error parsing {}: transaction type is not set'.format(filename))
+        sys.exit()
+
+    try:
+        t.set_description(trxn.attrib['description'])
+    except KeyError:
+        pass
+
+    for attrib in trxn:
+        if attrib.tag.lower() == 'amount':
+            t.set_amount(attrib.text)
+        if attrib.tag.lower() == 'pin':
+            t.set_PIN(attrib.text)
+        elif attrib.tag.lower() == 'response_code':
+            t.set_expected_code(attrib.text)
+        elif attrib.tag.lower() == 'response_action':
+            if not t.set_expected_action(attrib.text):
+                print('Unknown response action: {}'.format(attrib.text))
+
+    return t
+
+
+
+def parse_data_file(filename, term, card):
     """
     """
     transactions = []
     trxn_tree = ET.parse(filename)
     trxn_root = trxn_tree.getroot()
     for trxn in trxn_root:
-        t = None
-        try:
-            t = Transaction(trxn.attrib['type'], card, term)
-        except KeyError:
-            print('Error parsing {}: transaction type is not set'.format(filename))
-            sys.exit()
+        if trxn.tag == 'trxn':
+            t = parse_transaction_data(trxn)
+            if t:
+                transactions.append(t)
 
-        try:
-            t.set_description(trxn.attrib['description'])
-        except KeyError:
-            pass
-
-        for attrib in trxn:
-            if attrib.tag.lower() == 'amount':
-                t.set_amount(attrib.text)
-            if attrib.tag.lower() == 'pin':
-                t.set_PIN(attrib.text)
-            elif attrib.tag.lower() == 'response_code':
-                t.set_expected_code(attrib.text)
-            elif attrib.tag.lower() == 'response_action':
-                if not t.set_expected_action(attrib.text):
-                    print('Unknown response action: {}'.format(attrib.text))
-
-        transactions.append(t)
     return transactions
 
 
@@ -181,7 +192,7 @@ if __name__ == '__main__':
     port = None
     terminal_id = None
     merchant_id = None
-    trxn_file = None
+    data_file = None
     transactions = None
 
     try:
@@ -207,7 +218,7 @@ if __name__ == '__main__':
                 merchant_id = arg
 
             elif opt in ('-f', '--file'):
-                trxn_file = arg
+                data_file = arg
 
     except getopt.GetoptError:
         show_help(sys.argv[0])
@@ -215,8 +226,8 @@ if __name__ == '__main__':
     
     term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
     card = Card()    
-    if trxn_file:
-        transactions = parse_transactions_file(trxn_file, term, card)
+    if data_file:
+        transactions = parse_data_file(data_file, term, card)
 
     pos = isoClient(term, card, transactions)
     pos.set_verbosity_level(verbosity)

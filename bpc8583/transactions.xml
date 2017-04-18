@@ -10,6 +10,7 @@
 	</trxn>
 
 	<trxn type='balance' description='Balance Inquiry without PIN approved'/>
+-->
 
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
@@ -18,19 +19,18 @@
 		<response_code>110</response_code>
 	</trxn>
 
--->
 	<trxn type='purchase' description='110 RUB purchase with PIN approved'>
 		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
 
+<!--
 	<trxn type='purchase' description='90 RUB purchase without PIN declined'>
 		<amount>9000</amount>
 		<currency>RUB</currency>
 		<response_code>920</response_code>
 	</trxn>
-<!--
 
 	<trxn type='purchase' description='110 RUB purchase without PIN declined'>
 		<amount>11000</amount>
