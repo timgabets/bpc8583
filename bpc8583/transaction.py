@@ -24,7 +24,16 @@ class Transaction():
 
             self.IsoMessage.FieldData(3, 990000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
+            self.IsoMessage.FieldData(24, 801)
 
+        elif self.type == 'key change':
+            """
+            """
+            self.IsoMessage.MTI("0800")
+
+            self.IsoMessage.FieldData(3, 990000)
+            self.IsoMessage.FieldData(12, get_datetime_with_year())
+            self.IsoMessage.FieldData(24, 811)
 
         elif self.type == 'balance':
             """
@@ -56,7 +65,7 @@ class Transaction():
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
         else:
-            print('Unknown transaction type: {}'.format(_type))
+            print('Unknown transaction type: {}'.format(type))
             return None
     
         # Common message fields:
