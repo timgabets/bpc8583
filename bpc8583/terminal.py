@@ -9,12 +9,11 @@ from Crypto.Cipher import DES3
 
 class Terminal:
 
-    def __init__(self, host=None, port=None, id=None, merchant=None):
+    def __init__(self, host=None, port=None, id=None, merchant=None, key=None):
         """
         Terminal initialization
         """
         self.pinblock_format = '01'
-        self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
 
         # Host to connect to
         if host:
@@ -45,6 +44,12 @@ class Terminal:
             self.merchant_id = '999999999999001'
 
         self.currency = '643'
+
+        # Terminal key
+        if key:
+            self.key = bytes.fromhex(key)
+        else:
+            self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
 
 
     def connect(self):
@@ -106,8 +111,16 @@ class Terminal:
     def set_terminal_key(self, key_value):
         """
         Set the terminal key. The key_value is a hex string
+        TODO: decrypt the received value under existing key
         """
         self.key = bytes.fromhex(key_value)
+
+
+    def get_terminal_key(self):
+        """
+        Get string representation of terminal key (needed mostly for debugging purposes)
+        """
+        return binascii.hexlify(self.key).decode('utf-8').upper()
 
 
     def _get_pinblock(self, __PIN, __PAN):

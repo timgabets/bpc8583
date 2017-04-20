@@ -12,8 +12,8 @@ from isoTools import get_response, dump
 class TestTerminal(unittest.TestCase):
 
     def setUp(self):
-        self.term = Terminal()
-        self.term.set_terminal_key('deadbeef deadbeef deadbeef deadbeef')
+        self.default_terminal_key = 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF'
+        self.term = Terminal(key=self.default_terminal_key)
 
     """
     terminal._get_pinblock()
@@ -51,6 +51,13 @@ class TestTerminal(unittest.TestCase):
 
     def test_get_encrypted_pin_valid_digits(self):
         self.assertEqual(self.term.get_encrypted_pin('1234', '4000001234562000'), '11E7C600A7E2988B')
+
+    """
+    terminal.get_terminal_key()
+    """
+    def test_get_default_terminal_key(self):
+        self.assertEqual(self.term.get_terminal_key(), self.default_terminal_key)
+
 
 
 class TestIsoTools(unittest.TestCase):
