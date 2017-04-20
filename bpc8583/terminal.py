@@ -113,8 +113,15 @@ class Terminal:
         Set the terminal key. The key_value is a hex string
         TODO: decrypt the received value under existing key
         """
-        self.key = bytes.fromhex(key_value)
-        return True
+        if key_value:
+            try:
+                self.key = bytes.fromhex(key_value)
+                return True
+
+            except ValueError:
+                return False
+
+        return False
 
 
     def get_terminal_key(self):
