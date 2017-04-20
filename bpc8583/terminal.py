@@ -114,6 +114,7 @@ class Terminal:
         TODO: decrypt the received value under existing key
         """
         self.key = bytes.fromhex(key_value)
+        return True
 
 
     def get_terminal_key(self):

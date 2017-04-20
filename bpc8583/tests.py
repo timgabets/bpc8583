@@ -58,6 +58,14 @@ class TestTerminal(unittest.TestCase):
     def test_get_default_terminal_key(self):
         self.assertEqual(self.term.get_terminal_key(), self.default_terminal_key)
 
+    
+    """
+    terminal.set_terminal_key()
+    """
+    def test_set_new_terminal_key(self):
+        new_key_value = '00001111222233334444555566667777'
+        self.assertTrue(self.term.set_terminal_key(new_key_value))
+        self.assertEqual(self.term.get_terminal_key(), new_key_value)    
 
 
 class TestIsoTools(unittest.TestCase):

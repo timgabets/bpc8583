@@ -101,7 +101,7 @@ class isoClient:
                 trxn.trace()
         
             elif trxn_type == 'p':
-                default_amount = 1000
+                default_amount = 20000
                 amount = self._user_input('Enter transaction amount ({} by default): '.format(default_amount))
                 if not amount:
                     amount = default_amount
