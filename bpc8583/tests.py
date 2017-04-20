@@ -65,9 +65,11 @@ class TestTerminal(unittest.TestCase):
     def test_set_new_empty_terminal_key(self):        
         self.assertFalse(self.term.set_terminal_key(''))
 
-
     def test_set_new_terminal_key_with_invalid_characters(self):  
         self.assertFalse(self.term.set_terminal_key('invalid key'))
+
+    def test_set_new_terminal_key_with_invalid_length_key(self):  
+        self.assertFalse(self.term.set_terminal_key('DEAFBEEDEAFBEE'))
 
     def test_set_new_terminal_key(self):
         new_key_value = '00001111222233334444555566667777'

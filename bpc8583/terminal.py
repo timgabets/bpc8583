@@ -115,7 +115,12 @@ class Terminal:
         """
         if key_value:
             try:
-                self.key = bytes.fromhex(key_value)
+                new_key = bytes.fromhex(key_value)
+                if len(self.key) != len(new_key):
+                    # The keys must have equal length
+                    return False
+
+                self.key = new_key
                 return True
 
             except ValueError:
