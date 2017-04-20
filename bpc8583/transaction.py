@@ -17,7 +17,7 @@ class Transaction():
         self.expected_response_code = '000'
         self.expected_response_action = None
 
-        if self.type == 'echo':
+        if self.type == 'logon':
             """
             """
             self.IsoMessage.MTI("0800")

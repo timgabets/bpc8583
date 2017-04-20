@@ -27,11 +27,14 @@
 	</card>
 <!--
 -->
+	<trxn type='logon' description='Merchant log on'/>
+
 	<trxn type='balance' card='8990011234567890' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
 	</trxn>
 
 	<trxn type='balance' description='Balance Inquiry without PIN approved'/>
+<!--
 
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
@@ -57,6 +60,5 @@
 		<currency>RUB</currency>
 		<response_code>920</response_code>
 	</trxn>
-<!--
 -->
 </data>
