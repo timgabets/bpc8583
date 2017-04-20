@@ -51,6 +51,9 @@ class Terminal:
         else:
             self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
 
+        # Crypto init
+        self.cipher = DES3.new(self.key, DES3.MODE_ECB)
+
 
     def connect(self):
         """
@@ -111,7 +114,7 @@ class Terminal:
     def set_terminal_key(self, key_value):
         """
         Set the terminal key. The key_value is a hex string
-        TODO: decrypt the received value under existing key
+        key_value is expected to be encrypted under existing key
         """
         if key_value:
             try:
@@ -120,7 +123,8 @@ class Terminal:
                     # The keys must have equal length
                     return False
 
-                self.key = new_key
+                self.key = self.cipher.decrypt(new_key)
+                self.cipher = DES3.new(self.key, DES3.MODE_ECB)
                 return True
 
             except ValueError:
@@ -170,13 +174,12 @@ class Terminal:
             return ''
 
         if self.pinblock_format == '01':
-            cipher = DES3.new(self.key, DES3.MODE_ECB)
             try:
                 pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
             except TypeError:
                 return ''
 
-            encrypted_pinblock = cipher.encrypt(pinblock)
+            encrypted_pinblock = self.cipher.encrypt(pinblock)
             return binascii.hexlify(encrypted_pinblock).decode('utf-8').upper()
 
         else:

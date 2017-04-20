@@ -72,9 +72,11 @@ class TestTerminal(unittest.TestCase):
         self.assertFalse(self.term.set_terminal_key('DEAFBEEDEAFBEE'))
 
     def test_set_new_terminal_key(self):
-        new_key_value = '00001111222233334444555566667777'
-        self.assertTrue(self.term.set_terminal_key(new_key_value))
-        self.assertEqual(self.term.get_terminal_key(), new_key_value) 
+        clear_key = '00001111222233334444555566667777'
+        # encrypted_key = 3DES(clear_key, self.default_terminal_key) 
+        encrypted_key = '96D9BE1AB41D7B51B62EF366B4F4BF89'
+        self.assertTrue(self.term.set_terminal_key(encrypted_key))
+        self.assertEqual(self.term.get_terminal_key(), clear_key) 
 
 
 class TestIsoTools(unittest.TestCase):
