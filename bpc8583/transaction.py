@@ -3,7 +3,7 @@ from datetime import datetime
 
 from bpc8583.ISO8583 import ISO8583
 from bpc8583.tools import trace, get_datetime_with_year, get_datetime, get_stan
-from bpc8583.py8583spec import IsoSpec, IsoSpec1987BPC
+from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 
 
 class Transaction():

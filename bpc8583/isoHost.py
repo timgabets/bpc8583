@@ -7,7 +7,7 @@ import os
 import getopt
 
 from bpc8583.ISO8583 import ISO8583, MemDump
-from bpc8583.py8583spec import IsoSpec, IsoSpec1987BPC
+from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from bpc8583.tools import trace, get_response
 
 def main(s):

@@ -8,7 +8,7 @@ from bpc8583.terminal import Terminal
 from bpc8583.transaction import Transaction
 from bpc8583.tools import get_response, dump
 from bpc8583.ISO8583 import ISO8583, ParseError
-from bpc8583.py8583spec import IsoSpec1987ASCII, IsoSpec1987BCD
+from bpc8583.spec import IsoSpec1987ASCII, IsoSpec1987BCD
 
 
 class TestAsciiParse1987(unittest.TestCase):
@@ -92,9 +92,6 @@ class TestBCDParse1987(unittest.TestCase):
             with self.assertRaisesRegex(ParseError, "Invalid MTI"):
                 MTI = binascii.unhexlify("010" + str(b4))
                 self.IsoPacket.SetIsoContent(MTI)
-    
-    def test_Bitmap(self):
-        pass
 
 
 class TestTerminal(unittest.TestCase):

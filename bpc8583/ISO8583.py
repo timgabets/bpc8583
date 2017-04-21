@@ -93,7 +93,7 @@ class ISO8583:
         if(IsoSpec != None):
             self.__IsoSpec = IsoSpec
         else:
-            self.__IsoSpec = py8583spec.IsoSpec1987ASCII()
+            self.__IsoSpec = spec.IsoSpec1987ASCII()
         
         if(IsoMsg != None):
             if( isinstance(IsoMsg, bytes) == False ):
