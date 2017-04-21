@@ -2,12 +2,10 @@
 
 import unittest
 
-from ISO8583 import ISO8583, MemDump
-from py8583spec import IsoSpec, IsoSpec1987BPC
-from terminal import Terminal
-from card import Card
-from transaction import Transaction
-from isoTools import get_response, dump
+from bpc8583.card import Card
+from bpc8583.terminal import Terminal
+from bpc8583.transaction import Transaction
+from bpc8583.isoTools import get_response, dump
 
 class TestTerminal(unittest.TestCase):
 

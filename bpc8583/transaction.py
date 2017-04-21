@@ -1,9 +1,10 @@
 import struct
-
-from ISO8583 import ISO8583
-from isoTools import trace, get_datetime_with_year, get_datetime, get_stan
-from py8583spec import IsoSpec, IsoSpec1987BPC
 from datetime import datetime
+
+from bpc8583.ISO8583 import ISO8583
+from bpc8583.isoTools import trace, get_datetime_with_year, get_datetime, get_stan
+from bpc8583.py8583spec import IsoSpec, IsoSpec1987BPC
+
 
 class Transaction():
     def __init__(self, type, card, term):
@@ -17,7 +18,7 @@ class Transaction():
         self.expected_response_code = '000'
         self.expected_response_action = None
 
-        if self.type == 'logon':
+        if self.type in ['logon', 'echo']:
             """
             """
             self.IsoMessage.MTI("0800")

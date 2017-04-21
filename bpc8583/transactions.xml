@@ -28,10 +28,10 @@
 <!--
 -->
 	<trxn type='logon' description='Merchant log on'/>
-	
 <!--
+	
 	<trxn type='key change' description='Terminal key change'/>
-
+-->
 	<trxn type='balance' card='8990011234567890' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
 	</trxn>
@@ -62,5 +62,6 @@
 		<currency>RUB</currency>
 		<response_code>920</response_code>
 	</trxn>
+<!--
 -->
 </data>
