@@ -5,14 +5,14 @@ import os
 import getopt
 import time
 import xml.etree.ElementTree as ET
-
-from ISO8583 import ISO8583, MemDump
-from py8583spec import IsoSpec, IsoSpec1987BPC
-from terminal import Terminal
-from card import Card
-from transaction import Transaction
-from isoTools import trace_passed, trace_failed
 from collections import OrderedDict
+
+from bpc8583.ISO8583 import ISO8583, MemDump
+from bpc8583.py8583spec import IsoSpec, IsoSpec1987BPC
+from bpc8583.terminal import Terminal
+from bpc8583.card import Card
+from bpc8583.transaction import Transaction
+from bpc8583.isoTools import trace_passed, trace_failed
 
 
 class isoClient:
