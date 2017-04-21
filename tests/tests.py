@@ -11,7 +11,7 @@ from bpc8583.ISO8583 import ISO8583, ParseError
 from bpc8583.py8583spec import IsoSpec1987ASCII, IsoSpec1987BCD
 
 
-class AsciiParse1987(unittest.TestCase):
+class TestAsciiParse1987(unittest.TestCase):
     
     def setUp(self):
         self.IsoPacket = ISO8583(IsoSpec = IsoSpec1987ASCII())
@@ -62,7 +62,7 @@ class AsciiParse1987(unittest.TestCase):
             self.assertEqual(self.IsoPacket.Bitmap()[128 - shift], 1)
             self.assertEqual(self.IsoPacket.Field(128 - shift), 1)
                 
-class BCDParse1987(unittest.TestCase):
+class TestBCDParse1987(unittest.TestCase):
     
     def setUp(self):
         self.IsoPacket = ISO8583(IsoSpec = IsoSpec1987BCD())
