@@ -5,7 +5,7 @@ import unittest
 from bpc8583.card import Card
 from bpc8583.terminal import Terminal
 from bpc8583.transaction import Transaction
-from bpc8583.isoTools import get_response, dump
+from bpc8583.tools import get_response, dump
 
 class TestTerminal(unittest.TestCase):
 

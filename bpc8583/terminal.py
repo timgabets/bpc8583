@@ -3,7 +3,7 @@ import struct
 import sys
 import binascii
 
-from .isoTools import trace, get_datetime
+from bpc8583.tools import trace, get_datetime
 
 from Crypto.Cipher import DES3
 

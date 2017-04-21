@@ -12,7 +12,7 @@ from bpc8583.py8583spec import IsoSpec, IsoSpec1987BPC
 from bpc8583.terminal import Terminal
 from bpc8583.card import Card
 from bpc8583.transaction import Transaction
-from bpc8583.isoTools import trace_passed, trace_failed
+from bpc8583.tools import trace_passed, trace_failed
 
 
 class isoClient:
