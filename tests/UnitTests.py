@@ -6,14 +6,13 @@ import sys
 import binascii
 import unittest
 
-sys.path.insert(0, os.path.abspath('..'))
-
-from py8583 import *
+from bpc8583.ISO8583 import ISO8583, ParseError
+from bpc8583.py8583spec import IsoSpec1987ASCII, IsoSpec1987BCD
 
 class AsciiParse1987(unittest.TestCase):
     
     def setUp(self):
-        self.IsoPacket = py8583.ISO8583(IsoSpec = py8583spec.IsoSpec1987ASCII())
+        self.IsoPacket = ISO8583(IsoSpec = IsoSpec1987ASCII())
         self.IsoPacket.Strict(True)
     
     def tearDown(self):
@@ -30,14 +29,14 @@ class AsciiParse1987(unittest.TestCase):
                         self.assertEqual(self.IsoPacket.MTI(), MTI)
     
         # negative test
-        with self.assertRaisesRegex(py8583.ParseError, "Invalid MTI"):
+        with self.assertRaisesRegex(ParseError, "Invalid MTI"):
             self.IsoPacket.SetIsoContent("000A".encode('latin'))
             
-        with self.assertRaisesRegex(py8583.ParseError, "Invalid MTI"):
+        with self.assertRaisesRegex(ParseError, "Invalid MTI"):
             self.IsoPacket.SetIsoContent("0000".encode('latin'))
             
         for b4 in range(6, 9):
-            with self.assertRaisesRegex(py8583.ParseError, "Invalid MTI"):
+            with self.assertRaisesRegex(ParseError, "Invalid MTI"):
                 MTI = "010" + str(b4)
                 self.IsoPacket.SetIsoContent(MTI.encode('latin'))
                 
@@ -64,7 +63,7 @@ class AsciiParse1987(unittest.TestCase):
 class BCDParse1987(unittest.TestCase):
     
     def setUp(self):
-        self.IsoPacket = py8583.ISO8583(IsoSpec = py8583spec.IsoSpec1987BCD())
+        self.IsoPacket = ISO8583(IsoSpec = IsoSpec1987BCD())
         self.IsoPacket.Strict(True)
     
     def tearDown(self):
@@ -81,14 +80,14 @@ class BCDParse1987(unittest.TestCase):
                         self.assertEqual(self.IsoPacket.MTI(), MTI)
                         
         # negative test
-        with self.assertRaisesRegex(py8583.ParseError, "Invalid MTI"):
+        with self.assertRaisesRegex(ParseError, "Invalid MTI"):
             self.IsoPacket.SetIsoContent(binascii.unhexlify("000A"))
 
-        with self.assertRaisesRegex(py8583.ParseError, "Invalid MTI"):
+        with self.assertRaisesRegex(ParseError, "Invalid MTI"):
             self.IsoPacket.SetIsoContent(binascii.unhexlify("0000"))
             
         for b4 in range(6, 9):
-            with self.assertRaisesRegex(py8583.ParseError, "Invalid MTI"):
+            with self.assertRaisesRegex(ParseError, "Invalid MTI"):
                 MTI = binascii.unhexlify("010" + str(b4))
                 self.IsoPacket.SetIsoContent(MTI)
     
