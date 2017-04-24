@@ -215,8 +215,4 @@ class Terminal:
         """
         Get terminal country code, used in ICC data
         """
-        padding = ''
-        for i in range(4 - len(str(self.country_code))):
-            padding += '0'
-
-        return padding + str(self.country_code)
+        return self.country_code.ljust(4, '0')
