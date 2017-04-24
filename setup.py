@@ -22,7 +22,7 @@ setup(name='bpc8583',
       keywords='BPC\'s flavour of ISO8583 banking protocol library',
       
       url='https://github.com/timgabets/bpc8583',
-      author='Tim Gabets Nikolopoulos',
+      author='Tim Gabets',
       author_email='tim@gabets.ru',
       
       license='LGPLv2',
