@@ -158,6 +158,7 @@ class IsoSpec1987BPC(IsoSpec1987):
 
         self.DataType(1, DT.BIN) # bitmap
         self.DataType(52, DT.BIN) # pin block
+        self.DataType(55, DT.BIN) # ICC data
 
 
     def RespCodeDescription(self, response_code):

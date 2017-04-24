@@ -187,5 +187,9 @@ class Transaction():
 
     def build_emv_data(self):
         """
+        TODO:
+        95    TVR
+        9A    trans_date
+        82    app_int_prof 
         """
         return '9A03170424'
