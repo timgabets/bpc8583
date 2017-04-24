@@ -66,11 +66,7 @@ class Card:
 		"""
 		Get ICC application transaction counter
 		"""
-		padding = ''
-		for i in range(4 - len(str(self.trxn_counter))):
-			padding += '0'
-
-		return padding + str(self.trxn_counter)
+		return str(self.trxn_counter).rjust(4, '0')
 
 
 	def get_card_number(self):
