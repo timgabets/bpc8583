@@ -15,7 +15,7 @@ class Card:
 		if service_code:
 			self.service_code = str(service_code)
 		else:
-			self.service_code = '101'
+			self.service_code = '201'
 
 		if pvvki:
 			self.PVV_key_index = str(pvvki)

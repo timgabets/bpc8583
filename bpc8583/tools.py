@@ -41,6 +41,14 @@ def dump(data):
     return dump
 
 
+def get_date():
+    """
+    Get current date
+    """
+    return datetime.now().strftime("%y%m%d")
+
+
+
 def get_datetime():
     """
     Get current date and time (for ISO data fields)
