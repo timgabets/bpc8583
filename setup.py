@@ -27,5 +27,5 @@ setup(name='bpc8583',
       
       license='LGPLv2',
       packages=['bpc8583'],
-      install_requires=['enum34', 'pycrypto'],
+      install_requires=['enum34', 'pycrypto', 'pytlv'],
       zip_safe=True)

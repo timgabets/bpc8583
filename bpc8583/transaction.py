@@ -2,14 +2,17 @@ import struct
 from datetime import datetime
 
 from bpc8583.ISO8583 import ISO8583
-from bpc8583.tools import trace, get_datetime_with_year, get_datetime, get_stan
+from bpc8583.tools import trace, get_date, get_datetime_with_year, get_datetime, get_stan
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
+from pytlv.TLV import TLV, known_tags
 
 
 class Transaction():
     def __init__(self, type, card, term):
         """
         """
+        self.TLV = TLV(known_tags)
+
         self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
         self.card = card
         self.term = term
@@ -192,4 +195,7 @@ class Transaction():
         9A    trans_date
         82    app_int_prof 
         """
-        return '9A03170424'
+        emv_data = ''
+        emv_data += self.TLV.build({'9A': get_date()})
+
+        return emv_data
