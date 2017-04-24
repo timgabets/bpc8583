@@ -157,6 +157,7 @@ class IsoSpec1987BPC(IsoSpec1987):
                 self.LengthDataType(field, DT.ASCII)
 
         self.DataType(1, DT.BIN) # bitmap
+        self.DataType(52, DT.BIN) # pin block
 
 
     def RespCodeDescription(self, response_code):
