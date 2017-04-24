@@ -206,5 +206,6 @@ class Transaction():
         emv_data += self.TLV.build({'82': self._get_app_interchange_profile()})
         emv_data += self.TLV.build({'9A': get_date()})
         emv_data += self.TLV.build({'95': self.term.get_tvr()})
+        emv_data += self.TLV.build({'9F10': self.card.get_iss_application_data()})
 
         return emv_data

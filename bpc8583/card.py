@@ -37,6 +37,12 @@ class Card:
 		else:
 			self.discretionary_data = '00720'
 
+	def get_iss_application_data(self):
+		"""
+		Get ICC Issuer Application data (Contains proprietary application data for transmission to the issuer in an online transaction)
+		"""
+		return '0000'
+
 
 	def get_card_number(self):
 		"""
