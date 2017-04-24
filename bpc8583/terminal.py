@@ -45,6 +45,7 @@ class Terminal:
             self.merchant_id = '999999999999001'
 
         self.currency = '643'
+        self.country_code = '643'
 
         # Terminal key
         if key:
@@ -205,7 +206,17 @@ class Terminal:
 
     def get_unpredno(self):
         """
-        Get unpredictable number (a value to provide variability and uniqueness to the generation of a cryptogram)
+        Get unpredictable number (a value to provide variability and uniqueness to the generation of a cryptogram), used in ICC data
         """
         return get_random_hex(8)
 
+
+    def get_country_code(self):
+        """
+        Get terminal country code, used in ICC data
+        """
+        padding = ''
+        for i in range(4 - len(str(self.country_code))):
+            padding += '0'
+
+        return padding + str(self.country_code)

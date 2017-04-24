@@ -210,6 +210,7 @@ class Transaction():
         emv_data += self.TLV.build({'9F26': self.card.get_application_cryptogram()})
         emv_data += self.TLV.build({'9F36': self.card.get_transaction_counter()})
         emv_data += self.TLV.build({'9F37': self.term.get_unpredno()})
+        emv_data += self.TLV.build({'9F1A': self.term.get_country_code()})
 
 
         return emv_data
