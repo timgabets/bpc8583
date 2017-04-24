@@ -304,7 +304,23 @@ class TestCardClass(unittest.TestCase):
         self.assertEqual(self.card.get_expiry_date(), 1120)
 
     def test_get_card_number(self):
-        self.assertEqual(self.card.get_card_number(), 4444555566667777)        
+        self.assertEqual(self.card.get_card_number(), 4444555566667777)
+
+    def test_get_transaction_counter_length_1(self):
+        self.card._set_transaction_counter(1)
+        self.assertEqual(self.card.get_transaction_counter(), '0001')        
+
+    def test_get_transaction_counter_length_2(self):
+        self.card._set_transaction_counter(88)
+        self.assertEqual(self.card.get_transaction_counter(), '0088') 
+
+    def test_get_transaction_counter_length_3(self):
+        self.card._set_transaction_counter(777)
+        self.assertEqual(self.card.get_transaction_counter(), '0777') 
+
+    def test_get_transaction_counter_length_4(self):
+        self.card._set_transaction_counter(9999)
+        self.assertEqual(self.card.get_transaction_counter(), '9999') 
 
 if __name__ == '__main__':
     unittest.main()

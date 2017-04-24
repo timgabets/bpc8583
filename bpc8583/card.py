@@ -4,6 +4,8 @@ class Card:
 	def __init__(self, pan=None, expiry_date=None, service_code=None, pvvki=None, PVV=None, CVV=None, discretionary_data=None):
 		"""
 		"""
+		self.trxn_counter = 0
+
 		if pan:
 			self.pan = str(pan)
 		else:
@@ -50,7 +52,25 @@ class Card:
 		"""
 		Return ICC application crytpogram (returned by the ICC in response of the GENERATE AC command)
 		"""
+		self.trxn_counter += 1
 		return get_random_hex(16)
+
+
+	def _set_transaction_counter(self, counter):
+		"""
+		"""
+		self.trxn_counter = counter
+
+
+	def get_transaction_counter(self):
+		"""
+		Get ICC application transaction counter
+		"""
+		padding = ''
+		for i in range(4 - len(str(self.trxn_counter))):
+			padding += '0'
+
+		return padding + str(self.trxn_counter)
 
 
 	def get_card_number(self):
