@@ -281,6 +281,9 @@ class TestCardClass(unittest.TestCase):
     def test_get_track2(self):
         self.assertEqual(self.card.get_track2(), '4444555566667777=11201011872300000720')
 
+    def test_get_service_code(self):
+        self.assertEqual(self.card.get_service_code(), '101')
+
     def test_get_expiry_date(self):
         self.assertEqual(self.card.get_expiry_date(), 1120)
 

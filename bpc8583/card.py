@@ -43,6 +43,11 @@ class Card:
 		"""
 		return self.get_int_card_number()
 
+	def get_service_code(self):
+		"""
+		"""
+		return self.service_code
+
 
 	def get_int_card_number(self):
 		"""

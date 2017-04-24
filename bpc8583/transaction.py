@@ -76,6 +76,9 @@ class Transaction():
         self.IsoMessage.FieldData(42, self.term.get_merchant_id())
         self.IsoMessage.FieldData(49, self.term.get_currency_code())
 
+        if self.type in ['purchase', 'balance'] and card.get_service_code()[0] in ['2', '6']:
+            self.IsoMessage.FieldData(55, self.build_emv_data())
+
         self.rebuild()
 
 
@@ -182,5 +185,7 @@ class Transaction():
         return True
 
 
-
-
+    def build_emv_data(self):
+        """
+        """
+        return '9A03170424'
