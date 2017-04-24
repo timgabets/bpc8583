@@ -1,6 +1,7 @@
 import binascii
 import struct
 from enum import Enum
+from pytlv.TLV import TLV
 
 # Length Type enumeration
 class LT(Enum):
@@ -89,6 +90,7 @@ class ISO8583:
         self.__Bitmap = {}
         self.__FieldData = {}
         self.__iso = b''
+        self.tlv = TLV()
         
         if(IsoSpec != None):
             self.__IsoSpec = IsoSpec
@@ -494,6 +496,9 @@ class ISO8583:
                     FieldData = str(FieldData).zfill(self.__IsoSpec.MaxLength(i))
                 if i == 39:
                     print("\t\t{0:>3d} - {1: <41} [{2}]\t\t\t[{3}]".format(i, self.__IsoSpec.Description(i), FieldData, self.__IsoSpec.RespCodeDescription(FieldData)))
+                elif i == 55:
+                    print("\t\t{0:>3d} - {1: <41} [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
+                    print(self.tlv.dump(self.tlv.parse(FieldData), left_indent='\t\t', desc_column_width=48))
                 else:
                     print("\t\t{0:>3d} - {1: <41} [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
 
