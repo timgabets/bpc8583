@@ -188,14 +188,23 @@ class Transaction():
         return True
 
 
+    def _get_app_interchange_profile(self):
+        """
+        Contains the data objects (with tags and lengths) returned by the ICC in response to a command
+        """
+        #return '9A039505'
+        return '0000'
+
+
     def build_emv_data(self):
         """
         TODO:
         95    TVR
-        9A    trans_date
         82    app_int_prof 
         """
         emv_data = ''
+        emv_data += self.TLV.build({'82': self._get_app_interchange_profile()})
         emv_data += self.TLV.build({'9A': get_date()})
+        emv_data += self.TLV.build({'95': self.term.get_tvr()})
 
         return emv_data
