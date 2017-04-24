@@ -215,4 +215,4 @@ class Terminal:
         """
         Get terminal country code, used in ICC data
         """
-        return self.country_code.ljust(4, '0')
+        return self.country_code.rjust(4, '0')

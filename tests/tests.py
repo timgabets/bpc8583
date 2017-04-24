@@ -164,6 +164,13 @@ class TestTerminal(unittest.TestCase):
         self.assertEqual(self.term.get_terminal_key(), clear_key) 
 
 
+    """
+    terminal.get_country_code()
+    """
+    def test_get_country_code(self):
+        self.assertEqual(self.term.get_country_code(), '0643')
+
+
 class TestIsoTools(unittest.TestCase):
     
     """
