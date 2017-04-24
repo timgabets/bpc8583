@@ -49,12 +49,12 @@ class isoClient:
     
             # Checking response code
             if trxn.is_response_expected(IsoMessage.FieldData(39)):
-                trace_passed(trxn.get_description(), show_colored_description=verbosity)
-                if verbosity:
+                trace_passed(trxn.get_description(), show_colored_description=self.verbosity)
+                if self.verbosity:
                     trxn.trace(header='Request')
                     IsoMessage.Print(header='Response')    
             else:
-                trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=verbosity)
+                trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=self.verbosity)
                 trxn.trace(header='Request')
                 IsoMessage.Print(header='Response')
     
