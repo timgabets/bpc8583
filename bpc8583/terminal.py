@@ -195,3 +195,10 @@ class Terminal:
         return int(pan_and_date_entry_mode + pin_entry_capability)
 
 
+    def get_tvr(self):
+        """
+        return TVR (The status of the different functions as seen from the terminal)
+        """
+        return '0000000000'
+
+
