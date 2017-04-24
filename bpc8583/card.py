@@ -1,3 +1,5 @@
+from bpc8583.tools import get_random_hex
+
 class Card:
 	def __init__(self, pan=None, expiry_date=None, service_code=None, pvvki=None, PVV=None, CVV=None, discretionary_data=None):
 		"""
@@ -42,6 +44,13 @@ class Card:
 		Get ICC Issuer Application data (Contains proprietary application data for transmission to the issuer in an online transaction)
 		"""
 		return '0000'
+
+
+	def get_application_cryptogram(self):
+		"""
+		Return ICC application crytpogram (returned by the ICC in response of the GENERATE AC command)
+		"""
+		return get_random_hex(16)
 
 
 	def get_card_number(self):

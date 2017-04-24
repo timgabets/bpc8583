@@ -6,7 +6,7 @@ import binascii
 from bpc8583.card import Card
 from bpc8583.terminal import Terminal
 from bpc8583.transaction import Transaction
-from bpc8583.tools import get_response, dump
+from bpc8583.tools import get_response, dump, get_random_hex
 from bpc8583.ISO8583 import ISO8583, ParseError
 from bpc8583.spec import IsoSpec1987ASCII, IsoSpec1987BCD
 
@@ -195,6 +195,22 @@ class TestIsoTools(unittest.TestCase):
 
     def test_dump_two_lines_ascii(self):
         self.assertEqual(dump(b'loremipsumdolorsitamet'), '\t6c 6f 72 65 6d 69 70 73 75 6d 64 6f 6c 6f 72 73         loremipsumdolors\n\t69 74 61 6d 65 74                                       itamet\n\t')
+
+
+    """
+    get_random_hex()
+    """
+    def test_get_random_hex_0_length(self):
+        self.assertEqual(get_random_hex(0), '')
+
+    def test_get_random_hex_2(self):
+        self.assertEqual(len(get_random_hex(2)), 2)
+
+    def test_get_random_hex_5(self):
+        self.assertEqual(len(get_random_hex(5)), 5)
+
+    def test_get_random_hex_16(self):
+        self.assertEqual(len(get_random_hex(16)), 16)
 
 
 class TestTransactionClass(unittest.TestCase):
