@@ -498,7 +498,7 @@ class ISO8583:
                     print("\t\t{0:>3d} - {1: <41} [{2}]\t\t\t[{3}]".format(i, self.__IsoSpec.Description(i), FieldData, self.__IsoSpec.RespCodeDescription(FieldData)))
                 elif i == 55:
                     print("\t\t{0:>3d} - {1: <41} [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
-                    print(self.tlv.dump(self.tlv.parse(FieldData), left_indent='\t\t', desc_column_width=48))
+                    print(self.tlv.dump(self.tlv.parse(FieldData), left_indent='\t\t', desc_column_width=40))
                 else:
                     print("\t\t{0:>3d} - {1: <41} [{2}]".format(i, self.__IsoSpec.Description(i), FieldData))
 
