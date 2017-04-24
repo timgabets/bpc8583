@@ -3,7 +3,7 @@ import struct
 import sys
 import binascii
 
-from bpc8583.tools import trace, get_datetime
+from bpc8583.tools import trace, get_datetime, get_random_hex
 
 from Crypto.Cipher import DES3
 
@@ -202,4 +202,10 @@ class Terminal:
         """
         return '0000000000'
 
+
+    def get_unpredno(self):
+        """
+        Get unpredictable number (a value to provide variability and uniqueness to the generation of a cryptogram)
+        """
+        return get_random_hex(8)
 
