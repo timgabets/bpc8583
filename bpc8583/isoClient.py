@@ -43,16 +43,17 @@ class isoClient:
         self.term.connect()
         for trxn in self.transactions:
             self.term.send(trxn.get_data(), show_trace=False)
-    
+            if self.verbosity:
+                trxn.trace(header='Request')
+
             data = self.term.recv(show_trace=False)
             IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-    
+
             # Checking response code
             if trxn.is_response_expected(IsoMessage.FieldData(39)):
                 trace_passed(trxn.get_description(), show_colored_description=self.verbosity)
                 if self.verbosity:
-                    trxn.trace(header='Request')
-                    IsoMessage.Print(header='Response')    
+                    IsoMessage.Print(header='Response')
             else:
                 trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=self.verbosity)
                 trxn.trace(header='Request')
