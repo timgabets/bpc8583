@@ -201,7 +201,7 @@ class Terminal:
         return TVR (The status of the different functions as seen from the terminal)
         TODO: non-dummy value
         """
-        return '0000000000'
+        return '0000040880'
 
 
     def get_unpredno(self):
