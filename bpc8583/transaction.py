@@ -58,7 +58,7 @@ class Transaction():
             """
             """
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
-            self.IsoMessage.MTI("0200")
+            self.IsoMessage.MTI("0100")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
             self.IsoMessage.FieldData(3, 000000)
