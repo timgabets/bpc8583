@@ -53,7 +53,7 @@ def get_MMDD():
     """
     Get current date MMDD
     """
-    return datetime.now().strftime("%m%d")
+    return int(datetime.now().strftime("%m%d"))
 
 
 def get_datetime():
