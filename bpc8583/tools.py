@@ -71,6 +71,13 @@ def get_timestamp(t=None):
     return datetime.now().strftime("%H:%M:%S.%f")
 
 
+def get_seconds_since_epoch():
+    """
+    Get number of seconds since Jan 01 1970
+    """
+    return int((datetime.now()-datetime(1970,1,1)).total_seconds())
+
+
 def get_stan():
     """
     Get random systems trace audit number

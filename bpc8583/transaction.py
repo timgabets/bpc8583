@@ -2,7 +2,7 @@ import struct
 from datetime import datetime
 
 from bpc8583.ISO8583 import ISO8583
-from bpc8583.tools import trace, get_date, get_datetime_with_year, get_datetime, get_stan
+from bpc8583.tools import trace, get_date, get_datetime_with_year, get_datetime, get_stan, get_seconds_since_epoch
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from pytlv.TLV import TLV
 
@@ -73,7 +73,7 @@ class Transaction():
             return None
     
         # Common message fields:
-        self.IsoMessage.FieldData(7, get_datetime())
+        self.IsoMessage.FieldData(7, get_seconds_since_epoch())
         self.IsoMessage.FieldData(11, get_stan())
         self.IsoMessage.FieldData(41, self.term.get_terminal_id())
         self.IsoMessage.FieldData(42, self.term.get_merchant_id())
