@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
 from bpc8583.ISO8583 import ISO8583, MemDump
-from bpc8583.py8583spec import IsoSpec, IsoSpec1987BPC
+from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from bpc8583.terminal import Terminal
 from bpc8583.card import Card
 from bpc8583.transaction import Transaction
