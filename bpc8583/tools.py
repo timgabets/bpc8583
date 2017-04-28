@@ -44,10 +44,16 @@ def dump(data):
 
 def get_date():
     """
-    Get current date
+    Get current date YYMMDD
     """
     return datetime.now().strftime("%y%m%d")
 
+
+def get_MMDD():
+    """
+    Get current date MMDD
+    """
+    return datetime.now().strftime("%m%d")
 
 
 def get_datetime():
