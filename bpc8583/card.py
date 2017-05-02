@@ -39,7 +39,7 @@ class Card:
 		if discretionary_data:
 			self.discretionary_data = str(discretionary_data)
 		else:
-			self.discretionary_data = '00720'
+			self.discretionary_data = ''
 
 	def get_iss_application_data(self):
 		"""
