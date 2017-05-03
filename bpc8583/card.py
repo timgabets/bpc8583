@@ -1,10 +1,11 @@
 from bpc8583.tools import get_random_hex
 
 class Card:
-	def __init__(self, pan=None, expiry_date=None, service_code=None, pvvki=None, PVV=None, CVV=None, discretionary_data=None):
+	def __init__(self, pan=None, expiry_date=None, service_code=None, pvvki=None, PVV=None, CVV=None, discretionary_data=None, description=None):
 		"""
 		"""
 		self.trxn_counter = 0
+		self.set_description(description)
 
 		if pan:
 			self.pan = str(pan)
@@ -109,3 +110,18 @@ class Card:
 		"""
 		"""
 		return 1
+
+	def set_description(self, description):
+		"""
+		"""
+		if description: 
+			self.description = description
+		else:
+			self.description = ''
+
+
+	def get_description(self):
+		"""
+		"""
+		return self.description
+

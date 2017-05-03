@@ -115,10 +115,14 @@ class Transaction():
         """
         Get transaction description (for logging purposes)
         """
+        card_description = self.card.get_description()
+        if card_description:
+            card_description += ' | '
+
         if self.description:
-            return self.description
+            return card_description + self.description
         else:
-            return self.type + ' ' + str(self.IsoMessage.FieldData(11))
+            return card_description + self.type + ' ' + str(self.IsoMessage.FieldData(11))
 
 
     def set_PIN(self, PIN):

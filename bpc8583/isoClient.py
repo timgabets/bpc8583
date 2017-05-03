@@ -183,11 +183,16 @@ def parse_card_data(card):
     PVV = None
     CVV = None
     discr_data = None
+    description = ''
+    try:
+        description = card.attrib['description']
+    except:
+        pass
 
     for attrib in card:
         if attrib.tag.lower() == 'pan':
             pan = attrib.text
-        if attrib.tag.lower() == 'expiry_date':
+        elif attrib.tag.lower() == 'expiry_date':
             expiry_date = attrib.text
         elif attrib.tag.lower() == 'service_code':
             service_code = attrib.text
@@ -200,7 +205,8 @@ def parse_card_data(card):
         elif attrib.tag.lower() == 'discr_data':
             discr_data = attrib.text
 
-    return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV, discretionary_data=discr_data)
+    print(description)
+    return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV, discretionary_data=discr_data, description=description)
             
 
 def parse_data_file(filename, term):

@@ -16,13 +16,21 @@
 		<CVV>000</CVV>
 		<discr_data>00720</discr_data>
 	</card>
-	<card>
+	<card description='VISA 417407'>
 		<pan>4174070000000104</pan>
 		<expiry_date>1712</expiry_date>
 		<service_code>201</service_code>
 		<PVVKi>1</PVVKi>
 		<PVV>9738</PVV>
 		<CVV>009</CVV>
+	</card>
+	<card description='VISA Off-Us'>
+		<pan>4005520000000129</pan>
+		<expiry_date>1712</expiry_date>
+		<service_code>201</service_code>
+		<PVVKi>1</PVVKi>
+		<PVV>8358</PVV>
+		<CVV>873</CVV>
 	</card>
 <!--
 	<trxn type='logon' description='Merchant log on'/>

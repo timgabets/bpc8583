@@ -226,7 +226,7 @@ class TestTransactionClass(unittest.TestCase):
         self.term = Terminal()
         self.card = Card()
         self.trxn = Transaction('echo', self.card, self.term)
-
+        self.trxn.set_description('Test echo')
 
     """
     trxn.set_expected_action()
@@ -280,6 +280,18 @@ class TestTransactionClass(unittest.TestCase):
     def test_is_response_expected_resp_action_DECLINED_resp_code_999(self):
         self.trxn.set_expected_action('DECLINED')
         self.assertEqual(self.trxn.is_response_expected('777'), True)
+
+    """
+    trxn.get_description()
+    """
+    def test_trxn_description_card_description_empty(self):
+        self.assertEqual(self.trxn.get_description(), 'Test echo')
+
+    def test_trxn_description_card_description_not_empty(self):
+        card_description = 'On-us card 445566'
+        self.card.set_description(card_description)
+        self.assertEqual(self.trxn.get_description(), card_description + ' | Test echo')
+
 
 
 class TestCardClass(unittest.TestCase):
