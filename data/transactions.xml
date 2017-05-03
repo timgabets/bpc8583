@@ -44,7 +44,7 @@
 
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='8990011234567890'/>
 -->
-	<trxn type='balance' description='Balance Inquiry without PIN approved' card='4174070000000104' icc='false'/>
+	<trxn type='balance' description='Balance Inquiry without PIN approved' card='VISA Off-Us' icc='false'/>
 <!--
 
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>

@@ -134,14 +134,25 @@ def parse_transaction_item(trxn, term, cards):
     """
     t = None
     card = None
+    card_description = None
     icc_trxn = None
 
+    #card = cards[trxn.attrib['card']]
     try:
-        card = cards[trxn.attrib['card']]
-    except:
+        card_description = trxn.attrib['card']
+    except KeyError:
+        for key, value in cards.items():
+            card_description = value.get_description()
+            break
+    
+    try:
+        card = cards[card_description]
+    except KeyError:
+        if card_description:
+            print('Card \'' + card_description + '\' not found.')
         for key, value in cards.items():
             card = value
-            break        
+            break    
 
     try:
         icc_trxn = trxn.attrib['icc']
@@ -220,6 +231,9 @@ def parse_data_file(filename, term):
             c = parse_card_data(item)
             if c:
                 cards[c.get_str_card_number()] = c
+                if c.get_description():
+                    cards[c.get_description()] = c
+
 
     if not cards:
         # No <card> items in transaction file:
