@@ -153,6 +153,11 @@ def parse_transaction_item(trxn, term, cards):
     except KeyError:
         pass
 
+    try:
+        t.set_icc_needed(trxn.attrib['description'])
+    except:
+        pass
+
     for attrib in trxn:
         if attrib.tag.lower() == 'amount':
             t.set_amount(attrib.text)

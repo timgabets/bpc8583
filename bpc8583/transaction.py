@@ -20,6 +20,7 @@ class Transaction():
         self.description = ''
         self.expected_response_code = '000'
         self.expected_response_action = None
+        self.icc_data_nedeed = None
 
         if self.type in ['logon', 'echo']:
             """
@@ -46,7 +47,7 @@ class Transaction():
             
             self.IsoMessage.FieldData(2, self.card.get_card_number())
             self.IsoMessage.FieldData(3, 310000)
-            self.IsoMessage.FieldData(4, 0)
+            #self.IsoMessage.FieldData(4, 0)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(13, get_MMDD())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
@@ -79,7 +80,7 @@ class Transaction():
         self.IsoMessage.FieldData(42, self.term.get_merchant_id())
         self.IsoMessage.FieldData(49, self.term.get_currency_code())
 
-        if self.type in ['purchase', 'balance'] and card.get_service_code()[0] in ['2', '6']:
+        if self.type in ['purchase', 'balance'] and self._is_icc_data_needed():
             self.IsoMessage.FieldData(55, self.build_emv_data())
 
         self.rebuild()
@@ -214,3 +215,29 @@ class Transaction():
 
 
         return emv_data
+
+    def set_icc_needed(self, flag):
+        """
+        """
+        if flag.lower() == 'true':
+            self.icc_data_nedeed = True
+        elif flag.lower() == 'false':
+            self.icc_data_nedeed = False
+        else:
+            self.icc_data_nedeed = None
+
+
+    def _is_icc_data_needed(self):
+        """
+        """
+        if self.icc_data_nedeed == False:
+            return False
+        elif self.card.get_service_code()[0] in ['2', '6']:
+            return True
+        else:
+            return False
+
+        
+        return True
+
+

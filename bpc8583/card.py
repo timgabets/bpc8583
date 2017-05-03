@@ -74,6 +74,7 @@ class Card:
 		"""
 		return self.get_int_card_number()
 
+
 	def get_service_code(self):
 		"""
 		"""
