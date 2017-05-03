@@ -134,6 +134,7 @@ def parse_transaction_item(trxn, term, cards):
     """
     t = None
     card = None
+    icc_trxn = None
 
     try:
         card = cards[trxn.attrib['card']]
@@ -143,7 +144,12 @@ def parse_transaction_item(trxn, term, cards):
             break        
 
     try:
-        t = Transaction(trxn.attrib['type'], card, term)
+        icc_trxn = trxn.attrib['icc']
+    except:
+        pass
+
+    try:
+        t = Transaction(trxn.attrib['type'], card, term, icc_trxn=icc_trxn)
     except KeyError:
         print('Error parsing {}: transaction type is not set'.format(filename))
         sys.exit()
@@ -151,11 +157,6 @@ def parse_transaction_item(trxn, term, cards):
     try:
         t.set_description(trxn.attrib['description'])
     except KeyError:
-        pass
-
-    try:
-        t.set_icc_needed(trxn.attrib['description'])
-    except:
         pass
 
     for attrib in trxn:

@@ -8,7 +8,7 @@ from pytlv.TLV import TLV
 
 
 class Transaction():
-    def __init__(self, type, card, term):
+    def __init__(self, type, card, term, icc_trxn=None):
         """
         """
         self.TLV = TLV()
@@ -20,7 +20,7 @@ class Transaction():
         self.description = ''
         self.expected_response_code = '000'
         self.expected_response_action = None
-        self.icc_data_nedeed = None
+        self._set_icc_trxn(icc_trxn)
 
         if self.type in ['logon', 'echo']:
             """
@@ -80,7 +80,7 @@ class Transaction():
         self.IsoMessage.FieldData(42, self.term.get_merchant_id())
         self.IsoMessage.FieldData(49, self.term.get_currency_code())
 
-        if self.type in ['purchase', 'balance'] and self._is_icc_data_needed():
+        if self.type in ['purchase', 'balance'] and self.icc_trxn:
             self.IsoMessage.FieldData(55, self.build_emv_data())
 
         self.rebuild()
@@ -212,32 +212,17 @@ class Transaction():
         emv_data += self.TLV.build({'9F36': self.card.get_transaction_counter()})
         emv_data += self.TLV.build({'9F37': self.term.get_unpredno()})
         emv_data += self.TLV.build({'9F1A': self.term.get_country_code()})
-
-
         return emv_data
 
-    def set_icc_needed(self, flag):
+
+    def _set_icc_trxn(self, icc_trxn):
         """
         """
-        if flag.lower() == 'true':
-            self.icc_data_nedeed = True
-        elif flag.lower() == 'false':
-            self.icc_data_nedeed = False
+        if icc_trxn == None and self.card.get_service_code()[0] in ['2', '6']:
+            self.icc_trxn = True
+        elif icc_trxn == None and self.card.get_service_code()[0] not in ['2', '6']:
+            self.icc_trxn = False
+        elif icc_trxn.lower() == 'true':
+            self.icc_trxn = True
         else:
-            self.icc_data_nedeed = None
-
-
-    def _is_icc_data_needed(self):
-        """
-        """
-        if self.icc_data_nedeed == False:
-            return False
-        elif self.card.get_service_code()[0] in ['2', '6']:
-            return True
-        else:
-            return False
-
-        
-        return True
-
-
+            self.icc_trxn = False

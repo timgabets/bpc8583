@@ -281,38 +281,6 @@ class TestTransactionClass(unittest.TestCase):
         self.trxn.set_expected_action('DECLINED')
         self.assertEqual(self.trxn.is_response_expected('777'), True)
 
-    """
-    trxn._is_icc_data_needed()
-    """
-    def test_is_icc_data_needed_true_service_code_201(self):
-        self.trxn.set_icc_needed('true')
-        self.assertEqual(self.trxn._is_icc_data_needed(), True)
-
-    def test_is_icc_data_needed_false_service_code_201(self):
-        self.trxn.set_icc_needed('false')
-        self.assertEqual(self.trxn._is_icc_data_needed(), False)
-
-    def test_is_icc_data_needed_none_service_code_201(self):
-        self.assertEqual(self.trxn.icc_data_nedeed, None)
-        self.assertEqual(self.trxn._is_icc_data_needed(), True)
-
-
-    def test_is_icc_data_needed_true_service_code_101(self):
-        self.card = Card(service_code='101')
-        self.trxn = Transaction('echo', self.card, self.term)
-        self.trxn.set_icc_needed('true')
-        self.assertEqual(self.trxn._is_icc_data_needed(), False)
-
-    def test_is_icc_data_needed_false_service_code_101(self):
-        self.card = Card(service_code='101')
-        self.trxn = Transaction('echo', self.card, self.term)
-        self.trxn.set_icc_needed('false')
-        self.assertEqual(self.trxn._is_icc_data_needed(), False)
-
-    def test_is_icc_data_needed_none_service_code_101(self):
-        self.card = Card(service_code='101')
-        self.trxn = Transaction('echo', self.card, self.term)
-        self.assertEqual(self.trxn._is_icc_data_needed(), False)
 
 class TestCardClass(unittest.TestCase):
 
