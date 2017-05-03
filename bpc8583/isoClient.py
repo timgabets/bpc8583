@@ -205,7 +205,6 @@ def parse_card_data(card):
         elif attrib.tag.lower() == 'discr_data':
             discr_data = attrib.text
 
-    print(description)
     return Card(pan=pan, expiry_date=expiry_date, service_code=service_code, pvvki=PVVKi, PVV=PVV, CVV=CVV, discretionary_data=discr_data, description=description)
             
 

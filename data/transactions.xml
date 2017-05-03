@@ -16,7 +16,7 @@
 		<CVV>000</CVV>
 		<discr_data>00720</discr_data>
 	</card>
-	<card description='VISA 417407'>
+	<card>
 		<pan>4174070000000104</pan>
 		<expiry_date>1712</expiry_date>
 		<service_code>201</service_code>
