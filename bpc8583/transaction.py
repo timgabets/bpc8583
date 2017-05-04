@@ -1,11 +1,10 @@
 import struct
 from datetime import datetime
 
-from bpc8583.ISO8583 import ISO8583
+from bpc8583.ISO8583 import ISO8583, currency_codes
 from bpc8583.tools import trace, get_date, get_datetime_with_year, get_datetime, get_stan, get_seconds_since_epoch, get_MMDD
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from pytlv.TLV import TLV
-
 
 class Transaction():
     def __init__(self, type, card, term, icc_trxn=None):
@@ -20,6 +19,7 @@ class Transaction():
         self.description = ''
         self.expected_response_code = '000'
         self.expected_response_action = None
+        self.currency = None
         self._set_icc_trxn(icc_trxn)
 
         if self.type in ['logon', 'echo']:
@@ -245,3 +245,22 @@ class Transaction():
             self.icc_trxn = True
         else:
             self.icc_trxn = False
+
+
+    def set_currency(self, currency_id):
+        """
+        Set transaction currency code from given currency id, e.g. set 840 from 'USD'
+        """
+        try:
+            self.currency = currency_codes[currency_id]
+            self.IsoMessage.FieldData(49, self.currency)
+            self.rebuild()
+        except KeyError:
+            self.currency = None
+
+
+    def get_currency(self):
+        """
+        Currency getter
+        """
+        return self.currency

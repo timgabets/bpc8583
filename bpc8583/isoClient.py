@@ -174,8 +174,10 @@ def parse_transaction_item(trxn, term, cards):
     for attrib in trxn:
         if attrib.tag.lower() == 'amount':
             t.set_amount(attrib.text)
-        if attrib.tag.lower() == 'pin':
+        elif attrib.tag.lower() == 'pin':
             t.set_PIN(attrib.text)
+        elif attrib.tag.lower() == 'currency':
+            t.set_currency(attrib.text)
         elif attrib.tag.lower() == 'response_code':
             t.set_expected_code(attrib.text)
         elif attrib.tag.lower() == 'response_action':

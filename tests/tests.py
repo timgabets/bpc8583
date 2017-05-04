@@ -292,6 +292,16 @@ class TestTransactionClass(unittest.TestCase):
         self.card.set_description(card_description)
         self.assertEqual(self.trxn.get_description(), card_description + ' | Test echo')
 
+    """
+    trxn.set_currency()
+    """
+    def test_trxn_set_valid_currency(self):
+        self.trxn.set_currency('USD')
+        self.assertEqual(self.trxn.get_currency(), 840)
+
+    def test_trxn_set_invalid_currency(self):
+        self.trxn.set_currency('IDDQD')
+        self.assertIsNone(self.trxn.get_currency())
 
 
 class TestCardClass(unittest.TestCase):

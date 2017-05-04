@@ -60,6 +60,13 @@
 	</trxn>
 -->
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='VISA On-Us #10' icc='false'/>
+	<trxn type='balance' description='Balance Inquiry in USD' card='VISA On-Us #10' icc='false'>
+		<currency>USD</currency>
+	</trxn>
+	<trxn type='balance' description='Balance Inquiry in GBP' card='VISA On-Us #10' icc='false'>
+		<currency>GBP</currency>
+	</trxn>
+
 <!--
 	<trxn type='purchase' description='Them-On-Us purchase' card='VISA Off-Us #13' icc='false'>
 		<amount>7300</amount>
