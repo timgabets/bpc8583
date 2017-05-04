@@ -69,6 +69,21 @@ class Transaction():
             self.IsoMessage.FieldData(25, 0)
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
+        elif self.type == 'refund':
+            """
+            Cash disbursement
+            """
+            self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
+            self.IsoMessage.MTI("0100")
+        
+            self.IsoMessage.FieldData(2, self.card.get_card_number())
+            self.IsoMessage.FieldData(3, 200000)
+            self.IsoMessage.FieldData(12, get_datetime_with_year())
+            self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
+            self.IsoMessage.FieldData(24, 100)
+            self.IsoMessage.FieldData(25, 0)
+            self.IsoMessage.FieldData(35, self.card.get_track2())            
+
         else:
             print('Unknown transaction type: {}'.format(type))
             return None
@@ -80,7 +95,7 @@ class Transaction():
         self.IsoMessage.FieldData(42, self.term.get_merchant_id())
         self.IsoMessage.FieldData(49, self.term.get_currency_code())
 
-        if self.type in ['purchase', 'balance'] and self.icc_trxn:
+        if self.type in ['purchase', 'balance', 'cash'] and self.icc_trxn:
             self.IsoMessage.FieldData(55, self.build_emv_data())
 
         self.rebuild()

@@ -56,7 +56,8 @@ class isoClient:
                     IsoMessage.Print(header='Response')
             else:
                 trace_failed(trxn.get_description(), IsoMessage.FieldData(39), show_colored_description=self.verbosity)
-                trxn.trace(header='Request')
+                if not self.verbosity:
+                    trxn.trace(header='Request')
                 IsoMessage.Print(header='Response')
     
         self.term.close()
