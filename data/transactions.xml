@@ -50,15 +50,21 @@
 		<PIN>1234</PIN>
 	</trxn>
 
-	<trxn type='refund' description='Them-On-Us Refund' card='VISA Off-Us' icc='false'>
-		<amount>7300</amount>
-		<PIN>1234</PIN>
-	</trxn>
 	<trxn type='purchase' description='Them-On-Us purchase' card='VISA Off-Us #25' icc='false'>
 		<amount>7300</amount>
 		<PIN>1234</PIN>
 	</trxn>
 -->
+	<trxn type='refund' description='Them-On-Us Refund' card='VISA Off-Us #13' icc='false'>
+		<amount>7300</amount>
+		<PIN>1234</PIN>
+	</trxn>
+
+	<trxn type='cash' description='Them-On-Us Cash Disbursement' card='VISA Off-Us #13' icc='false'>
+		<amount>20000</amount>
+		<PIN>1234</PIN>
+	</trxn>
+<!--
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='VISA On-Us #10' icc='false'/>
 	<trxn type='balance' description='Balance Inquiry in USD' card='VISA On-Us #10' icc='false'>
 		<currency>USD</currency>
@@ -67,7 +73,6 @@
 		<currency>GBP</currency>
 	</trxn>
 
-<!--
 	<trxn type='purchase' description='Them-On-Us purchase' card='VISA Off-Us #13' icc='false'>
 		<amount>7300</amount>
 		<PIN>1234</PIN>
