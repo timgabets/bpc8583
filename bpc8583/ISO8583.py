@@ -2,6 +2,7 @@ import binascii
 import struct
 from enum import Enum
 from pytlv.TLV import TLV
+from bpc8583.tools import get_timestamp
 
 # Length Type enumeration
 class LT(Enum):
@@ -463,7 +464,7 @@ class ISO8583:
 
     def Print(self, header=None):
         if header:
-            print('\t{}:'.format(header))
+            print('\t{} at {}:'.format(header, get_timestamp()))
         else:
             print('\tParsed message:')
 
