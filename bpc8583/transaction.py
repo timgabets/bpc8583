@@ -2,7 +2,8 @@ import struct
 from datetime import datetime
 
 from bpc8583.ISO8583 import ISO8583, currency_codes
-from bpc8583.tools import trace, get_date, get_datetime_with_year, get_datetime, get_stan, get_seconds_since_epoch, get_MMDD
+from bpc8583.tools import get_date, get_datetime_with_year, get_datetime, get_stan, get_seconds_since_epoch, get_MMDD
+from tracetools.tracetools import trace
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from pytlv.TLV import TLV
 

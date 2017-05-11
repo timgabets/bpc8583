@@ -3,43 +3,7 @@ import random
 from time import strftime
 from math import pow
 from datetime import datetime
-
-def dump(data):
-    """
-    Memdump with no title
-    """
-    i = 1
-
-    if( isinstance(data, bytes) == False ):
-        raise TypeError("Expected bytes for data")
-
-    dump = '\t'
-    dump_ascii = ''
-    padding = '        '
-    
-    for c in data:
-        try: # python 3
-            dump += '{:02x} '.format(c) 
-                
-        except: # python 2.x
-            dump += '{:02x} '.format(ord(c))
-            
-        if chr(c) >= ' ' and chr(c) < '~':
-            dump_ascii += chr(c)
-        else:
-            dump_ascii += '.'
-
-        if(i % 16 == 0):
-            dump = dump + padding + dump_ascii + '\n\t'
-            dump_ascii = ''
-        i+=1
-
-    if dump_ascii:
-        for i in range(16 - len(dump_ascii)):
-            padding += '   '
-        dump = dump + padding + dump_ascii + '\n\t'
-
-    return dump
+from tracetools.tracetools import get_timestamp
 
 
 def get_date():
@@ -68,13 +32,6 @@ def get_datetime_with_year():
     Get current time (for ISO data fields)
     """
     return int(datetime.now().strftime("%y%m%d%H%M%S"))
-
-
-def get_timestamp(t=None):
-    """
-    Get current timestamp for logging purposes
-    """
-    return datetime.now().strftime("%H:%M:%S.%f")
 
 
 def get_seconds_since_epoch():
@@ -112,12 +69,6 @@ def get_random_hex(length):
     if length <= 0:
         return ''
     return hexify(random.randint(pow(2, length*2), pow(2, length*4)))[0:length]
-
-
-def trace(title, data):
-    """
-    """
-    print('{} {}\n{}\n'.format(get_timestamp(), title, dump(data)))
 
 
 def get_response(_code):

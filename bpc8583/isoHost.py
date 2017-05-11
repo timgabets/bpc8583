@@ -8,7 +8,8 @@ import getopt
 
 from bpc8583.ISO8583 import ISO8583, MemDump
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
-from bpc8583.tools import trace, get_response
+from bpc8583.tools import get_response
+from tracetools.tracetools import trace
 
 def main(s):
     while True:

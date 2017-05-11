@@ -3,8 +3,8 @@ import struct
 import sys
 import binascii
 
-from bpc8583.tools import trace, get_datetime, get_random_hex
-
+from bpc8583.tools import get_datetime, get_random_hex
+from tracetools.tracetools import trace
 from Crypto.Cipher import DES3
 
 

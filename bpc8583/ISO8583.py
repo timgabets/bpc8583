@@ -2,7 +2,7 @@ import binascii
 import struct
 from enum import Enum
 from pytlv.TLV import TLV
-from bpc8583.tools import get_timestamp
+from tracetools.tracetools import get_timestamp
 
 # Length Type enumeration
 class LT(Enum):

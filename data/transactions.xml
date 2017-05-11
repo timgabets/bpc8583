@@ -54,17 +54,23 @@
 		<amount>7300</amount>
 		<PIN>1234</PIN>
 	</trxn>
--->
 	<trxn type='refund' description='Them-On-Us Refund' card='VISA Off-Us #13' icc='false'>
 		<amount>7300</amount>
 		<PIN>1234</PIN>
 	</trxn>
-
+	<trxn type='purchase' description='Them-On-Us purchase 20 RUB declined' card='VISA Off-Us #13' icc='false'>
+		<amount>2000</amount>
+		<PIN>1234</PIN>
+		<response_action>DECLINE</response_action>
+	</trxn>
+	<trxn type='purchase' description='Them-On-Us purchase 100 RUB approved' card='VISA Off-Us #13' icc='false'>
+		<amount>10000</amount>
+		<PIN>1234</PIN>
+	</trxn>
 	<trxn type='cash' description='Them-On-Us Cash Disbursement' card='VISA Off-Us #13' icc='false'>
 		<amount>20000</amount>
 		<PIN>1234</PIN>
 	</trxn>
-<!--
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='VISA On-Us #10' icc='false'/>
 	<trxn type='balance' description='Balance Inquiry in USD' card='VISA On-Us #10' icc='false'>
 		<currency>USD</currency>
@@ -73,10 +79,6 @@
 		<currency>GBP</currency>
 	</trxn>
 
-	<trxn type='purchase' description='Them-On-Us purchase' card='VISA Off-Us #13' icc='false'>
-		<amount>7300</amount>
-		<PIN>1234</PIN>
-	</trxn>
 	<trxn type='purchase' description='Them-On-Us purchase' card='VISA Off-Us #25' icc='false'>
 		<amount>9577</amount>
 		<PIN>1234</PIN>
@@ -88,12 +90,13 @@
 		<PIN>1234</PIN>
 		<response_code>110</response_code>
 	</trxn>
-
-	<trxn type='purchase' description='110 RUB purchase with PIN approved'>
+-->
+	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='8990011234567890' icc='false'>
 		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
+<!--
 
 	<trxn type='purchase' description='90 RUB purchase without PIN declined'>
 		<amount>9000</amount>
