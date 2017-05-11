@@ -1,10 +1,10 @@
 from setuptools import setup
 
 setup(name='bpc8583',
-      version='1.23',
+      version='1.24',
       
       description='BPC\'s flavour of ISO8583',
-      long_description=open('README.md').read(),
+      long_description=open('README').read(),
       
       classifiers=[
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
