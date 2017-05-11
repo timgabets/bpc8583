@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(name='bpc8583',
-      version='1.24',
+      version='1.25',
       
-      description='BPC\'s flavour of ISO8583',
+      description='BPC\'s flavour of ISO8583 library and toolset',
       long_description=open('README').read(),
       
       classifiers=[
@@ -19,7 +19,7 @@ setup(name='bpc8583',
         'Intended Audience :: Developers',
       ],
       
-      keywords='BPC\'s flavour of ISO8583 banking protocol library',
+      keywords='POS ISO8583 banking financial payment',
       
       url='https://github.com/timgabets/bpc8583',
       author='Tim Gabets',
