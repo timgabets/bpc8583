@@ -264,6 +264,7 @@ def show_help(name):
     print('  -s, --server=[IP]\t\tIP of the ISO host to connect to, 127.0.0.1 by default')
     print('  -t, --terminal=[ID]\t\tTerminal ID (used in DE 41 ISO field, 10001337 by default)')
     print('  -m, --merchant=[ID]\t\tMerchant ID (used in DE 42 ISO field, 999999999999001 by default)')
+    print('  -k, --key=[KEY]\t\tTerminal key (\'DEADBEEF DEADBEEF DEADBEEF DEADBEEF\' by default)')
     print('  -f, --file=[file.xml]\t\tUse transaction data from the given XML-file')
 
 
@@ -273,11 +274,12 @@ if __name__ == '__main__':
     port = None
     terminal_id = None
     merchant_id = None
+    terminal_key = None
     data_file = None
     transactions = None
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:f:v', ['help', 'port=', 'server=', 'terminal=', 'merchant=', 'file=', 'verbose'])
+        optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:k:f:v', ['help', 'port=', 'server=', 'terminal=', 'merchant=', 'key=', 'file=', 'verbose'])
         for opt, arg in optlist:
             if opt in ('-v', '--verbose'):
                 verbosity = True
@@ -298,6 +300,9 @@ if __name__ == '__main__':
             elif opt in ('-m', '--merchant'):
                 merchant_id = arg
 
+            elif opt in ('-k', '--key'):
+                terminal_key = arg
+
             elif opt in ('-f', '--file'):
                 data_file = arg
 
@@ -305,7 +310,7 @@ if __name__ == '__main__':
         show_help(sys.argv[0])
         sys.exit()
     
-    term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id)
+    term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id, key=terminal_key)
     if data_file:
         transactions = parse_data_file(data_file, term)
 

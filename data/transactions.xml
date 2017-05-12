@@ -83,7 +83,6 @@
 		<amount>9577</amount>
 		<PIN>1234</PIN>
 	</trxn>
-
 	<trxn type='purchase' description='90 RUB purchase with PIN declined'>
 		<amount>9000</amount>
 		<currency>RUB</currency>
