@@ -154,7 +154,7 @@ class Terminal:
         block1 = '0' + str(len(PIN)) + str(PIN)
         while len(block1) < 16:
             block1 += 'F'
-        block2 = '0000' + PAN[:12]
+        block2 = '0000' + PAN[-13:-1]
 
         try:
             raw_message = bytes.fromhex(block1)
