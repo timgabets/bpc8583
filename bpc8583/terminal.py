@@ -170,7 +170,7 @@ class Terminal:
         """
         Get string representation of terminal key (needed mostly for debugging purposes)
         """
-        return binascii.hexlify(self.key).decode('utf-8').upper()
+        return raw2str(self.key)
 
 
     def _get_pinblock(self, __PIN, __PAN):
