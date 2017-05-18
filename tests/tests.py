@@ -99,7 +99,7 @@ class TestTerminal(unittest.TestCase):
 
     def setUp(self):
         self.default_terminal_key = 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF'
-        self.term = Terminal(terminal_key=self.default_terminal_key, debug=False)
+        self.term = Terminal(terminal_key=self.default_terminal_key, show_keys=False)
 
     """
     terminal._get_pinblock()
@@ -200,7 +200,7 @@ class TestIsoTools(unittest.TestCase):
 class TestTransactionClass(unittest.TestCase):
 
     def setUp(self):
-        self.term = Terminal(debug=False)
+        self.term = Terminal(show_keys=False)
         self.card = Card()
         self.trxn = Transaction('echo', self.card, self.term)
         self.trxn.set_description('Test echo')

@@ -61,12 +61,12 @@ class Terminal:
         self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
         self.tmk_cipher = DES3.new(self.master_key, DES3.MODE_ECB)
 
-        self.debug = debug
+        self.show_keys = show_keys
         self.print_keys()
 
 
     def print_keys(self):
-        if self.debug:
+        if self.show_keys:
             print('Master key: {}'.format(raw2str(self.master_key)))
             print('Terminal key: {}'.format(raw2str(self.terminal_key)))
         
