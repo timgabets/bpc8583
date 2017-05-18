@@ -11,7 +11,7 @@ from Crypto.Cipher import DES3
 
 class Terminal:
 
-    def __init__(self, host=None, port=None, id=None, merchant=None, key=None):
+    def __init__(self, host=None, port=None, id=None, merchant=None, master_key=None, terminal_key=None, debug=None):
         """
         Terminal initialization
         """
@@ -48,56 +48,28 @@ class Terminal:
         self.currency = '643'
         self.country_code = '643'
 
-        # Terminal key
-        self.keyfile_name = '.terminalkey.cache'
-        self.save_set_terminal_key(key)
-
-
-    def get_stored_key(self):
-        """
-        """
-        try:
-            file = open(self.keyfile_name, 'r')
-            key = file.read()
-            file.close()
-            return key
-        except:
-            return None
-
-
-    def store_key(self, key):
-        """
-        """
-        try:
-            file = open(self.keyfile_name, 'w')
-            file.write(key)
-            file.close()
-        except:
-            return False
-        return True
-
-
-    def save_set_terminal_key(self, key=None):
-        """
-        Set new terminal key
-        """
-        if key:
-            self.key = bytes.fromhex(key)
+        if terminal_key:
+            self.terminal_key = bytes.fromhex(terminal_key)
         else:
-            stored_key = self.get_stored_key()
-            if stored_key:
-                self.key = bytes.fromhex(stored_key)
-            else:
-                self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+            self.terminal_key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+        
+        if master_key:
+            self.master_key = bytes.fromhex(master_key)
+        else:
+            self.master_key = bytes.fromhex('abababab cdcdcdcd efefefef aeaeaeae')    
 
-        self.store_key(raw2str(self.key))
+        self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
+        self.tmk_cipher = DES3.new(self.master_key, DES3.MODE_ECB)
 
-        # Crypto (re)init
-        self.cipher = DES3.new(self.key, DES3.MODE_ECB)
-        print('Using terminal key {}'.format(raw2str(self.key)))
+        self.debug = debug
+        self.print_keys()
 
-        return True
 
+    def print_keys(self):
+        if self.debug:
+            print('Master key: {}'.format(raw2str(self.master_key)))
+            print('Terminal key: {}'.format(raw2str(self.terminal_key)))
+        
 
     def connect(self):
         """
@@ -155,19 +127,21 @@ class Terminal:
         return self.currency
 
 
-    def change_terminal_key(self, encrypted_key):
+    def set_terminal_key(self, encrypted_key):
         """
         Change the terminal key. The encrypted_key is a hex string
-        encrypted_key is expected to be encrypted under existing key
+        encrypted_key is expected to be encrypted under master key
         """
         if encrypted_key:
             try:
                 new_key = bytes.fromhex(encrypted_key)
-                if len(self.key) != len(new_key):
+                if len(self.terminal_key) != len(new_key):
                     # The keys must have equal length
                     return False
 
-                self.save_set_terminal_key(raw2str(self.cipher.decrypt(new_key)))
+                self.terminal_key = self.tmk_cipher.decrypt(new_key)
+                self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
+                self.print_keys()
                 return True
 
             except ValueError:
@@ -180,7 +154,7 @@ class Terminal:
         """
         Get string representation of terminal key (needed mostly for debugging purposes)
         """
-        return raw2str(self.key)
+        return raw2str(self.terminal_key)
 
 
     def _get_pinblock(self, __PIN, __PAN):
@@ -212,7 +186,7 @@ class Terminal:
         """
         Get PIN block in ISO 0 format, encrypted with the terminal key
         """
-        if not self.key:
+        if not self.terminal_key:
             print('Terminal key is not set')
             return ''
 
@@ -222,7 +196,7 @@ class Terminal:
             except TypeError:
                 return ''
 
-            encrypted_pinblock = self.cipher.encrypt(pinblock)
+            encrypted_pinblock = self.tpk_cipher.encrypt(pinblock)
             return binascii.hexlify(encrypted_pinblock).decode('utf-8').upper()
 
         else:

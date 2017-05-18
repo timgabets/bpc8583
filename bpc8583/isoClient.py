@@ -316,7 +316,7 @@ if __name__ == '__main__':
         show_help(sys.argv[0])
         sys.exit()
     
-    term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id, key=terminal_key)
+    term = Terminal(host=ip, port=port, id=terminal_id, merchant=merchant_id, terminal_key=terminal_key)
     if data_file:
         transactions = parse_data_file(data_file, term)
 

@@ -99,7 +99,7 @@ class TestTerminal(unittest.TestCase):
 
     def setUp(self):
         self.default_terminal_key = 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF'
-        self.term = Terminal(key=self.default_terminal_key)
+        self.term = Terminal(terminal_key=self.default_terminal_key, debug=False)
 
     """
     terminal._get_pinblock()
@@ -146,82 +146,22 @@ class TestTerminal(unittest.TestCase):
 
     
     """
-    terminal.change_terminal_key()
+    terminal.set_terminal_key()
     """
     def test_set_new_empty_terminal_key(self):        
-        self.assertFalse(self.term.change_terminal_key(''))
+        self.assertFalse(self.term.set_terminal_key(''))
 
     def test_set_new_terminal_key_with_invalid_characters(self):  
-        self.assertFalse(self.term.change_terminal_key('invalid key'))
+        self.assertFalse(self.term.set_terminal_key('invalid key'))
 
     def test_set_new_terminal_key_with_invalid_length_key(self):  
-        self.assertFalse(self.term.change_terminal_key('DEAFBEEDEAFBEE'))
-
-    def test_set_new_terminal_key(self):
-        clear_key = '00001111222233334444555566667777'
-        # encrypted_key = 3DES(clear_key, self.default_terminal_key) 
-        encrypted_key = '96D9BE1AB41D7B51B62EF366B4F4BF89'
-        self.assertTrue(self.term.change_terminal_key(encrypted_key))
-        self.assertEqual(self.term.get_terminal_key(), clear_key) 
+        self.assertFalse(self.term.set_terminal_key('DEAFBEEDEAFBEE'))
 
     """
     terminal.get_country_code()
     """
     def test_get_country_code(self):
         self.assertEqual(self.term.get_country_code(), '0643')
-
-    """
-    terminal.get_stored_key()
-    """
-    def _remove_keyfile(self):
-        try:
-            os.remove('.terminalkey.cache')
-        except FileNotFoundError:
-            pass
-
-    def test_get_stored_key_no_keyfile(self):
-        self._remove_keyfile()
-        self.assertEqual(self.term.get_stored_key(), None)
-
-    def test_store_key_in_a_keyfile_no_error(self):
-        key = '96D9BE1AB41D7B51B62EF366B4F4BF89'
-        self.assertEqual(self.term.store_key(key), True)
-        self.assertEqual(self.term.get_stored_key(), key)
-
-    """
-    terminal.save_set_terminal_key()
-    """
-    def test_save_set_terminal_key_keyfile_does_not_exist(self):
-        self._remove_keyfile()
-        self.term.save_set_terminal_key()
-        self.assertEqual(self.term.get_terminal_key(), 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF')
-
-
-    def test_save_set_terminal_key_keyfile_does_not_exist_and_user_provided_a_key(self):
-        self._remove_keyfile()
-        key = '51B62EF36FE123'
-        self.term.save_set_terminal_key(key)
-        self.assertEqual(self.term.get_terminal_key(), key)
-        self.assertEqual(self.term.get_stored_key(), key)
-
-
-    def test_save_set_terminal_key_stored_key_rewritten(self):
-        self._remove_keyfile()
-        stored_key = 'DD127637851BB6C2EF36FE123F3E'
-        new_key = 'AEAEAEAEAEAEAEAEAEAEAE'
-        self.assertEqual(self.term.store_key(stored_key), True)
-        self.term.save_set_terminal_key(new_key)
-
-        self.assertEqual(self.term.get_terminal_key(), new_key)
-        self.assertEqual(self.term.get_stored_key(), new_key)
-
-    def test_new_terminal_uses_key_from_file(self):
-        self._remove_keyfile()
-        stored_key = 'DD127637851BB6C2EF36FE123F3EABCD'
-        self.assertEqual(self.term.store_key(stored_key), True)
-
-        self.term = Terminal()
-        self.assertEqual(self.term.get_terminal_key(), stored_key)
 
 
 class TestIsoTools(unittest.TestCase):
@@ -260,7 +200,7 @@ class TestIsoTools(unittest.TestCase):
 class TestTransactionClass(unittest.TestCase):
 
     def setUp(self):
-        self.term = Terminal()
+        self.term = Terminal(debug=False)
         self.card = Card()
         self.trxn = Transaction('echo', self.card, self.term)
         self.trxn.set_description('Test echo')
