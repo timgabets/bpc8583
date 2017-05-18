@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='bpc8583',
-      version='1.27',
+      version='1.28',
       
       description='BPC\'s flavour of ISO8583 library and toolset',
       long_description=open('README').read(),
