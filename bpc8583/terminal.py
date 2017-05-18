@@ -49,14 +49,45 @@ class Terminal:
         self.country_code = '643'
 
         # Terminal key
-        if key:
-            self.key = bytes.fromhex(key)
-        else:
-            self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+        self.keyfile_name = '.terminalkey.cache'
+        self.save_set_terminal_key(key)
 
         # Crypto init
         self.cipher = DES3.new(self.key, DES3.MODE_ECB)
 
+
+    def get_stored_key(self):
+        """
+        """
+        try:
+            file = open(self.keyfile_name, 'r')
+            key = file.read()
+            file.close()
+            return key
+        except:
+            return None
+
+
+    def store_key(self, key):
+        """
+        """
+        try:
+            file = open(self.keyfile_name, 'w')
+            file.write(key)
+            file.close()
+        except:
+            return False
+        return True
+
+    def save_set_terminal_key(self, key=None):
+        """
+        Set new terminal key
+        """
+        if key:
+            self.key = bytes.fromhex(key)
+        else:
+            self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+        return True
 
     def connect(self):
         """
@@ -114,22 +145,19 @@ class Terminal:
         return self.currency
 
 
-    def set_terminal_key(self, key_value):
+    def change_terminal_key(self, encrypted_key):
         """
-        Set the terminal key. The key_value is a hex string
-        key_value is expected to be encrypted under existing key
+        Change the terminal key. The encrypted_key is a hex string
+        encrypted_key is expected to be encrypted under existing key
         """
-        if key_value:
+        if encrypted_key:
             try:
-                new_key = bytes.fromhex(key_value)
+                new_key = bytes.fromhex(encrypted_key)
                 if len(self.key) != len(new_key):
                     # The keys must have equal length
                     return False
 
-                self.key = self.cipher.decrypt(new_key)
-                print('\tNew terminal key: {}'.format(raw2str(self.key)))
-
-                self.cipher = DES3.new(self.key, DES3.MODE_ECB)
+                self.save_set_terminal_key(raw2str(self.cipher.decrypt(new_key)))
                 return True
 
             except ValueError:

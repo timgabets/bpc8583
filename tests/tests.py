@@ -2,6 +2,7 @@
 
 import unittest
 import binascii
+import os
 
 from bpc8583.card import Card
 from bpc8583.terminal import Terminal
@@ -145,30 +146,56 @@ class TestTerminal(unittest.TestCase):
 
     
     """
-    terminal.set_terminal_key()
+    terminal.change_terminal_key()
     """
     def test_set_new_empty_terminal_key(self):        
-        self.assertFalse(self.term.set_terminal_key(''))
+        self.assertFalse(self.term.change_terminal_key(''))
 
     def test_set_new_terminal_key_with_invalid_characters(self):  
-        self.assertFalse(self.term.set_terminal_key('invalid key'))
+        self.assertFalse(self.term.change_terminal_key('invalid key'))
 
     def test_set_new_terminal_key_with_invalid_length_key(self):  
-        self.assertFalse(self.term.set_terminal_key('DEAFBEEDEAFBEE'))
+        self.assertFalse(self.term.change_terminal_key('DEAFBEEDEAFBEE'))
 
     def test_set_new_terminal_key(self):
         clear_key = '00001111222233334444555566667777'
         # encrypted_key = 3DES(clear_key, self.default_terminal_key) 
         encrypted_key = '96D9BE1AB41D7B51B62EF366B4F4BF89'
-        self.assertTrue(self.term.set_terminal_key(encrypted_key))
+        self.assertTrue(self.term.change_terminal_key(encrypted_key))
         self.assertEqual(self.term.get_terminal_key(), clear_key) 
-
 
     """
     terminal.get_country_code()
     """
     def test_get_country_code(self):
         self.assertEqual(self.term.get_country_code(), '0643')
+
+    """
+    terminal.get_stored_key()
+    """
+    def _remove_keyfile(self):
+        try:
+            os.remove('.terminalkey.cache')
+        except FileNotFoundError:
+            pass
+
+    def test_get_stored_key_no_keyfile(self):
+        self._remove_keyfile()
+        self.assertEqual(self.term.get_stored_key(), None)
+
+    def test_store_key_in_a_keyfile_no_error(self):
+        key = '96D9BE1AB41D7B51B62EF366B4F4BF89'
+        self.assertEqual(self.term.store_key(key), True)
+        self.assertEqual(self.term.get_stored_key(), key)
+
+    """
+    terminal.save_set_terminal_key()
+    """
+#    def save_set_terminal_key_keyfile_does_not_exist(self):
+#        os.remove('.terminalkey.cache')
+#        self.term.save_set_terminal_key()
+#        self.assertEqual(self.term.get_terminal_key(), 'DEADBEAF')
+
 
 
 class TestIsoTools(unittest.TestCase):
