@@ -191,11 +191,37 @@ class TestTerminal(unittest.TestCase):
     """
     terminal.save_set_terminal_key()
     """
-#    def save_set_terminal_key_keyfile_does_not_exist(self):
-#        os.remove('.terminalkey.cache')
-#        self.term.save_set_terminal_key()
-#        self.assertEqual(self.term.get_terminal_key(), 'DEADBEAF')
+    def test_save_set_terminal_key_keyfile_does_not_exist(self):
+        self._remove_keyfile()
+        self.term.save_set_terminal_key()
+        self.assertEqual(self.term.get_terminal_key(), 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF')
 
+
+    def test_save_set_terminal_key_keyfile_does_not_exist_and_user_provided_a_key(self):
+        self._remove_keyfile()
+        key = '51B62EF36FE123'
+        self.term.save_set_terminal_key(key)
+        self.assertEqual(self.term.get_terminal_key(), key)
+        self.assertEqual(self.term.get_stored_key(), key)
+
+
+    def test_save_set_terminal_key_stored_key_rewritten(self):
+        self._remove_keyfile()
+        stored_key = 'DD127637851BB6C2EF36FE123F3E'
+        new_key = 'AEAEAEAEAEAEAEAEAEAEAE'
+        self.assertEqual(self.term.store_key(stored_key), True)
+        self.term.save_set_terminal_key(new_key)
+
+        self.assertEqual(self.term.get_terminal_key(), new_key)
+        self.assertEqual(self.term.get_stored_key(), new_key)
+
+    def test_new_terminal_uses_key_from_file(self):
+        self._remove_keyfile()
+        stored_key = 'DD127637851BB6C2EF36FE123F3EABCD'
+        self.assertEqual(self.term.store_key(stored_key), True)
+
+        self.term = Terminal()
+        self.assertEqual(self.term.get_terminal_key(), stored_key)
 
 
 class TestIsoTools(unittest.TestCase):

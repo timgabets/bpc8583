@@ -52,9 +52,6 @@ class Terminal:
         self.keyfile_name = '.terminalkey.cache'
         self.save_set_terminal_key(key)
 
-        # Crypto init
-        self.cipher = DES3.new(self.key, DES3.MODE_ECB)
-
 
     def get_stored_key(self):
         """
@@ -79,6 +76,7 @@ class Terminal:
             return False
         return True
 
+
     def save_set_terminal_key(self, key=None):
         """
         Set new terminal key
@@ -86,8 +84,20 @@ class Terminal:
         if key:
             self.key = bytes.fromhex(key)
         else:
-            self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+            stored_key = self.get_stored_key()
+            if stored_key:
+                self.key = bytes.fromhex(stored_key)
+            else:
+                self.key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+
+        self.store_key(raw2str(self.key))
+
+        # Crypto (re)init
+        self.cipher = DES3.new(self.key, DES3.MODE_ECB)
+        print('Using terminal key {}'.format(raw2str(self.key)))
+
         return True
+
 
     def connect(self):
         """
