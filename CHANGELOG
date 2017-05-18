@@ -1,5 +1,6 @@
 
 May 2017
+	1.29 Processing terminal key change
 	1.28 Field 53 max length increased from 16 to 18
 	1.27 Fixed bug in PIN Block calculation
 	1.26 isoClient --key=

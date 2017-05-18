@@ -59,6 +59,12 @@ class isoClient:
                 if not self.verbosity:
                     trxn.trace(header='Request')
                 IsoMessage.Print(header='Response')
+
+            # Network management processing
+            if IsoMessage.MTI() == '0810':
+                if IsoMessage.FieldData(53):
+                    new_terminal_key = IsoMessage.FieldData(53) # e.g. '31361828DF416311C184F97A2E5E3B6DD62C', first two bytes is length
+                    self.term.set_terminal_key(new_terminal_key[4:])
     
         self.term.close()
 

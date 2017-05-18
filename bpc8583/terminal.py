@@ -5,6 +5,7 @@ import binascii
 
 from bpc8583.tools import get_datetime, get_random_hex
 from tracetools.tracetools import trace
+from pynblock.tools import raw2str
 from Crypto.Cipher import DES3
 
 
@@ -126,6 +127,8 @@ class Terminal:
                     return False
 
                 self.key = self.cipher.decrypt(new_key)
+                print('\tNew terminal key: {}'.format(raw2str(self.key)))
+
                 self.cipher = DES3.new(self.key, DES3.MODE_ECB)
                 return True
 
