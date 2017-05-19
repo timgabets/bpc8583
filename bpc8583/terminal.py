@@ -11,7 +11,7 @@ from Crypto.Cipher import DES3
 
 class Terminal:
 
-    def __init__(self, host=None, port=None, id=None, merchant=None, master_key=None, terminal_key=None, debug=None):
+    def __init__(self, host=None, port=None, id=None, merchant=None, master_key=None, terminal_key=None, show_keys=None):
         """
         Terminal initialization
         """
@@ -67,7 +67,7 @@ class Terminal:
 
     def print_keys(self):
         if self.show_keys:
-            print('Master key: {}'.format(raw2str(self.master_key)))
+            print('  Master key: {}'.format(raw2str(self.master_key)))
             print('Terminal key: {}'.format(raw2str(self.terminal_key)))
         
 
