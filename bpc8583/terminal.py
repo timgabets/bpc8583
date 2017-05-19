@@ -225,6 +225,7 @@ class Terminal:
         if self.pinblock_format == '01':
             try:
                 pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
+                #print('PIN block: {}'.format(raw2str(pinblock)))
             except TypeError:
                 return ''
 

@@ -42,6 +42,11 @@ class isoClient:
         """
         self.term.connect()
         for trxn in self.transactions:
+            # Re-encrypt PIN block if terminal key has changed
+            PIN = trxn.get_PIN()
+            if PIN:
+                trxn.set_PIN(PIN)
+
             self.term.send(trxn.get_data(), show_trace=False)
             if self.verbosity:
                 trxn.trace(header='Request')

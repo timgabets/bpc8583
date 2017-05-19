@@ -21,6 +21,7 @@ class Transaction():
         self.expected_response_code = '000'
         self.expected_response_action = None
         self.currency = None
+        self.PIN = None
         self._set_icc_trxn(icc_trxn)
 
         if self.type in ['logon', 'echo']:
@@ -160,10 +161,16 @@ class Transaction():
         """
         """
         if PIN:
+            self.PIN = PIN
             encrypted_pinblock = self.term.get_encrypted_pin(PIN, self.card.get_card_number())
             if encrypted_pinblock:
                 self.IsoMessage.FieldData(52, encrypted_pinblock)
                 self.rebuild()
+
+    def get_PIN(self):
+        """
+        """
+        return self.PIN
 
 
     def set_amount(self, amount):
