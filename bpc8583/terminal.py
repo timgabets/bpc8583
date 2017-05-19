@@ -52,7 +52,7 @@ class Terminal:
         if master_key:
             self.master_key = bytes.fromhex(master_key)
         else:
-            self.master_key = bytes.fromhex('abababab cdcdcdcd efefefef aeaeaeae')    
+            self.master_key = bytes.fromhex('CF7730DBA6CAC5E13C3FB45CAF8D71E1')    
 
         if terminal_key:
             self.terminal_key = bytes.fromhex(terminal_key)
@@ -61,7 +61,7 @@ class Terminal:
             if stored_key:
                 self.terminal_key = bytes.fromhex(stored_key)
             else:
-                self.terminal_key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
+                self.terminal_key = bytes.fromhex('FA9F90D49CB27B7D14A3FA9CCCFF6CB7')
 
         self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
         self.tmk_cipher = DES3.new(self.master_key, DES3.MODE_ECB)

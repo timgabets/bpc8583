@@ -12,8 +12,8 @@
 		<expiry_date>1809</expiry_date>
 		<service_code>201</service_code>
 		<PVVKi>1</PVVKi>
-		<PVV>4282</PVV>
-		<CVV>371</CVV>
+		<PVV>5222</PVV>
+		<CVV>786</CVV>
 		<discr_data>00720</discr_data>
 	</card>
 	<card description='VISA On-Us #10'>
@@ -43,7 +43,6 @@
 <!--
 	<trxn type='logon' description='Merchant log on'/>
 -->
-	
 	<trxn type='key change' description='Terminal key change'/>
 <!--
 	<trxn type='balance' card='8990011234567890' description='Balance Inquiry with PIN approved'>
@@ -72,6 +71,16 @@
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
+
+	<trxn type='key change' description='Terminal key change'/>
+
+-->
+	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='8990011234567890' icc='false'>
+		<amount>11000</amount>
+		<currency>RUB</currency>
+		<PIN>1234</PIN>
+	</trxn>
+<!--
 	<trxn type='cash' description='Them-On-Us Cash Disbursement' card='VISA Off-Us #13' icc='false'>
 		<amount>20000</amount>
 		<PIN>1234</PIN>
@@ -91,8 +100,6 @@
 		<PIN>1234</PIN>
 		<response_code>110</response_code>
 	</trxn>
--->
-<!--
 	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false'>
 		<amount>300000</amount>
 		<currency>RUB</currency>
