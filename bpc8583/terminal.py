@@ -47,16 +47,22 @@ class Terminal:
 
         self.currency = '643'
         self.country_code = '643'
-
-        if terminal_key:
-            self.terminal_key = bytes.fromhex(terminal_key)
-        else:
-            self.terminal_key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
         
+        # Keys
+        self.keyfile_name = '.terminalkey.cache'
         if master_key:
             self.master_key = bytes.fromhex(master_key)
         else:
             self.master_key = bytes.fromhex('abababab cdcdcdcd efefefef aeaeaeae')    
+
+        if terminal_key:
+            self.terminal_key = bytes.fromhex(terminal_key)
+        else:
+            stored_key = self.get_stored_key()
+            if stored_key:
+                self.terminal_key = bytes.fromhex(stored_key)
+            else:
+                self.terminal_key = bytes.fromhex('deadbeef deadbeef deadbeef deadbeef')
 
         self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
         self.tmk_cipher = DES3.new(self.master_key, DES3.MODE_ECB)
@@ -127,6 +133,30 @@ class Terminal:
         return self.currency
 
 
+    def store_terminal_key(self, key):
+        """
+        """
+        try:
+            f = open(self.keyfile_name, 'w+')
+            f.write(key)
+            f.close()
+        except:
+            return False
+        return True
+
+
+    def get_stored_key(self):
+        """
+        """
+        try:
+            f = open(self.keyfile_name, 'r')
+            key = f.read()
+            f.close()
+            return key
+        except:
+            return None
+
+
     def set_terminal_key(self, encrypted_key):
         """
         Change the terminal key. The encrypted_key is a hex string
@@ -140,6 +170,8 @@ class Terminal:
                     return False
 
                 self.terminal_key = self.tmk_cipher.decrypt(new_key)
+                self.store_terminal_key(raw2str(self.terminal_key))
+
                 self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
                 self.print_keys()
                 return True

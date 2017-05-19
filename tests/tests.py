@@ -280,6 +280,28 @@ class TestTransactionClass(unittest.TestCase):
         self.trxn.set_currency('IDDQD')
         self.assertIsNone(self.trxn.get_currency())
 
+class TestTerminalKeyStorage(unittest.TestCase):
+    
+    def setUp(self):
+        self.term = Terminal(show_keys=False)
+        self.key = 'C3BA1E04D88654C4'
+        self.keyfile = '.terminalkey.cache'
+        self._remove_keyfile()
+
+    def tearDown(self):
+        self._remove_keyfile()
+
+    def _remove_keyfile(self):
+        try:
+            os.remove(self.keyfile)
+        except FileNotFoundError:
+            pass
+
+    def test_terminal_key_stored(self):
+        self.assertTrue(self.term.store_terminal_key(self.key))
+        self.assertEqual(self.term.get_stored_key(), self.key)
+        
+
 
 class TestCardClass(unittest.TestCase):
 
