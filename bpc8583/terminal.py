@@ -1,11 +1,10 @@
 import socket
 import struct
 import sys
-import binascii
 
 from bpc8583.tools import get_datetime, get_random_hex
 from tracetools.tracetools import trace
-from pynblock.tools import raw2str
+from pynblock.tools import raw2str, get_pinblock
 from Crypto.Cipher import DES3
 
 
@@ -189,31 +188,6 @@ class Terminal:
         return raw2str(self.terminal_key)
 
 
-    def _get_pinblock(self, __PIN, __PAN):
-        """
-        """
-        PIN = str(__PIN)
-        PAN = str(__PAN)
-
-        if not PIN or not PAN:
-            return None
-
-        block1 = '0' + str(len(PIN)) + str(PIN)
-        while len(block1) < 16:
-            block1 += 'F'
-        block2 = '0000' + PAN[-13:-1]
-
-        try:
-            raw_message = bytes.fromhex(block1)
-            raw_key = bytes.fromhex(block2)
-        except ValueError:
-            return ''
-
-        result = ''.join(["{0:#0{1}x}".format((i ^ j), 4)[2:] for i, j in zip(raw_message, raw_key)])
-
-        return result
-
-
     def get_encrypted_pin(self, clear_pin, card_number):
         """
         Get PIN block in ISO 0 format, encrypted with the terminal key
@@ -224,13 +198,13 @@ class Terminal:
 
         if self.pinblock_format == '01':
             try:
-                pinblock = bytes.fromhex(self._get_pinblock(clear_pin, card_number))
+                pinblock = bytes.fromhex(get_pinblock(clear_pin, card_number))
                 #print('PIN block: {}'.format(raw2str(pinblock)))
             except TypeError:
                 return ''
 
             encrypted_pinblock = self.tpk_cipher.encrypt(pinblock)
-            return binascii.hexlify(encrypted_pinblock).decode('utf-8').upper()
+            return raw2str(encrypted_pinblock)
 
         else:
             print('Unsupported PIN Block format')

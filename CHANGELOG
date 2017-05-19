@@ -1,5 +1,6 @@
 
 May 2017
+	1.33 get_pinblock() moved to pynblock library
 	1.32 storing terminal key in a temporary file
 	1.31 --master-key and --terminal-key command line options
 	1.30 The incoming key on key exchange expceted to be encrypted under TMK, not TPK

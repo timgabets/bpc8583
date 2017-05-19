@@ -102,28 +102,6 @@ class TestTerminal(unittest.TestCase):
         self.term = Terminal(terminal_key=self.default_terminal_key, show_keys=False)
 
     """
-    terminal._get_pinblock()
-    """
-
-    def test_get_pinblock_empty_pin(self):
-        self.assertEqual(self.term._get_pinblock('', '4000001234562000'), None)
-
-    def test_get_pinblock_empty_pan(self):
-        self.assertEqual(self.term._get_pinblock('1234', ''), None)
-
-    def test_get_pinblock_pin_passed_as_int(self):
-        self.assertEqual(self.term._get_pinblock(1234, '4000001234562000'), '041234fedcba9dff')
-
-    def test_get_pinblock_cardnumber_passed_as_int(self):
-        self.assertEqual(self.term._get_pinblock('1234', 4000001234562000), '041234fedcba9dff')    
-
-    def test_get_pinblock_length_4(self):
-        self.assertEqual(self.term._get_pinblock('1234', '8998811234567890'), '0412bceedcba9876')
-
-    def test_get_pinblock_length_5(self):
-        self.assertEqual(self.term._get_pinblock('92389', '4000001234562'), '0592789fffedcba9')
-
-    """
     terminal.get_encrypted_pin()
     """
     def test_get_encrypted_pin_empty_pin_empty_cardnumber(self):
