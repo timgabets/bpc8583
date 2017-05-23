@@ -330,7 +330,10 @@ class ISO8583:
         else:
             LenDataType = self.__IsoSpec.LengthDataType(field)
             
-            data = "{0}".format(self.__FieldData[field])
+            try:
+                data = '{0}'.format(self.__FieldData[field])
+            except KeyError:
+                data = ''
             Len = len(data)
             if(DataType == DT.BIN):
                 Len //=2

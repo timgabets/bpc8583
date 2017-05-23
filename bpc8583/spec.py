@@ -96,6 +96,7 @@ class IsoSpec1987BPC(IsoSpec1987):
     DataFields are also ASCII
     """
     RespCodeDescriptions = {
+        '00': 'APPROVED',
         '000': 'APPROVED',
         '001': 'HONR W/ID:',
         '005': 'UNABLE TO PROCESS',
@@ -150,7 +151,10 @@ class IsoSpec1987BPC(IsoSpec1987):
     def RespCodeDescription(self, response_code):
         """
         """
-        return self.RespCodeDescriptions[response_code ]
+        try:
+            return self.RespCodeDescriptions[response_code ]
+        except KeyError:
+            return ''
 
 
 class IsoSpec1987BCD(IsoSpec1987):

@@ -62,6 +62,7 @@ class Terminal:
                 self.terminal_key = bytes.fromhex(stored_key)
             else:
                 self.terminal_key = bytes.fromhex('FA9F90D49CB27B7D14A3FA9CCCFF6CB7')
+                self.store_terminal_key(raw2str(self.terminal_key))
 
         self.tpk_cipher = DES3.new(self.terminal_key, DES3.MODE_ECB)
         self.tmk_cipher = DES3.new(self.master_key, DES3.MODE_ECB)
