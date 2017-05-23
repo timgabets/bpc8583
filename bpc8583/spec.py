@@ -334,7 +334,7 @@ ContentTypes['1987'] = {
     12 :  { 'ContentType':'n',     'MaxLen': 12,  'LenType': LT.FIXED },
     13 :  { 'ContentType':'n',     'MaxLen': 4,   'LenType': LT.FIXED },
     14 :  { 'ContentType':'n',     'MaxLen': 4,   'LenType': LT.FIXED },
-    15 :  { 'ContentType':'n',     'MaxLen': 4,   'LenType': LT.FIXED },
+    15 :  { 'ContentType':'n',     'MaxLen': 6,   'LenType': LT.FIXED },
     16 :  { 'ContentType':'n',     'MaxLen': 4,   'LenType': LT.FIXED },
     17 :  { 'ContentType':'n',     'MaxLen': 4,   'LenType': LT.FIXED },
     18 :  { 'ContentType':'n',     'MaxLen': 4,   'LenType': LT.FIXED },
