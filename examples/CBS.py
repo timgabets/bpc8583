@@ -7,68 +7,87 @@ import os
 import getopt
 
 from bpc8583.ISO8583 import ISO8583, MemDump
-from bpc8583.spec import IsoSpec, IsoSpec1987BPC
+from bpc8583.spec import IsoSpec, IsoSpec1987ASCII
 from bpc8583.tools import get_response
 from tracetools.tracetools import trace
 
-def main(s):
-    while True:
-        conn, addr = s.accept()
+class CBS:
+    def __init__(self, host=None, port=None):
+        if host:
+            self.host = host
+        else:
+            self.host = '127.0.0.1'
+
+        if port:
+            try:
+                self.port = int(port)
+            except ValueError:
+                print('Invalid TCP port: {}'.format(arg))
+                sys.exit()
+        else:
+            self.port = 3388
+
+
+
+    def connect(self):
+        """
+        """
+        try:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.bind((self.host, self.port))   
+            self.sock.listen(5)
+
+        except OSError as msg:
+            print('Error starting server - {}'.format(msg))
+            sys.exit()
+        print('Listening port *:{}'.format(self.port))
+
+
+    def run(self):
+        """
+        """
+        self.connect()
+
+        conn, addr = self.sock.accept()
         print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
 
         while True:
-            try:
-                data = conn.recv(4096)
-                trace('<< {} bytes received: '.format(len(data)), data)
-                    
-                Len = struct.unpack_from("!H", data[:2])[0]
-                
-                if(Len != len(data) - 2):
-                    print("Invalid length {0} - {1}".format(Len, len(data) - 2))
-                    conn.close()
-                    continue
-                
-                IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-                IsoMessage.Print()
-                
-                IsoMessage.MTI(get_response(IsoMessage.get_MTI()))
-                
-                IsoMessage.Field(39, 1)
-                IsoMessage.FieldData(39, '000')
-                IsoMessage.Field(2, 0)
-                IsoMessage.Field(35, 0)
-                IsoMessage.Field(52, 0)
-                IsoMessage.Field(60, 0)
-                 
-                IsoMessage.Print()
-                data = IsoMessage.BuildIso()
-                data = struct.pack("!H", len(data)) + data
-                
-                conn.send(data)
-                trace('>> {} bytes sent:'.format(len(data)), data)
+            data = conn.recv(4096)
+            trace('<< {} bytes received: '.format(len(data)), data)
+            
+            IsoMessage = ISO8583(data[2:], IsoSpec1987ASCII())
 
-            except KeyboardInterrupt:
-                print('Exit')
-                s.close()
-                sys.exit()
+            #from pudb import set_trace
+            #set_trace()
 
-            #except:
-            #    conn.close()
-            #    print('Connection closed')
-            #    break   
+            IsoMessage.Print()
+
+            IsoMessage.FieldData(39, '00')
+            IsoMessage.Print()
+            data = IsoMessage.BuildIso()
+                
+            data = hexlify(bytes(str(len(data)), 'utf-8')).decode('utf-8') + data
+                
+            conn.send(data)
+            trace('>> {} bytes sent:'.format(len(data)), data)
+
+        self.sock.close()
+        conn.close()
+            #self.term.send(trxn.get_data(), show_trace=verbosity)
+
 
 def show_help(name):
     """
     Show help and basic usage
     """
     print('Usage: python3 {} [OPTIONS]... '.format(name))
-    print('ISO8583 message echo server')
-    print('  -p, --port=[PORT]\t\tTCP port to listen, 1337 by default')
+    print('ISO8583 Core banking system simulator')
+    print('  -p, --port=[PORT]\t\tTCP port to listen to, 3388 by default')
 
 
 if __name__ == '__main__':
     ip = ''
-    port = 1337
+    port = 3388
     max_conn = 5
 
     optlist, args = getopt.getopt(sys.argv[1:], 'hp:', ['help', 'port='])
@@ -83,12 +102,5 @@ if __name__ == '__main__':
                 print('Invalid TCP port: {}'.format(arg))
                 sys.exit()
 
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((ip, port))   
-        s.listen(max_conn)
-        print('Listening on port {}'.format(port))
-        main(s)
-    except OSError as msg:
-        print('Error starting server: {}'.format(msg))
-        sys.exit()
+    cbs = CBS(port=port)
+    cbs.run()
