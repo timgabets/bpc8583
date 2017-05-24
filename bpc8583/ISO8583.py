@@ -44,22 +44,25 @@ def MemDump(Title, data):
        
     print(TheDump)
 
+
 def Bcd2Str(bcd):
     return binascii.hexlify(bcd).decode('latin')
+
 
 def Str2Bcd(string):
     if(len(string) % 2 == 1):
         string = string.zfill(len(string) + 1)
     return binascii.unhexlify(string)
 
+
 def Bcd2Int(bcd):
     return int(Bcd2Str(bcd))
+
 
 def Int2Bcd(integer):
     string = str(integer)
     if(len(string) % 2 == 1):
         string = string.zfill(len(string) + 1)
-
     return binascii.unhexlify(string)
 
 

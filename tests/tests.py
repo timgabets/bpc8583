@@ -8,8 +8,27 @@ from bpc8583.card import Card
 from bpc8583.terminal import Terminal
 from bpc8583.transaction import Transaction
 from bpc8583.tools import get_response, get_random_hex
-from bpc8583.ISO8583 import ISO8583, ParseError
+from bpc8583.ISO8583 import ISO8583, ParseError, Bcd2Str, Str2Bcd
 from bpc8583.spec import IsoSpec1987ASCII, IsoSpec1987BCD
+
+
+class TestBcd2Str(unittest.TestCase):
+    def test_bcd2str_empty(self):
+        self.assertEqual(Bcd2Str(b''), '')
+
+    def test_bcd2str_00fa(self):
+        self.assertEqual(Bcd2Str(b'00fa'), '30306661')
+
+
+class TestStr2Bcd(unittest.TestCase):
+    def test_str2bcd_empty(self):
+        self.assertEqual(Str2Bcd(''), b'')
+
+    def test_str2bcd_00fa(self):
+        self.assertEqual(Str2Bcd('00fa'), b'\x00\xfa')
+
+    def test_str2bcd_99b(self):
+        self.assertEqual(Str2Bcd('55b'), b'\x05\x5b')
 
 
 class TestAsciiParse1987(unittest.TestCase):

@@ -12,6 +12,12 @@ from bpc8583.ISO8583 import ISO8583, MemDump, ParseError
 from bpc8583.spec import IsoSpec, IsoSpec1987ASCII, IsoSpec1987BPC
 from bpc8583.tools import get_response
 from tracetools.tracetools import trace
+from pynblock.tools import B2raw
+
+
+def get_message_length(message):
+    return B2raw(bytes(str(len(message)).zfill(4), 'utf-8'))
+
 
 class CBS:
     def __init__(self, host=None, port=None):
@@ -64,10 +70,17 @@ class CBS:
         
                     IsoMessage.MTI(get_response(IsoMessage.get_MTI()))            
                     IsoMessage.FieldData(39, '000')
+                    # TODO: fix these fields:
+                    IsoMessage.RemoveField(9)
+                    IsoMessage.RemoveField(10)
+                    IsoMessage.RemoveField(32)
+                    IsoMessage.RemoveField(42)
+
                     IsoMessage.Print()
                     
                     data = IsoMessage.BuildIso()
-                    data = struct.pack("!H", len(data)) + data
+                    #data = struct.pack("!H", len(data)) + data
+                    data = get_message_length(data) + data
                     conn.send(data)
                     trace('>> {} bytes sent:'.format(len(data)), data)
         
@@ -77,7 +90,6 @@ class CBS:
 
         self.sock.close()
         conn.close()
-            #self.term.send(trxn.get_data(), show_trace=verbosity)
 
 
 def show_help(name):
