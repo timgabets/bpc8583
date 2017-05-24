@@ -6,8 +6,10 @@ import struct
 import os
 import getopt
 
-from bpc8583.ISO8583 import ISO8583, MemDump
-from bpc8583.spec import IsoSpec, IsoSpec1987ASCII
+from binascii import hexlify
+
+from bpc8583.ISO8583 import ISO8583, MemDump, ParseError
+from bpc8583.spec import IsoSpec, IsoSpec1987ASCII, IsoSpec1987BPC
 from bpc8583.tools import get_response
 from tracetools.tracetools import trace
 
@@ -26,7 +28,6 @@ class CBS:
                 sys.exit()
         else:
             self.port = 3388
-
 
 
     def connect(self):
@@ -48,28 +49,31 @@ class CBS:
         """
         self.connect()
 
-        conn, addr = self.sock.accept()
-        print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
-
         while True:
-            data = conn.recv(4096)
-            trace('<< {} bytes received: '.format(len(data)), data)
-            
-            IsoMessage = ISO8583(data[2:], IsoSpec1987ASCII())
+            try:
+                conn, addr = self.sock.accept()
+                print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
 
-            #from pudb import set_trace
-            #set_trace()
-
-            IsoMessage.Print()
-
-            IsoMessage.FieldData(39, '00')
-            IsoMessage.Print()
-            data = IsoMessage.BuildIso()
-                
-            data = hexlify(bytes(str(len(data)), 'utf-8')).decode('utf-8') + data
-                
-            conn.send(data)
-            trace('>> {} bytes sent:'.format(len(data)), data)
+                while True:
+                    data = conn.recv(4096)
+                    if len(data) > 0:
+                        trace('<< {} bytes received: '.format(len(data)), data)
+                    
+                    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
+                    IsoMessage.Print()
+        
+                    IsoMessage.MTI(get_response(IsoMessage.get_MTI()))            
+                    IsoMessage.FieldData(39, '000')
+                    IsoMessage.Print()
+                    
+                    data = IsoMessage.BuildIso()
+                    data = struct.pack("!H", len(data)) + data
+                    conn.send(data)
+                    trace('>> {} bytes sent:'.format(len(data)), data)
+        
+            except ParseError:
+                print('Connection closed')
+                conn.close()
 
         self.sock.close()
         conn.close()

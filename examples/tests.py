@@ -4,19 +4,12 @@ import unittest
 import binascii
 import os
 
-import CBS
+from CBS import *
 
-class TestCBS(unittest.TestCase):
+class TestGetMessageLength(unittest.TestCase):
     
-    def setUp(self):
-        self.IsoPacket = ISO8583(IsoSpec = IsoSpec1987ASCII())
-        self.IsoPacket.Strict(True)
-    
-    def tearDown(self):
+    def test_get_message_length_ascii_empty(self):
         pass
-    
-    def test_MTI(self):
-        self.assertEqual(self.IsoPacket.MTI(), MTI)
 
 if __name__ == '__main__':
     unittest.main()                        
