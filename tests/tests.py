@@ -62,6 +62,26 @@ class TestAsciiParse1987(unittest.TestCase):
             self.IsoPacket.SetIsoContent(content.encode('latin'))
             self.assertEqual(self.IsoPacket.Bitmap()[128 - shift], 1)
             self.assertEqual(self.IsoPacket.Field(128 - shift), 1)
+
+    """
+    RemoveField()
+    """
+    def test_remove_field(self):
+        self.IsoPacket.FieldData(39, '00')
+        self.IsoPacket.FieldData(4, '000000000000')
+        self.assertEqual(self.IsoPacket.Bitmap(), {4:1, 39: 1})
+        self.assertEqual(self.IsoPacket.FieldData(39), '00')
+
+        self.IsoPacket.RemoveField(39)
+        self.assertEqual(self.IsoPacket.Bitmap(), {4: 1})
+        self.assertEqual(self.IsoPacket.FieldData(39), None)
+
+
+    def test_remove_non_existent_field(self):
+        self.assertEqual(self.IsoPacket.Bitmap(), {})
+        self.IsoPacket.RemoveField(39)
+        self.assertTrue(True)
+
                 
 class TestBCDParse1987(unittest.TestCase):
     

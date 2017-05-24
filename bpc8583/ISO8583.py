@@ -383,6 +383,16 @@ class ISO8583:
         return self.__iso
     
     
+    def RemoveField(self, field):
+        """
+        """
+        try:
+            self.__FieldData[field] = None
+            del(self.__Bitmap[field])
+        except KeyError:
+            pass
+
+
     def Field(self, field, Value = None):
         """
         Add field to bitmap
