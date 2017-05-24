@@ -65,21 +65,22 @@ class CBS:
                     if len(data) > 0:
                         trace('<< {} bytes received: '.format(len(data)), data)
                     
-                    IsoMessage = ISO8583(data[2:], IsoSpec1987BPC())
-                    IsoMessage.Print()
-        
-                    IsoMessage.MTI(get_response(IsoMessage.get_MTI()))            
-                    IsoMessage.FieldData(39, '000')
-                    # TODO: fix these fields:
-                    IsoMessage.RemoveField(9)
-                    IsoMessage.RemoveField(10)
-                    IsoMessage.RemoveField(32)
-                    IsoMessage.RemoveField(42)
+                    request = ISO8583(data[2:], IsoSpec1987BPC())
+                    request.Print()
 
-                    IsoMessage.Print()
+                    response = ISO8583(data[2:], IsoSpec1987BPC())
+                    response.MTI(get_response(request.get_MTI()))            
                     
-                    data = IsoMessage.BuildIso()
-                    #data = struct.pack("!H", len(data)) + data
+                    response.FieldData(39, '000')
+                    # TODO: fix these fields:
+                    response.RemoveField(9)
+                    response.RemoveField(10)
+                    response.RemoveField(32)
+                    response.RemoveField(42)
+
+                    response.Print()
+                    
+                    data = response.BuildIso()
                     data = get_message_length(data) + data
                     conn.send(data)
                     trace('>> {} bytes sent:'.format(len(data)), data)
