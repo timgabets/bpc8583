@@ -19,6 +19,26 @@ def get_message_length(message):
     return B2raw(bytes(str(len(message)).zfill(4), 'utf-8'))
 
 
+def get_balance_string(balance, currency_code):
+    """
+    Get balance string, according to Field 54 description
+    """
+    if not balance or not currency_code:
+        return ''
+
+    account_type = '00' # Not applicable or not specified
+    amount_type = '01' # Deposit accounts: current (ledger) balance
+    if float(balance) > 0:
+        amount_sign = 'C'
+    else:
+        amount_sign = 'D'
+
+    balance_formatted = balance.replace(' ', '').replace('.', '').replace('-', '').zfill(12)
+    balance_string = account_type + amount_type + currency_code + amount_sign + balance_formatted
+
+    return str(len(balance_string)) + balance_string
+
+
 class CBS:
     def __init__(self, host=None, port=None):
         if host:
