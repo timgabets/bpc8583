@@ -60,28 +60,26 @@ class CBS:
         """
         """
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.bind((self.host, self.port))   
-            self.sock.listen(5)
-
+            self.sock = None
+            for res in socket.getaddrinfo(self.host, self.port, socket.AF_UNSPEC, socket.SOCK_STREAM):
+                af, socktype, proto, canonname, sa = res
+                self.sock = socket.socket(af, socktype, proto)
+                self.sock.connect(sa)
         except OSError as msg:
-            print('Error starting server - {}'.format(msg))
+            print('Error connecting to {}:{} - {}'.format(self.host, self.port, msg))
             sys.exit()
-        print('Listening port *:{}'.format(self.port))
+        print('Connected to {}:{}'.format(self.host, self.port))
 
 
     def run(self):
         """
         """
-        self.connect()
-
         while True:
             try:
-                conn, addr = self.sock.accept()
-                print ('Connected client: ' + addr[0] + ':' + str(addr[1]))
+                self.connect()
 
                 while True:
-                    data = conn.recv(4096)
+                    data = self.sock.recv(4096)
                     if len(data) > 0:
                         trace('<< {} bytes received: '.format(len(data)), data)
                     
@@ -91,6 +89,11 @@ class CBS:
                     response = ISO8583(data[2:], IsoSpec1987BPC())
                     response.MTI(get_response(request.get_MTI()))            
                     
+                    processing_code = str(request.FieldData(3)).zfill(6)
+                    
+                    if processing_code[0:2] == '31':
+                        response.FieldData(54, get_balance_string('1234.56', '826'))
+
                     response.FieldData(39, '000')
                     # TODO: fix these fields:
                     response.RemoveField(9)
@@ -102,7 +105,7 @@ class CBS:
                     
                     data = response.BuildIso()
                     data = get_message_length(data) + data
-                    conn.send(data)
+                    self.sock.send(data)
                     trace('>> {} bytes sent:'.format(len(data)), data)
         
             except ParseError:
@@ -119,15 +122,15 @@ def show_help(name):
     """
     print('Usage: python3 {} [OPTIONS]... '.format(name))
     print('ISO8583 Core banking system simulator')
-    print('  -p, --port=[PORT]\t\tTCP port to listen to, 3388 by default')
+    print('  -p, --port=[PORT]\t\tTCP port to connect to, 3388 by default')
+    print('  -s, --server=[IP]\t\tIP of the host to connect to, 127.0.0.1 by default')
 
 
 if __name__ == '__main__':
     ip = ''
     port = 3388
-    max_conn = 5
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'hp:', ['help', 'port='])
+    optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:', ['help', 'port=', 'server='])
     for opt, arg in optlist:
         if opt in ('-h', '--help'):
             show_help(sys.argv[0])
@@ -139,5 +142,8 @@ if __name__ == '__main__':
                 print('Invalid TCP port: {}'.format(arg))
                 sys.exit()
 
-    cbs = CBS(port=port)
+        elif opt in ('-s', '--server'):
+            ip = arg
+
+    cbs = CBS(host=ip, port=port)
     cbs.run()
