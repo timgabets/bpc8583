@@ -61,3 +61,4 @@ iso/
 
 # Terminal key file
 bpc8583/.terminalkey.cache
+tests/.terminalkey.cache
