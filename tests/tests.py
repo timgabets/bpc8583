@@ -198,6 +198,12 @@ class TestIsoTools(unittest.TestCase):
     def test_get_response_passed_as_integer(self):
         self.assertEqual(get_response(200), '210')
 
+    def test_get_response_auth_advice_1120(self):
+        self.assertEqual(get_response('1120'), '1130')
+
+    def test_get_response_network_mgmt_0800(self):
+        self.assertEqual(get_response('0800'), '0810')
+
     """
     get_random_hex()
     """

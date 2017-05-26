@@ -77,7 +77,7 @@ def get_response(_code):
     """
     if _code:
         code = str(_code)
-        return code[:-2] + '1' + code[-1]
+        return code[:-2] + str(int(code[-2:-1]) + 1) + code[-1]
     else:
         return None
 
