@@ -100,6 +100,7 @@ class IsoSpec1987BPC(IsoSpec1987):
         '000': 'APPROVED',
         '001': 'HONR W/ID:',
         '005': 'UNABLE TO PROCESS',
+        '020': 'BALANCE IS NEGATIVE',
         '100': 'CARD DECLINED',
         '101': 'EXPIRED CARD',
         '103': 'CALL ISSUER',
