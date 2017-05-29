@@ -43,6 +43,8 @@
 <!--
 	<trxn type='logon' description='Merchant log on'/>
 	<trxn type='key change' description='Terminal key change'/>
+-->
+<!--
 	<trxn type='balance' card='8990011234567890' description='Balance Inquiry with PIN approved'>
 		<PIN>1234</PIN>
 	</trxn>
@@ -52,8 +54,6 @@
 		<PIN>1234</PIN>
 		<response_action>DECLINE</response_action>
 	</trxn>
--->
-<!--
 	<trxn type='refund' description='Them-On-Us Refund (Offline)' card='VISA Off-Us #13' icc='false'>
 		<amount>7300</amount>
 		<PIN>1234</PIN>
@@ -66,8 +66,10 @@
 		<amount>7300</amount>
 		<PIN>1234</PIN>V
 	</trxn>
+-->
+<!--
 	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='8990011234567890' icc='false'>
-		<amount>11000</amount>
+		<amount>13762</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
@@ -83,8 +85,6 @@
 		<amount>20000</amount>
 		<PIN>1234</PIN>
 	</trxn>
--->
-<!--
 	<trxn type='balance' description='Balance Inquiry in GBP' card='VISA On-Us #10' icc='false'>
 		<currency>GBP</currency>
 	</trxn>
@@ -101,7 +101,7 @@
 	</trxn>
 -->
 	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false'>
-		<amount>60000</amount>
+		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>

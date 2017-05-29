@@ -60,5 +60,4 @@ iso/
 /.project
 
 # Terminal key file
-bpc8583/.terminalkey.cache
-tests/.terminalkey.cache
+*/.terminalkey.cache
