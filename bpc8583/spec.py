@@ -88,13 +88,13 @@ class IsoSpec1987ASCII(IsoSpec1987):
 
 
 class IsoSpec1987BPC(IsoSpec1987):
-    """
+    '''
     A BPC's flavour of ISO8583 
 
     MTI is ASCII
     Bitmap is BCD
     DataFields are also ASCII
-    """
+    '''
     RespCodeDescriptions = {
         '00': 'APPROVED',
         '000': 'APPROVED',
@@ -135,8 +135,8 @@ class IsoSpec1987BPC(IsoSpec1987):
     }
 
     def SetDataTypes(self):
-        """
-        """
+        '''
+        '''
         self.DataType('MTI', DT.ASCII)
         for field in self.ContentTypes.keys():
             self.DataType(field, DT.ASCII)
@@ -150,8 +150,8 @@ class IsoSpec1987BPC(IsoSpec1987):
 
 
     def RespCodeDescription(self, response_code):
-        """
-        """
+        '''
+        '''
         try:
             return self.RespCodeDescriptions[response_code ]
         except KeyError:
@@ -186,11 +186,11 @@ class IsoSpec1987BCD(IsoSpec1987):
     
 ContentTypes = {}
 
-"""
+'''
 Notes to the BPC's flavour of ISO8583:
  * DE 12 has length of 12, not 6
  * DE 39 has length of 3, not 2
-"""
+'''
 ContentTypes['1987'] = {
     1 :   { 'ContentType':'b',     'MaxLen': 8,   'LenType': LT.FIXED,   'Description': 'Bitmap' },
     2 :   { 'ContentType':'n',     'MaxLen': 19,  'LenType': LT.LLVAR,   'Description': 'Primary account number (PAN)' },
