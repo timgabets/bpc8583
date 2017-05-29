@@ -464,8 +464,8 @@ class ISO8583:
         return self.__MTI
 
 
-    def Description(self, field, Description = None):
-        return self.__IsoSpec.Description(field, Description)
+    def Description(self, field):
+        return self.__IsoSpec.Description(field)
     
     def DataType(self, field, DataType = None):
         return self.__IsoSpec.DataType(field, DataType)

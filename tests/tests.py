@@ -40,6 +40,12 @@ class TestAsciiParse1987(unittest.TestCase):
     def tearDown(self):
         pass
     
+    def test_description_field_2(self):
+        self.assertEqual(self.IsoPacket.Description(2), 'Primary account number (PAN)')
+
+    def test_description_non_existent_field(self):
+        self.assertEqual(self.IsoPacket.Description(200), '')    
+
     def test_MTI(self):
         # positive test
         for b1 in range(0, 9):
