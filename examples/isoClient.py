@@ -182,20 +182,28 @@ def parse_transaction_item(trxn, term, cards):
     except KeyError:
         pass
 
-    for attrib in trxn:
-        if attrib.tag.lower() == 'amount':
-            t.set_amount(attrib.text)
-        elif attrib.tag.lower() == 'pin':
-            t.set_PIN(attrib.text)
-        elif attrib.tag.lower() == 'currency':
-            t.set_currency(attrib.text)
-        elif attrib.tag.lower() == 'response_code':
-            t.set_expected_code(attrib.text)
-        elif attrib.tag.lower() == 'response_action':
-            if not t.set_expected_action(attrib.text):
-                print('Unknown response action: {}'.format(attrib.text))
+    try:
+        num_of_trxns_to_repeat = int(trxn.attrib['repeat'])
+    except KeyError:
+        num_of_trxns_to_repeat = 1
 
-    return t
+    transactions = []
+    for i in range(0, num_of_trxns_to_repeat):
+        for attrib in trxn:
+            if attrib.tag.lower() == 'amount':
+                t.set_amount(attrib.text)
+            elif attrib.tag.lower() == 'pin':
+                t.set_PIN(attrib.text)
+            elif attrib.tag.lower() == 'currency':
+                t.set_currency(attrib.text)
+            elif attrib.tag.lower() == 'response_code':
+                t.set_expected_code(attrib.text)
+            elif attrib.tag.lower() == 'response_action':
+                if not t.set_expected_action(attrib.text):
+                    print('Unknown response action: {}'.format(attrib.text))
+
+        transactions.append(t)
+    return transactions
 
 
 def parse_card_data(card):
@@ -257,10 +265,10 @@ def parse_data_file(filename, term):
     transactions = []
     for item in data_root:
         if item.tag == 'trxn':
-            t = parse_transaction_item(item, term, cards)
-            if t:
-                transactions.append(t)
-
+            trxns = parse_transaction_item(item, term, cards)
+            if trxns:
+                for t in trxns:
+                    transactions.append(t)
     return transactions
 
 

@@ -100,7 +100,7 @@
 		<response_code>110</response_code>
 	</trxn>
 -->
-	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false'>
+	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='3'>
 		<amount>11000</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
