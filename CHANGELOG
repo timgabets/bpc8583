@@ -1,5 +1,6 @@
 
 May 2017
+	1.40 README -> README.rst
 	1.39 repeat option support in isoClient non-interactive mode
 	1.38 isoClient and isoHost moved to examples/ 
 	1.37 Added 020 repsonse code ('BALANCE IS NEGATIVE')
