@@ -22,45 +22,50 @@ class IsoSpec(object):
         except KeyError:
             return ''
 
+
     def DataType(self, field, DataType = None):
-        if(DataType == None):
+        if DataType == None:
             return self.DataTypes[field]['Data']
         else:
-            if(DataType not in DT):
+            if DataType not in DT:
                 raise SpecError("Cannot set data type '{0}' for F{1}: Invalid data type".format(DataType, field))
-            if(field not in self.DataTypes.keys()):
+            if field not in self.DataTypes.keys():
                 self.DataTypes[field] = {}
             self.DataTypes[field]['Data'] = DataType
+
     
     def ContentType(self, field, ContentType = None):
-        if(ContentType == None):
+        if ContentType == None:
             return self.ContentTypes[field]['ContentType']
         else:
-            if(ContentType not in self.__ValidContentTypes):
+            if ContentType not in self.__ValidContentTypes:
                 raise SpecError("Cannot set Content type '{0}' for F{1}: Invalid content type".format(ContentType, field))
             self.ContentTypes[field]['ContentType'] = ContentType
+
             
     def MaxLength(self, field, MaxLength = None):
-        if(MaxLength == None):
-            return self.ContentTypes[field]['MaxLen']
-        else:
+        if MaxLength:
             self.ContentTypes[field]['MaxLen'] = MaxLength
+        else:
+            return self.ContentTypes[field]['MaxLen']
     
+
     def LengthType(self, field, LengthType = None):
-        if(LengthType == None):
+        if LengthType == None:
             return self.ContentTypes[field]['LenType']
         else:
-            if(LengthType not in self.__ValidContentTypes):
+            if LengthType not in self.__ValidContentTypes:
                 raise SpecError("Cannot set Length type '{0}' for F{1}: Invalid length type".format(LengthType, field))
             self.ContentTypes[field]['LenType'] = LengthType
+
     
     def LengthDataType(self, field, LengthDataType = None):
-        if(LengthDataType == None):
+        if LengthDataType == None:
             return self.DataTypes[field]['Length']
         else:
-            if(LengthDataType not in DT):
+            if LengthDataType not in DT:
                 raise SpecError("Cannot set data type '{0}' for F{1}: Invalid data type".format(LengthDataType, field))
-            if(field not in self.DataTypes.keys()):
+            if field not in self.DataTypes.keys():
                 self.DataTypes[field] = {}
             self.DataTypes[field]['Length'] = LengthDataType
     
@@ -78,7 +83,7 @@ class IsoSpec1987ASCII(IsoSpec1987):
         
         for field in self.ContentTypes.keys():
             self.DataType(field, DT.ASCII)
-            if(self.LengthType(field) != LT.FIXED):
+            if self.LengthType(field) != LT.FIXED:
                 self.LengthDataType(field, DT.ASCII)
 
 
@@ -135,7 +140,7 @@ class IsoSpec1987BPC(IsoSpec1987):
         self.DataType('MTI', DT.ASCII)
         for field in self.ContentTypes.keys():
             self.DataType(field, DT.ASCII)
-            if(self.LengthType(field) != LT.FIXED):
+            if self.LengthType(field) != LT.FIXED:
                 self.LengthDataType(field, DT.ASCII)
 
         self.DataType(1, DT.BIN) # bitmap
@@ -161,7 +166,7 @@ class IsoSpec1987BCD(IsoSpec1987):
         # Most popular BCD implementations use the reserved/private fields
         # as binary, so we have to set them as such in contrast to the ISO spec
         for field in self.ContentTypes.keys():
-            if(self.MaxLength(field) == 999):
+            if self.MaxLength(field) == 999:
                 self.ContentType(field, 'b')
         
         
@@ -169,14 +174,14 @@ class IsoSpec1987BCD(IsoSpec1987):
             
             ContentType = self.ContentType(field)
             
-            if('a' in ContentType or 's' in ContentType):
+            if 'a' in ContentType or 's' in ContentType:
                 self.DataType(field, DT.ASCII)
-            elif(ContentType == 'b'):
+            elif ContentType == 'b':
                 self.DataType(field, DT.BIN)
             else:
                 self.DataType(field, DT.BCD)
 
-            if(self.LengthType(field) != LT.FIXED):
+            if self.LengthType(field) != LT.FIXED:
                 self.LengthDataType(field, DT.BCD)
     
 ContentTypes = {}

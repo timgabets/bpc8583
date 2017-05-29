@@ -26,7 +26,7 @@ class SpecError(Exception):
 def MemDump(Title, data):
     i = 1
 
-    if( isinstance(data, bytes) == False ):
+    if isinstance(data, bytes) == False:
         raise TypeError("Expected bytes for data")
 
     print(Title)
@@ -38,7 +38,7 @@ def MemDump(Title, data):
         except: # python 2.x
             TheDump += "{:02x} ".format(ord(c))
         
-        if(i % 16 == 0):
+        if i % 16 == 0:
             TheDump += "\n"
         i+=1
        
@@ -50,7 +50,7 @@ def Bcd2Str(bcd):
 
 
 def Str2Bcd(string):
-    if(len(string) % 2 == 1):
+    if len(string) % 2 == 1:
         string = string.zfill(len(string) + 1)
     return binascii.unhexlify(string)
 
@@ -61,7 +61,7 @@ def Bcd2Int(bcd):
 
 def Int2Bcd(integer):
     string = str(integer)
-    if(len(string) % 2 == 1):
+    if len(string) % 2 == 1:
         string = string.zfill(len(string) + 1)
     return binascii.unhexlify(string)
 
@@ -96,13 +96,10 @@ class ISO8583:
         self.__iso = b''
         self.tlv = TLV()
         
-        if(IsoSpec != None):
-            self.__IsoSpec = IsoSpec
-        else:
-            self.__IsoSpec = spec.IsoSpec1987ASCII()
+        self.__IsoSpec = IsoSpec if IsoSpec != None else spec.IsoSpec1987ASCII()
         
-        if(IsoMsg != None):
-            if( isinstance(IsoMsg, bytes) == False ):
+        if IsoMsg:
+            if isinstance(IsoMsg, bytes) == False:
                 raise TypeError("Expected bytes for iso message")
             
             self.__iso = IsoMsg
@@ -110,13 +107,13 @@ class ISO8583:
 
 
     def Strict(self, Value):
-        if(Value != True and Value != False):
+        if Value != True and Value != False:
             raise ValueError
         self.strict = Value
 
         
     def SetIsoContent(self, IsoMsg):
-        if( isinstance(IsoMsg, bytes) == False ):
+        if isinstance(IsoMsg, bytes) == False:
             raise TypeError("Expected bytes for iso message")
         self.__iso = IsoMsg
         self.ParseIso()
@@ -126,10 +123,10 @@ class ISO8583:
     def ParseMTI(self, p):
         DataType = self.__IsoSpec.DataType('MTI')
         
-        if(DataType == DT.BCD):
+        if DataType == DT.BCD:
             self.__MTI = Bcd2Str(self.__iso[p:p+2])
             p+=2
-        elif(DataType == DT.ASCII):
+        elif DataType == DT.ASCII:
             self.__MTI = self.__iso[p:p+4].decode('latin')
             p+=4
         
@@ -138,11 +135,11 @@ class ISO8583:
         except:
             raise ParseError("Invalid MTI: [{0}]".format(self.__MTI))
             
-        if(self.strict == True):
-            if(self.__MTI[1] == '0'):
+        if self.strict == True:
+            if self.__MTI[1] == '0':
                 raise ParseError("Invalid MTI: Invalid Message type [{0}]".format(self.__MTI))
                   
-            if(int(self.__MTI[3]) > 5):
+            if int(self.__MTI[3]) > 5:
                 raise ParseError("Invalid MTI: Invalid Message origin [{0}]".format(self.__MTI))
         
         return p
@@ -151,10 +148,10 @@ class ISO8583:
     def ParseBitmap(self, p):
         DataType = self.__IsoSpec.DataType(1)
 
-        if(DataType == DT.BIN):
+        if DataType == DT.BIN:
             Primary = self.__iso[p:p+8]
             p += 8
-        elif(DataType == DT.ASCII):
+        elif DataType == DT.ASCII:
             Primary = binascii.unhexlify(self.__iso[p:p+16])
             p += 16
                 
@@ -163,11 +160,11 @@ class ISO8583:
         for i in range(1, 65):
             self.__Bitmap[i] = (IntPrimary >> (64 - i)) & 0x1
 
-        if(self.__Bitmap[1] == 1):
-            if(DataType == DT.BIN):
+        if self.__Bitmap[1] == 1:
+            if DataType == DT.BIN:
                 Secondary = self.__iso[p:p+8]
                 p += 8
-            elif(DataType == DT.ASCII):
+            elif DataType == DT.ASCII:
                 Secondary = binascii.unhexlify(self.__iso[p:p+16])
                 p += 16
                 
@@ -190,61 +187,61 @@ class ISO8583:
             raise SpecError("Cannot parse F{0}: Incomplete field specification".format(field))
 
         try:
-            if(DataType == DT.ASCII and ContentType == 'b'):
+            if DataType == DT.ASCII and ContentType == 'b':
                 MaxLength *= 2
                 
-            if(LenType == LT.FIXED):
+            if LenType == LT.FIXED:
                 Len = MaxLength
-            elif(LenType == LT.LVAR):
+            elif LenType == LT.LVAR:
                 pass
-            elif(LenType == LT.LLVAR):
+            elif LenType == LT.LLVAR:
                 LenDataType = self.__IsoSpec.LengthDataType(field)
-                if(LenDataType == DT.ASCII):
+                if LenDataType == DT.ASCII:
                     Len = int(self.__iso[p:p+2])
                     p+=2
-                elif(LenDataType == DT.BCD):
+                elif LenDataType == DT.BCD:
                     Len = Bcd2Int(self.__iso[p:p+1])
                     p+=1
-            elif(LenType == LT.LLLVAR):
+            elif LenType == LT.LLLVAR:
                 LenDataType = self.__IsoSpec.LengthDataType(field)
-                if(LenDataType == DT.ASCII):
+                if LenDataType == DT.ASCII:
                     Len = int(self.__iso[p:p+3])
                     p+=3
-                elif(LenDataType == DT.BCD):
+                elif LenDataType == DT.BCD:
                     Len = Bcd2Int(self.__iso[p:p+2])
                     p+=2
         except ValueError:
             raise ParseError("Cannot parse F{0}: Invalid length".format(field))
             
-        if(Len > MaxLength):
+        if Len > MaxLength:
             raise ParseError("F{0} is larger than maximum length ({1}>{2})".format(field, Len, MaxLength))
         
         # In case of zero length, don't try to parse the field itself, just continue
-        if(Len == 0):
+        if Len == 0:
             return p
 
         try:
-            if(DataType == DT.ASCII):
-                if(ContentType == 'n'):
-                    self.__FieldData[field] = int(self.__iso[p:p+(Len)])
+            if DataType == DT.ASCII:
+                if ContentType == 'n':
+                    self.__FieldData[field] = int(self.__iso[p:p+(Len)]) 
                 else:
                     self.__FieldData[field] = self.__iso[p:p+(Len)].decode('latin')
                 p += Len
-            elif(DataType == DT.BCD):
-                if(Len % 2 == 1):
+            elif DataType == DT.BCD:
+                if Len % 2 == 1:
                     Len += 1
-                if(ContentType == 'n'):
+                if ContentType == 'n':
                     self.__FieldData[field] = Bcd2Int(self.__iso[p:p+(Len//2)])
-                elif(ContentType == 'z'):
+                elif ContentType == 'z':
                     self.__FieldData[field] = binascii.hexlify(self.__iso[p:p+(Len//2)]).decode('latin').upper()
                 p += Len//2
-            elif(DataType == DT.BIN):
+            elif DataType == DT.BIN:
                 self.__FieldData[field] = binascii.hexlify(self.__iso[p:p+(Len)]).decode('latin').upper()
                 p += Len
         except:
             raise ParseError("Cannot parse F{0}".format(field))
         
-        if(ContentType == 'z'):
+        if ContentType == 'z':
             self.__FieldData[field] = self.__FieldData[field].replace("D", "=") # in track2, replace d with =  
             self.__FieldData[field] = self.__FieldData[field].replace("F", "") # in track2, remove trailing f
  
@@ -259,14 +256,14 @@ class ISO8583:
 
         for field in sorted(self.__Bitmap):
             # field 1 is parsed by the bitmap function
-            if(field != 1 and self.Field(field) == 1):
+            if field != 1 and self.Field(field) == 1:
                 p = self.ParseField(field, p)
     
 
     def BuildMTI(self):
-        if(self.__IsoSpec.DataType('MTI') == DT.BCD):
+        if self.__IsoSpec.DataType('MTI') == DT.BCD:
             self.__iso += Str2Bcd(self.__MTI)
-        elif(self.__IsoSpec.DataType('MTI') == DT.ASCII):
+        elif self.__IsoSpec.DataType('MTI') == DT.ASCII:
             self.__iso += self.__MTI.encode('latin')
     
     
@@ -275,7 +272,7 @@ class ISO8583:
         
         # check if we need a secondary bitmap
         for i in self.__Bitmap.keys():
-            if(i > 64):
+            if i > 64:
                 self.__Bitmap[1] = 1
                 break
         
@@ -286,9 +283,9 @@ class ISO8583:
 
         Primary = struct.pack("!Q", IntPrimary)
 
-        if(DataType == DT.BIN):
+        if DataType == DT.BIN:
             self.__iso += Primary
-        elif(DataType == DT.ASCII):
+        elif DataType == DT.ASCII:
             self.__iso += binascii.hexlify(Primary)
             
         # Add secondary bitmap if applicable
@@ -301,9 +298,9 @@ class ISO8583:
                 
             Secondary = struct.pack("!Q", IntSecondary)
 
-            if(DataType == DT.BIN):
+            if DataType == DT.BIN:
                 self.__iso += Secondary
-            elif(DataType == DT.ASCII):
+            elif DataType == DT.ASCII:
                 self.__iso += binascii.hexlify(Secondary)
             
             
@@ -318,12 +315,12 @@ class ISO8583:
  
 
         data = ""
-        if(LenType == LT.FIXED):
+        if LenType == LT.FIXED:
             Len = MaxLength
             
-            if(ContentType == 'n'):
+            if ContentType == 'n':
                 formatter = "{{0:0{0}d}}".format(Len)
-            elif('a' in ContentType or 'n' in ContentType or 's' in ContentType):
+            elif 'a' in ContentType or 'n' in ContentType or 's' in ContentType:
                 formatter = "{{0: >{0}}}".format(Len)
             else:
                 formatter = "{0}"
@@ -338,39 +335,39 @@ class ISO8583:
             except KeyError:
                 data = ''
             Len = len(data)
-            if(DataType == DT.BIN):
+            if DataType == DT.BIN:
                 Len //=2
                 
-            if(Len > MaxLength):
+            if Len > MaxLength:
                 raise BuildError("Cannot Build F{0}: Field Length larger than specification".format(field))
             
-            if(LenType == LT.LVAR):
+            if LenType == LT.LVAR:
                 LenData = "{0:01d}".format(Len)
                 
-            elif(LenType == LT.LLVAR):
+            elif LenType == LT.LLVAR:
                 LenData = "{0:02d}".format(Len)
                 
-            elif(LenType == LT.LLLVAR):
+            elif LenType == LT.LLLVAR:
                 LenData = "{0:03d}".format(Len)
                 
-            if(LenDataType == DT.ASCII):
+            if LenDataType == DT.ASCII:
                 self.__iso += LenData.encode('latin')
-            elif(LenDataType == DT.BCD):
+            elif LenDataType == DT.BCD:
                 self.__iso += Str2Bcd(LenData)
-            elif(LenDataType == DT.BIN):
+            elif LenDataType == DT.BIN:
                 self.__iso += binascii.unhexlify(LenData)
             
             
-        if(ContentType == 'z'):
+        if ContentType == 'z':
             data = data.replace("=", "D")
             #if(len(data) % 2 == 1):
             #    data = data + 'F'
         
-        if(DataType == DT.ASCII):
+        if DataType == DT.ASCII:
             self.__iso += data.encode('latin')
-        elif(DataType == DT.BCD):
+        elif DataType == DT.BCD:
             self.__iso += Str2Bcd(data)
-        elif(DataType == DT.BIN):
+        elif DataType == DT.BIN:
             self.__iso += binascii.unhexlify(self.__FieldData[field])
 
 
@@ -380,7 +377,7 @@ class ISO8583:
         self.BuildBitmap()
         
         for field in sorted(self.__Bitmap):
-            if(field != 1 and self.Field(field) == 1):
+            if field != 1 and self.Field(field) == 1:
                 self.BuildField(field)
                 
         return self.__iso
@@ -400,12 +397,12 @@ class ISO8583:
         """
         Add field to bitmap
         """
-        if(Value == None):
+        if Value == None:
             try:
                 return self.__Bitmap[field]
             except KeyError:
                 return None
-        elif(Value == 1 or Value == 0):
+        elif Value == 1 or Value == 0:
             self.__Bitmap[field] = Value
         else:
             raise ValueError
@@ -423,13 +420,13 @@ class ISO8583:
         """
         Add field data
         """
-        if(Value == None):
+        if Value == None:
             try:
                 return self.__FieldData[field]
             except KeyError:
                 return None
         else:
-            if(len(str(Value)) > self.__IsoSpec.MaxLength(field)):
+            if len(str(Value)) > self.__IsoSpec.MaxLength(field):
                 raise ValueError('Value length larger than field maximum ({0})'.format(self.__IsoSpec.MaxLength(field)))
             
             self.Field(field, Value=1)
@@ -440,7 +437,7 @@ class ISO8583:
         return self.__Bitmap
 
     def MTI(self, MTI = None):
-        if(MTI == None):
+        if MTI == None:
             return self.__MTI
         else:
             try: # MTI should only contain numbers
@@ -448,11 +445,11 @@ class ISO8583:
             except:
                 raise ValueError("Invalid MTI [{0}]: MTI must contain only numbers".format(MTI))
         
-            if(self.strict == True):
-                if(MTI[1] == '0'):
+            if self.strict == True:
+                if MTI[1] == '0':
                     raise ValueError("Invalid MTI [{0}]: Invalid Message type".format(MTI))
                       
-                if(int(MTI[3]) > 5):
+                if int(MTI[3]) > 5:
                     raise ValueError("Invalid MTI [{0}]: Invalid Message origin".format(MTI))
             
             self.__MTI = MTI
@@ -491,25 +488,24 @@ class ISO8583:
         
         bitmapLine = "\tFields: [ "
         for i in sorted(self.__Bitmap.keys()):
-            if(i == 1): 
+            if i == 1: 
                 continue
-            if(self.__Bitmap[i] == 1):
+            if self.__Bitmap[i] == 1:
                 bitmapLine += str(i) + " "
         bitmapLine += "]"
         print(bitmapLine)
         
 
         for i in sorted(self.__Bitmap.keys()):
-            if(i == 1): 
+            if i == 1:
                 continue
-            if(self.__Bitmap[i] == 1):
-                
+            if self.__Bitmap[i] == 1:
                 try:
                     FieldData = self.__FieldData[i]
                 except KeyError:
                     FieldData = ''
                 
-                if(self.ContentType(i) == 'n' and self.__IsoSpec.LengthType(i) == LT.FIXED):
+                if self.ContentType(i) == 'n' and self.__IsoSpec.LengthType(i) == LT.FIXED:
                     FieldData = str(FieldData).zfill(self.__IsoSpec.MaxLength(i))
                 if i == 39:
                     print("\t\t{0:>3d} - {1: <41} [{2}]\t\t\t[{3}]".format(i, self.__IsoSpec.Description(i), FieldData, self.__IsoSpec.RespCodeDescription(FieldData)))

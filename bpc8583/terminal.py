@@ -17,11 +17,8 @@ class Terminal:
         self.pinblock_format = '01'
 
         # Host to connect to
-        if host:
-            self.host = host
-        else:
-            self.host = '127.0.0.1'
-
+        self.host = host if host else '127.0.0.1'
+    
         # Port ot connect to
         if port:
             try:
@@ -33,26 +30,17 @@ class Terminal:
             self.port = 1337
 
         # Terminal ID
-        if id:
-            self.terminal_id = id
-        else:
-            self.terminal_id = '10001337'
+        self.terminal_id = id if id else '10001337'
 
         # Merchant ID
-        if merchant:
-            self.merchant_id = merchant
-        else:
-            self.merchant_id = '999999999999001'
+        self.merchant_id = merchant if merchant else '999999999999001'
 
         self.currency = '643'
         self.country_code = '643'
         
         # Keys
         self.keyfile_name = '.terminalkey.cache'
-        if master_key:
-            self.master_key = bytes.fromhex(master_key)
-        else:
-            self.master_key = bytes.fromhex('CF7730DBA6CAC5E13C3FB45CAF8D71E1')    
+        self.master_key = bytes.fromhex(master_key) if master_key else bytes.fromhex('CF7730DBA6CAC5E13C3FB45CAF8D71E1')    
 
         if terminal_key:
             self.terminal_key = bytes.fromhex(terminal_key)

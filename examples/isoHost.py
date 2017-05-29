@@ -23,7 +23,7 @@ def main(s):
                     
                 Len = struct.unpack_from("!H", data[:2])[0]
                 
-                if(Len != len(data) - 2):
+                if Len != len(data) - 2:
                     print("Invalid length {0} - {1}".format(Len, len(data) - 2))
                     conn.close()
                     continue

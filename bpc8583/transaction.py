@@ -151,10 +151,7 @@ class Transaction():
         if card_description:
             card_description += ' | '
 
-        if self.description:
-            return card_description + self.description
-        else:
-            return card_description + self.type + ' ' + str(self.IsoMessage.FieldData(11))
+        return card_description + self.description if self.description else card_description + self.type + ' ' + str(self.IsoMessage.FieldData(11))
 
 
     def set_PIN(self, PIN):
@@ -207,23 +204,15 @@ class Transaction():
         """
         """
         if self.expected_response_action in ['APPROVED', 'APPROVE']:
-            if int(actual_response_code) == 0:
-                return True
-            else:
-                return False
+            return True if int(actual_response_code) == 0 else False
 
         elif self.expected_response_action in ['DECLINED', 'DECLINE']:
-            if int(actual_response_code) != 0:
-                return True
-            else:
-                return False
+            return True if int(actual_response_code) != 0 else False
+            
         else:
             # no response action available, compare the response codes:
             if self.expected_response_code:
-                if self.expected_response_code == actual_response_code:
-                    return True
-                else:
-                    return False
+                return True if self.expected_response_code == actual_response_code else False
             else:
                 # neither response action, nor response code are set
                 return None

@@ -7,40 +7,14 @@ class Card:
 		self.trxn_counter = 0
 		self.set_description(description)
 
-		if pan:
-			self.pan = str(pan)
-		else:
-			self.pan = '8990011234567890'
+		self.pan = str(pan) if pan else '8990011234567890'
+		self.expiry_date = str(expiry_date) if expiry_date else '1809'
+		self.service_code = str(service_code) if service_code else '201'
+		self.PVV_key_index = str(pvvki) if pvvki else '1'
+		self.PVV = str(PVV) if PVV else '8723'
+		self.CVV = str(CVV) if CVV else '000'
+		self.discretionary_data = str(discretionary_data) if discretionary_data else ''
 
-		if expiry_date:
-			self.expiry_date = str(expiry_date)
-		else:
-			self.expiry_date = '1809'
-
-		if service_code:
-			self.service_code = str(service_code)
-		else:
-			self.service_code = '201'
-
-		if pvvki:
-			self.PVV_key_index = str(pvvki)
-		else:
-			self.PVV_key_index = '1'
-
-		if PVV:
-			self.PVV = str(PVV)
-		else:
-			self.PVV = '8723'
-
-		if CVV:
-			self.CVV = str(CVV)
-		else:
-			self.CVV = '000'
-
-		if discretionary_data:
-			self.discretionary_data = str(discretionary_data)
-		else:
-			self.discretionary_data = ''
 
 	def get_iss_application_data(self):
 		"""
@@ -114,10 +88,7 @@ class Card:
 	def set_description(self, description):
 		"""
 		"""
-		if description: 
-			self.description = description
-		else:
-			self.description = ''
+		self.description = description if description else ''
 
 
 	def get_description(self):
