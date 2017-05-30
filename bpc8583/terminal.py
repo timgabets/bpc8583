@@ -20,14 +20,11 @@ class Terminal:
         self.host = host if host else '127.0.0.1'
     
         # Port ot connect to
-        if port:
-            try:
-                self.port = int(port)
-            except ValueError:
-                print('Invalid TCP port: {}'.format(arg))
-                sys.exit()
-        else:
-            self.port = 1337
+        try:
+            self.port = int(port) if port else 1337
+        except ValueError:
+            print('Invalid TCP port: {}'.format(arg))
+            sys.exit()
 
         # Terminal ID
         self.terminal_id = id if id else '10001337'

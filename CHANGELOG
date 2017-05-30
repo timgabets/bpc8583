@@ -1,5 +1,6 @@
 
 May 2017
+	1.43 Changed the option parse order in isoClient
 	1.42 coding standards applied + ternary operator 
 	1.41 ISO8583 filed descriptions refactored
 	1.40 README -> README.rst

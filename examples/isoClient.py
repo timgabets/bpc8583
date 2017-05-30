@@ -31,10 +31,7 @@ class isoClient:
     def run(self):
         """
         """
-        if self.transactions:
-            self._run_non_interactive()
-        else:
-            self._run_interactive() 
+        self._run_non_interactive() if self.transactions else self._run_interactive() 
 
 
     def _run_non_interactive(self):
@@ -78,10 +75,7 @@ class isoClient:
         """
         python-version-independent wrapper to raw_input()/input()
         """
-        if sys.version[0] != '3':
-            return raw_input(hint)
-        else:
-            return input(hint)
+        return raw_input(hint) if sys.version[0] != '3' else input(hint)
 
 
     def _show_available_transactions(self):
@@ -302,13 +296,13 @@ if __name__ == '__main__':
     try:
         optlist, args = getopt.getopt(sys.argv[1:], 'hp:s:t:m:k:K:f:v', ['help', 'port=', 'server=', 'terminal=', 'merchant=', 'terminal-key=', 'master-key=', 'file=', 'verbose'])
         for opt, arg in optlist:
-            if opt in ('-v', '--verbose'):
-                verbosity = True
-
             if opt in ('-h', '--help'):
                 show_help(sys.argv[0])
                 sys.exit()
-    
+            
+            if opt in ('-v', '--verbose'):
+                verbosity = True
+
             elif opt in ('-p', '--port'):
                 port = arg
     
