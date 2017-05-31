@@ -1,1 +1,5 @@
+pynblock
 pycrypto
+enum34
+pytlv
+tracetools

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='bpc8583',
-      version='1.43',
+      version='1.44',
       
       description='ISO8583 library and tools (BPC\'s flavour)',
       long_description=open('README.rst').read(),
@@ -27,5 +27,5 @@ setup(name='bpc8583',
       
       license='LGPLv2',
       packages=['bpc8583'],
-      install_requires=['enum34', 'pycrypto', 'pytlv', 'tracetools'],
+      install_requires=['enum34', 'pycrypto', 'pytlv', 'tracetools', 'pynblock'],
       zip_safe=True)
