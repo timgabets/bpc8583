@@ -1,5 +1,6 @@
 
 May 2017
+	1.45 isoTools/hexify() moved to pynblock library
 	1.44 tox testing framework support
 	1.43 Changed the option parse order in isoClient
 	1.42 coding standards applied + ternary operator 
