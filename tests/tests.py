@@ -7,7 +7,7 @@ import os
 from bpc8583.card import Card
 from bpc8583.terminal import Terminal
 from bpc8583.transaction import Transaction
-from bpc8583.tools import get_response, get_random_hex
+from bpc8583.tools import get_response, get_random_hex, hexify
 from bpc8583.ISO8583 import ISO8583, ParseError, Bcd2Str, Str2Bcd
 from bpc8583.spec import IsoSpec1987ASCII, IsoSpec1987BCD
 
@@ -224,6 +224,27 @@ class TestIsoTools(unittest.TestCase):
 
     def test_get_random_hex_16(self):
         self.assertEqual(len(get_random_hex(16)), 16)
+
+
+    """
+    hexify()
+    """
+    def test_hexify_zero(self):
+        self.assertEqual(hexify(0), '00')
+
+    def test_hexify_12(self):
+        self.assertEqual(hexify(12), '0C')
+
+    def test_hexify_256(self):
+        self.assertEqual(hexify(256), '0100')
+
+    def test_hexify_negative(self):
+        with self.assertRaisesRegex(ValueError, 'Invalid number to hexify - must be positive'):
+            hexify(-700)
+
+    def test_hexify_float(self):
+        with self.assertRaises(TypeError):
+            hexify(33.88)
 
 
 class TestTransactionClass(unittest.TestCase):
