@@ -4,6 +4,7 @@ from time import strftime
 from math import pow
 from datetime import datetime
 from tracetools.tracetools import get_timestamp
+from pynblock.tools import hexify
 
 
 def get_date():
@@ -46,23 +47,6 @@ def get_stan():
     Get random systems trace audit number
     """
     return random.randint(0, 999999)
-
-
-def hexify(number):
-    """
-    Convert integer to hex string representation, e.g. 12 to '0C'
-    """
-    if( isinstance(number, int) == False ):
-        raise TypeError('hexify(): expected integer, not {}'.format(type(number)))
-
-    if number < 0:
-        raise ValueError('Invalid number to hexify - must be positive')
-
-    result = hex(int(number)).replace('0x', '').upper()
-    if divmod(len(result), 2)[1] == 1:
-        # Padding
-        result = '0{}'.format(result)
-    return result
 
 
 def get_random_hex(length):
