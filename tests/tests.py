@@ -146,6 +146,10 @@ class TestTerminal(unittest.TestCase):
         self.default_terminal_key = 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF'
         self.term = Terminal(terminal_key=self.default_terminal_key, show_keys=False)
 
+    def test_invalid_terminal_port(self):
+        with self.assertRaisesRegex(ValueError, 'Invalid TCP port: iddqd'):
+            self.term = Terminal(port='iddqd')
+
     """
     terminal.get_encrypted_pin()
     """

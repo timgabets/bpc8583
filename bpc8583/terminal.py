@@ -23,8 +23,7 @@ class Terminal:
         try:
             self.port = int(port) if port else 1337
         except ValueError:
-            print('Invalid TCP port: {}'.format(arg))
-            sys.exit()
+            raise ValueError('Invalid TCP port: {}'.format(port))
 
         # Terminal ID
         self.terminal_id = id if id else '10001337'
