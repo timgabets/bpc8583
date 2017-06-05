@@ -58,10 +58,13 @@ def get_random_hex(length):
     return hexify(random.randint(pow(2, length*2), pow(2, length*4)))[0:length]
 
 
-def get_random_amount(min=None, max=None):
+def get_random_amount(min=None, max=None, step=None):
     _min = min if min else 0
     _max = max if max else 1000000
-    return random.randint(_min, _max)
+    if step:
+        return round(random.randint(_min, _max) / step) * step
+    else:
+        return random.randint(_min, _max)
 
 
 def get_response(_code):

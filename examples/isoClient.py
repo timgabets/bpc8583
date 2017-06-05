@@ -196,8 +196,13 @@ def parse_transaction_item(trxn, term, cards):
                         max = int(attrib.attrib['max'])
                     except KeyError:
                         pass
+                    step = None
+                    try:
+                        step = int(attrib.attrib['step'])
+                    except KeyError:
+                        pass
 
-                    random_amount = get_random_amount(min, max)
+                    random_amount = get_random_amount(min, max, step)
                     t.set_amount(random_amount)
                 else:
                     t.set_amount(attrib.text)

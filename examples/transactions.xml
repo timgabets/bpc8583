@@ -102,7 +102,7 @@
 	</trxn>
 -->
 	<trxn type='purchase' description='740 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
-		<amount min='1000' max='100000'>random</amount>
+		<amount min='10000' max='100000' step='10'>random</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
