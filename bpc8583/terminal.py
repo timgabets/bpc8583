@@ -143,7 +143,7 @@ class Terminal:
 
     def set_terminal_key(self, encrypted_key):
         """
-        Change the terminal key. The encrypted_key is a hex string
+        Change the terminal key. The encrypted_key is a hex string.
         encrypted_key is expected to be encrypted under master key
         """
         if encrypted_key:

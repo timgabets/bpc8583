@@ -1,4 +1,7 @@
 
+June 2017
+	1.46 random transaction amount support
+
 May 2017
 	1.45 isoTools/hexify() moved to pynblock library
 	1.44 tox testing framework support

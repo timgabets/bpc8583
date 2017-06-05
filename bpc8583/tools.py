@@ -58,6 +58,12 @@ def get_random_hex(length):
     return hexify(random.randint(pow(2, length*2), pow(2, length*4)))[0:length]
 
 
+def get_random_amount(min=None, max=None):
+    _min = min if min else 0
+    _max = max if max else 1000000
+    return random.randint(_min, _max)
+
+
 def get_response(_code):
     """
     Return xx1x response for xx0x codes (e.g. 0810 for 0800)

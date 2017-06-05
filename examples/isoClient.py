@@ -12,7 +12,7 @@ from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from bpc8583.terminal import Terminal
 from bpc8583.card import Card
 from bpc8583.transaction import Transaction
-from bpc8583.tools import trace_passed, trace_failed
+from bpc8583.tools import trace_passed, trace_failed, get_random_amount
 
 
 class isoClient:
@@ -185,7 +185,22 @@ def parse_transaction_item(trxn, term, cards):
     for i in range(0, num_of_trxns_to_repeat):
         for attrib in trxn:
             if attrib.tag.lower() == 'amount':
-                t.set_amount(attrib.text)
+                if attrib.text == 'random':
+                    min = None
+                    try:
+                        int(attrib.attrib['min'])
+                    except KeyError:
+                        pass
+                    max = None
+                    try:
+                        max = int(attrib.attrib['max'])
+                    except KeyError:
+                        pass
+
+                    random_amount = get_random_amount(min, max)
+                    t.set_amount(random_amount)
+                else:
+                    t.set_amount(attrib.text)
             elif attrib.tag.lower() == 'pin':
                 t.set_PIN(attrib.text)
             elif attrib.tag.lower() == 'currency':

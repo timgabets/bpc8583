@@ -81,10 +81,6 @@
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
-	<trxn type='cash' description='Them-On-Us Cash Disbursement' card='VISA Off-Us #13' icc='false'>
-		<amount>20000</amount>
-		<PIN>1234</PIN>
-	</trxn>
 	<trxn type='balance' description='Balance Inquiry in GBP' card='VISA On-Us #10' icc='false'>
 		<currency>GBP</currency>
 	</trxn>
@@ -99,14 +95,19 @@
 		<PIN>1234</PIN>
 		<response_code>110</response_code>
 	</trxn>
+	<trxn type='cash' description='Them-On-Us Cash Disbursement' card='VISA On-Us #10' icc='false'>
+		<amount>20000</amount>
+		<currency>RUB</currency>
+		<PIN>1234</PIN>
+	</trxn>
 -->
-	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
-		<amount>11000</amount>
+	<trxn type='purchase' description='740 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
+		<amount min='1000' max='100000'>random</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
 <!--
-	<trxn type='balance' description='Balance Inquiry with PIN approved' card='VISA On-Us #10' icc='false'>
+	<trxn type='balance' description='Balance Inquiry with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
 		<PIN>1234</PIN>
 	</trxn>
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='VISA On-Us #10' icc='false'/>

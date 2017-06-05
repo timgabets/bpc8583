@@ -7,7 +7,7 @@ import os
 from bpc8583.card import Card
 from bpc8583.terminal import Terminal
 from bpc8583.transaction import Transaction
-from bpc8583.tools import get_response, get_random_hex
+from bpc8583.tools import get_response, get_random_hex, get_random_amount
 from bpc8583.ISO8583 import ISO8583, ParseError, Bcd2Str, Str2Bcd
 from bpc8583.spec import IsoSpec1987ASCII, IsoSpec1987BCD
 
@@ -229,6 +229,19 @@ class TestIsoTools(unittest.TestCase):
     def test_get_random_hex_16(self):
         self.assertEqual(len(get_random_hex(16)), 16)
 
+    """
+    get_random_amount()
+    """
+    def test_get_random_amount(self):
+        min = 10
+        max = 1000
+        amount = get_random_amount(min, max)
+        self.assertGreater(amount, min)
+        self.assertLess(amount, max)
+
+    def test_get_random_amount_limits_not_specified(self):
+        amount = get_random_amount()
+        self.assertLess(amount, 1000000)
 
 class TestTransactionClass(unittest.TestCase):
 
