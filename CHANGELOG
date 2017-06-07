@@ -1,5 +1,6 @@
 
 June 2017
+	1.48 get_random_amount removed, using direct call to random.randint()
 	1.47 random step supports
 	1.46 random transaction amount support
 

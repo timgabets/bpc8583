@@ -68,11 +68,7 @@
 	</trxn>
 -->
 <!--
-	<trxn type='purchase' description='110 RUB purchase with PIN approved' card='8990011234567890' icc='false'>
-		<amount>13762</amount>
-		<currency>RUB</currency>
-		<PIN>1234</PIN>
-	</trxn>
+
 
 	<trxn type='key change' description='Terminal key change'/>
 
@@ -100,13 +96,19 @@
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
--->
-	<trxn type='purchase' description='740 RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
+	<trxn type='purchase' description='Random amount RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
 		<amount min='10000' max='100000' step='10'>random</amount>
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
+-->
+	<trxn type='purchase' description='Random amount purchase with PIN approved' card='8990011234567890' icc='true'>
+		<amount min='100' max='300' exponent='100'>random</amount>
+		<currency>RUB</currency>
+		<PIN>1234</PIN>
+	</trxn>
 <!--
+	<trxn type='balance' description='Balance Inquiry without PIN approved' card='8990011234567890' icc='false'/>
 	<trxn type='balance' description='Balance Inquiry with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
 		<PIN>1234</PIN>
 	</trxn>
