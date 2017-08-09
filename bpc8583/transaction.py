@@ -76,8 +76,7 @@ class Transaction():
             """
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
             self.IsoMessage.MTI("0100")
-        
-            self.IsoMessage.FieldData(2, self.card.get_card_number())
+
             self.IsoMessage.FieldData(3, 150000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
@@ -160,7 +159,11 @@ class Transaction():
         """
         Get transaction description (for logging purposes)
         """
-        card_description = self.card.get_description()
+        if self.card:
+            card_description = self.card.get_description()
+        else:
+            card_description = 'Cardless'
+
         if card_description:
             card_description += ' | '
 
@@ -262,14 +265,18 @@ class Transaction():
     def _set_icc_trxn(self, icc_trxn):
         """
         """
-        if icc_trxn == None and self.card.get_service_code()[0] in ['2', '6']:
-            self.icc_trxn = True
-        elif icc_trxn == None and self.card.get_service_code()[0] not in ['2', '6']:
-            self.icc_trxn = False
-        elif icc_trxn.lower() == 'true':
-            self.icc_trxn = True
-        else:
-            self.icc_trxn = False
+        try:
+            if icc_trxn == None and self.card.get_service_code()[0] in ['2', '6']:
+                self.icc_trxn = True
+            elif icc_trxn == None and self.card.get_service_code()[0] not in ['2', '6']:
+                self.icc_trxn = False
+            elif icc_trxn.lower() == 'true':
+                self.icc_trxn = True
+            else:
+                self.icc_trxn = False
+        except AttributeError:
+            # self.card is None for cardless transactions
+            pass
 
 
     def set_currency(self, currency_id):

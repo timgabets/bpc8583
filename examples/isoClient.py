@@ -155,11 +155,7 @@ def parse_transaction_item(trxn, term, cards):
     try:
         card = cards[card_description]
     except KeyError:
-        if card_description:
-            print('Card \'' + card_description + '\' not found.')
-        for key, value in cards.items():
-            card = value
-            break    
+        pass
 
     try:
         icc_trxn = trxn.attrib['icc']
