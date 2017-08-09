@@ -314,4 +314,6 @@ class Transaction():
             field48_data += tag + str(len(self.field48[tag])).zfill(3) + self.field48[tag]
 
         self.IsoMessage.FieldData(48, field48_data)
+        self.rebuild()
+
 

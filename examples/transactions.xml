@@ -107,8 +107,8 @@
 	<trxn type='virtual purchase' description='Random amount virtual purchase approved'>
 		<amount min='100' max='300' exponent='100'>random</amount>
 		<currency>RUB</currency>
-		<field48 tag='003'>OTPSRV</field48>
 		<field48 tag='061'>137137137</field48>
+		<field48 tag='003'>OTPSRV</field48>
 	</trxn>
 <!--
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='8990011234567890' icc='false'/>
