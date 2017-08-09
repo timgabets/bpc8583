@@ -23,6 +23,7 @@ class Transaction():
         self.currency = None
         self.PIN = None
         self._set_icc_trxn(icc_trxn)
+        self.field48 = {}
 
         if self.type in ['logon', 'echo']:
             """
@@ -296,3 +297,21 @@ class Transaction():
         Currency getter
         """
         return self.currency
+
+
+    def set_field48_tags(self, tag, tag_value):
+        """
+        """
+        self.field48[tag] = tag_value
+        self.build_field48()
+
+
+    def build_field48(self):
+        """
+        """
+        field48_data = ''
+        for tag in self.field48:
+            field48_data += tag + str(len(self.field48[tag])).zfill(3) + self.field48[tag]
+
+        self.IsoMessage.FieldData(48, field48_data)
+

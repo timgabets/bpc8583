@@ -204,6 +204,8 @@ def parse_transaction_item(trxn, term, cards):
                 t.set_PIN(attrib.text)
             elif attrib.tag.lower() == 'currency':
                 t.set_currency(attrib.text)
+            elif attrib.tag.lower() == 'field48':
+                t.set_field48_tags(attrib.attrib['tag'], attrib.text)
             elif attrib.tag.lower() == 'response_code':
                 t.set_expected_code(attrib.text)
             elif attrib.tag.lower() == 'response_action':
