@@ -71,6 +71,19 @@ class Transaction():
             self.IsoMessage.FieldData(25, 0)
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
+        elif self.type == 'virtual purchase':
+            """
+            """
+            self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
+            self.IsoMessage.MTI("0100")
+        
+            self.IsoMessage.FieldData(2, self.card.get_card_number())
+            self.IsoMessage.FieldData(3, 150000)
+            self.IsoMessage.FieldData(12, get_datetime_with_year())
+            self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
+            self.IsoMessage.FieldData(24, 100)
+            self.IsoMessage.FieldData(25, 0)
+
         elif self.type == 'refund':
             """
             Refund
