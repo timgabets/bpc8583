@@ -99,9 +99,12 @@ class Transaction():
             self.IsoMessage.FieldData(25, 0)
             self.IsoMessage.FieldData(35, self.card.get_track2())
 
-        elif self.type == 'pin change':
+        elif self.type in ['pin change', 'pin change reversal']:
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
-            self.IsoMessage.MTI("0100")
+            if self.type == 'pin change':
+                self.IsoMessage.MTI("0100")
+            elif self.type == 'pin change reversal':
+                self.IsoMessage.MTI("0420")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
             self.IsoMessage.FieldData(3, 760000)
