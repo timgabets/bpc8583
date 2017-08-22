@@ -1,4 +1,5 @@
 August 2017
+	1.53 PostBridge2 interface support
 	1.52 Implemented field48 customization
 	1.51 Cardless transactions support
 	1.50 Virtual Purchase transaction (processing code 150000)
