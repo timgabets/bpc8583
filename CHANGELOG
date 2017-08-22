@@ -1,4 +1,5 @@
 August 2017
+	1.54 PIN Change transaction support (processing code 760000)
 	1.53 PostBridge2 interface support
 	1.52 Implemented field48 customization
 	1.51 Cardless transactions support
