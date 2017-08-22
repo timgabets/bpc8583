@@ -193,6 +193,16 @@ class Transaction():
                 self.IsoMessage.FieldData(52, encrypted_pinblock)
                 self.rebuild()
 
+    def set_STAN(self, STAN):
+        """
+        """
+        if STAN and int(STAN) < 1000000 and int(STAN) > 0:
+           self.IsoMessage.FieldData(11, int(STAN)) 
+           self.rebuild()
+        else:
+            raise ValueError('Invalid STAN')
+
+
     def get_PIN(self):
         """
         """

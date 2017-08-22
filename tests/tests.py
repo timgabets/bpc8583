@@ -262,6 +262,29 @@ class TestTransactionClass(unittest.TestCase):
         self.assertEqual(self.trxn.expected_response_action, None)
 
     """
+    trxn.set_STAN()
+    """
+    def test_set_stan_empty(self):
+        with self.assertRaisesRegex(ValueError, "Invalid STAN"):
+            self.trxn.set_STAN('')
+
+    def test_set_stan_negative(self):
+        with self.assertRaisesRegex(ValueError, "Invalid STAN"):
+            self.trxn.set_STAN('-3')
+
+    def test_set_stan_overflow(self):
+        with self.assertRaisesRegex(ValueError, "Invalid STAN"):
+            self.trxn.set_STAN('1234567')
+
+    def test_set_stan_applied_passed_as_integer(self):
+        self.trxn.set_STAN(989898)
+        self.assertEqual(self.trxn.IsoMessage.FieldData(11), 989898)
+
+    def test_set_stan_applied_passed_as_string(self):
+        self.trxn.set_STAN('744321')
+        self.assertEqual(self.trxn.IsoMessage.FieldData(11), 744321)
+
+    """
     trxn.is_response_expected()
     """
     def test_is_response_expected_resp_codes_resp_action_are_not_set(self):

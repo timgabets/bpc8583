@@ -70,6 +70,7 @@
 -->
 	<trxn type='pin change' description='PIN change request' card='8990011234567890' icc='false'>		
 		<PIN>1234</PIN>
+		<STAN>744321</STAN>
 	</trxn>
 <!--
 	<trxn type='purchase' description='630 RUB purchase with PIN approved' card='8990011234567890' icc='false'>
