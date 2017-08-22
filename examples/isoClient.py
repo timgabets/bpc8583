@@ -40,6 +40,8 @@ class isoClient:
         """
         self.term.connect()
         for trxn in self.transactions:
+            time.sleep(trxn.get_timeout())
+
             # Re-encrypt PIN block if terminal key has changed
             PIN = trxn.get_PIN()
             if PIN:
@@ -143,6 +145,7 @@ def parse_transaction_item(trxn, term, cards):
     card = None
     card_description = None
     icc_trxn = None
+    timeout = None
 
     #card = cards[trxn.attrib['card']]
     try:
@@ -163,7 +166,12 @@ def parse_transaction_item(trxn, term, cards):
         pass
 
     try:
-        t = Transaction(trxn.attrib['type'], card, term, icc_trxn=icc_trxn)
+        timeout = trxn.attrib['timeout']
+    except KeyError:
+        pass
+
+    try:
+        t = Transaction(trxn.attrib['type'], card, term, icc_trxn, timeout)
     except KeyError:
         print('Error parsing {}: transaction type is not set'.format(filename))
         sys.exit()

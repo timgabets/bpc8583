@@ -8,7 +8,7 @@ from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from pytlv.TLV import TLV
 
 class Transaction():
-    def __init__(self, type, card, term, icc_trxn=None):
+    def __init__(self, type, card, term, icc_trxn=None, timeout=None):
         """
         """
         self.TLV = TLV()
@@ -24,6 +24,7 @@ class Transaction():
         self.PIN = None
         self._set_icc_trxn(icc_trxn)
         self.field48 = {}
+        self.timeout = int(timeout) if timeout else 0
 
         if self.type in ['logon', 'echo']:
             """
@@ -196,6 +197,13 @@ class Transaction():
                 self.IsoMessage.FieldData(52, encrypted_pinblock)
                 self.rebuild()
 
+
+    def get_PIN(self):
+        """
+        """
+        return self.PIN
+
+
     def set_STAN(self, STAN):
         """
         """
@@ -206,10 +214,10 @@ class Transaction():
             raise ValueError('Invalid STAN')
 
 
-    def get_PIN(self):
+    def get_timeout(self):
         """
         """
-        return self.PIN
+        return self.timeout
 
 
     def set_amount(self, amount):

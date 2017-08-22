@@ -72,7 +72,7 @@
 		<PIN>1234</PIN>
 		<STAN>744321</STAN>
 	</trxn>
-	<trxn type='pin change reversal' description='PIN change reversal' card='8990011234567890' icc='false'>		
+	<trxn type='pin change reversal' description='PIN change reversal' card='8990011234567890' icc='false' timeout='5'>
 		<PIN>1234</PIN>
 		<STAN>744321</STAN>
 	</trxn>
