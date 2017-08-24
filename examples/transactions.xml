@@ -67,14 +67,17 @@
 
 	<trxn type='key change' description='Terminal key change'/>
 
+	<trxn type='pin change' description='PIN change request' card='8990011234567890' icc='false'>		
+		<PIN>1234</PIN>
+	</trxn>
 -->
 	<trxn type='pin change' description='PIN change request' card='8990011234567890' icc='false'>		
 		<PIN>1234</PIN>
-		<STAN>744321</STAN>
+		<STAN>745321</STAN>
 	</trxn>
-	<trxn type='pin change reversal' description='PIN change reversal' card='8990011234567890' icc='false' timeout='5'>
+	<trxn type='pin change reversal' description='PIN change reversal' card='8990011234567890' icc='false' timeout='3'>
 		<PIN>1234</PIN>
-		<STAN>744321</STAN>
+		<STAN>745321</STAN>
 	</trxn>
 <!--
 	<trxn type='purchase' description='630 RUB purchase with PIN approved' card='8990011234567890' icc='false'>

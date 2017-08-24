@@ -105,7 +105,7 @@ class Transaction():
             if self.type == 'pin change':
                 self.IsoMessage.MTI("0100")
             elif self.type == 'pin change reversal':
-                self.IsoMessage.MTI("0420")
+                self.IsoMessage.MTI("0400")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
             self.IsoMessage.FieldData(3, 760000)
