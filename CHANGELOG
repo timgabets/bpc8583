@@ -1,4 +1,5 @@
 August 2017
+	1.59 <account_to/> and <account_from/> support
 	1.58 trxn.set_processing_code()
 	1.57 DCC Check transaction type
 	1.56 Transaction timeout support
