@@ -18,6 +18,8 @@ class Transaction():
         self.term = term
         self.type = type.lower()
         self.description = ''
+        self.account_from = '00'
+        self.account_to = '00'
         self.expected_response_code = '000'
         self.expected_response_action = None
         self.currency = None
@@ -31,7 +33,6 @@ class Transaction():
             """
             self.IsoMessage.MTI("0800")
 
-            self.IsoMessage.FieldData(3, 990000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(24, 801)
 
@@ -40,7 +41,6 @@ class Transaction():
             """
             self.IsoMessage.MTI("0800")
 
-            self.IsoMessage.FieldData(3, 990000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(24, 811)
 
@@ -50,8 +50,6 @@ class Transaction():
             self.IsoMessage.MTI("0100")
             
             self.IsoMessage.FieldData(2, self.card.get_card_number())
-            self.IsoMessage.FieldData(3, 310000)
-            #self.IsoMessage.FieldData(4, 0)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(13, get_MMDD())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
@@ -66,7 +64,6 @@ class Transaction():
             self.IsoMessage.MTI("0100")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
-            self.IsoMessage.FieldData(3, 000000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
             self.IsoMessage.FieldData(24, 100)
@@ -79,7 +76,6 @@ class Transaction():
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())            
             self.IsoMessage.MTI("0100")
 
-            self.IsoMessage.FieldData(3, 150000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
             self.IsoMessage.FieldData(24, 100)
@@ -93,7 +89,6 @@ class Transaction():
             self.IsoMessage.MTI("0100")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
-            self.IsoMessage.FieldData(3, 200000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
             self.IsoMessage.FieldData(24, 100)
@@ -108,7 +103,6 @@ class Transaction():
                 self.IsoMessage.MTI("0400")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
-            self.IsoMessage.FieldData(3, 760000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
             self.IsoMessage.FieldData(24, 100)
@@ -123,7 +117,6 @@ class Transaction():
             self.IsoMessage.MTI("0100")
         
             self.IsoMessage.FieldData(2, self.card.get_card_number())
-            self.IsoMessage.FieldData(3, 120000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
             self.IsoMessage.FieldData(24, 100)
@@ -137,7 +130,6 @@ class Transaction():
             self.IsoMessage = ISO8583(IsoSpec=IsoSpec1987BPC())
             self.IsoMessage.MTI("0300")
             self.IsoMessage.FieldData(2, self.card.get_card_number())
-            self.IsoMessage.FieldData(3, 1000)
             self.IsoMessage.FieldData(12, get_datetime_with_year())
             self.IsoMessage.FieldData(22, self.term.get_pos_entry_mode())
             self.IsoMessage.FieldData(24, 301)
@@ -149,6 +141,7 @@ class Transaction():
             return None
     
         # Common message fields:
+        self.set_processing_code()
         self.IsoMessage.FieldData(7, get_seconds_since_epoch())
         self.IsoMessage.FieldData(11, get_stan())
         self.IsoMessage.FieldData(41, self.term.get_terminal_id())
@@ -368,4 +361,34 @@ class Transaction():
         """
         """
         self.IsoMessage.FieldData(54, field_data)
+        self.rebuild()
+
+
+    def set_processing_code(self):
+        """
+        """
+
+        if self.type in ['purchase', 'dcc check']:
+            trxn_type_code = '00'
+        elif self.type in ['cash']:
+            trxn_type_code = '12'
+        elif self.type in ['virtual purchase']:
+            trxn_type_code = '15'
+        elif self.type in ['refund']:
+            trxn_type_code = '20'
+        elif self.type in ['balance']:
+            trxn_type_code = '31'
+        elif self.type in ['pin change', 'pin change reversal']:
+            trxn_type_code = '76'
+        elif self.type in ['logon', 'echo', 'key change']:
+            trxn_type_code = '99'
+        else:
+            trxn_type_code = None
+
+        if trxn_type_code:
+            self.processing_code = int(trxn_type_code + self.account_from + self.account_to )
+        else:
+            self.processing_code = None
+
+        self.IsoMessage.FieldData(3, self.processing_code)
         self.rebuild()

@@ -336,6 +336,71 @@ class TestTransactionClass(unittest.TestCase):
         self.trxn.set_currency('IDDQD')
         self.assertIsNone(self.trxn.get_currency())
 
+    """
+    trxn.set_processing_code()
+    """
+    def test_trxn_set_processing_code_balance(self):
+        self.trxn.type = 'balance'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 310000)
+
+    def test_trxn_set_processing_code_logon(self):
+        self.trxn.type = 'logon'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 990000)
+
+    def test_trxn_set_processing_code_echo(self):
+        self.trxn.type = 'echo'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 990000)
+
+    def test_trxn_set_processing_code_key_change(self):
+        self.trxn.type = 'key change'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 990000)
+
+    def test_trxn_set_processing_code_purchase(self):
+        self.trxn.type = 'purchase'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 0)
+
+    def test_trxn_set_processing_code_purchase_w_account_from(self):
+        self.trxn.type = 'purchase'
+        self.trxn.account_from = '10'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 1000)
+
+    def test_trxn_set_processing_code_purchase_w_account_to(self):
+        self.trxn.type = 'purchase'
+        self.trxn.account_to = '20'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 20)
+
+    def test_trxn_set_processing_code_virtual_purchase(self):
+        self.trxn.type = 'virtual purchase'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 150000)
+
+    def test_trxn_set_processing_code_refund(self):
+        self.trxn.type = 'refund'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 200000)
+
+    def test_trxn_set_processing_code_pin_change(self):
+        self.trxn.type = 'pin change'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 760000)
+
+    def test_trxn_set_processing_code_pin_change_reversal(self):
+        self.trxn.type = 'pin change reversal'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 760000)
+
+    def test_trxn_set_processing_code_cash(self):
+        self.trxn.type = 'cash'
+        self.trxn.set_processing_code()
+        self.assertEqual(self.trxn.processing_code, 120000)
+
 class TestTerminalKeyStorage(unittest.TestCase):
     
     def setUp(self):
