@@ -69,14 +69,16 @@
 -->
 	<trxn type='dcc check' description='DCC Availability Check' card='VISA Off-Us #25' icc='false'>
 		<amount>15300</amount>
+		<account_from>10</account_from>
 		<field48 tag='003'>DCCSRV</field48>
 		<PIN>1234</PIN>
 	</trxn>
 	<trxn type='purchase' description='DCC Purchase approved' card='VISA Off-Us #25' icc='false'>
+		<account_from>10</account_from>
 		<amount>202</amount>
 		<currency>GBP</currency>
 		<PIN>1234</PIN>
-		<field48 tag='038'>000000178706</field48>
+		<field48 tag='038'>000000179025</field48>
 		<field54>1057643C000000015300</field54>
 	</trxn>
 <!--

@@ -367,7 +367,6 @@ class Transaction():
     def set_processing_code(self):
         """
         """
-
         if self.type in ['purchase', 'dcc check']:
             trxn_type_code = '00'
         elif self.type in ['cash']:
@@ -392,3 +391,18 @@ class Transaction():
 
         self.IsoMessage.FieldData(3, self.processing_code)
         self.rebuild()
+
+
+    def set_account_from(self, account_type):
+        """
+        """
+        self.account_from = account_type
+        self.set_processing_code()
+
+
+    def set_account_to(self, account_type):
+        """
+        """
+        self.account_to = account_type
+        self.set_processing_code()
+        

@@ -218,6 +218,10 @@ def parse_transaction_item(trxn, term, cards):
                 t.set_field48_tags(attrib.attrib['tag'], attrib.text)
             elif attrib.tag.lower() == 'field54':
                 t.set_field54(attrib.text)
+            elif attrib.tag.lower() == 'account_from':
+                t.set_account_from(attrib.text)
+            elif attrib.tag.lower() == 'account_to':
+                t.set_account_to(attrib.text)
             elif attrib.tag.lower() == 'response_code':
                 t.set_expected_code(attrib.text)
             elif attrib.tag.lower() == 'response_action':
