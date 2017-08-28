@@ -64,13 +64,42 @@
 		<PIN>1234</PIN>
 	</trxn>
 
-
 	<trxn type='key change' description='Terminal key change'/>
+
+-->
+	<trxn type='dcc check' description='DCC Availability Check' card='VISA Off-Us #25' icc='false'>
+		<amount>15300</amount>
+		<field48 tag='003'>DCCSRV</field48>
+		<PIN>1234</PIN>
+	</trxn>
+	<trxn type='purchase' description='DCC Purchase approved' card='VISA Off-Us #25' icc='false'>
+		<amount>202</amount>
+		<currency>GBP</currency>
+		<PIN>1234</PIN>
+		<field48 tag='038'>000000178706</field48>
+		<field54>1057643C000000015300</field54>
+	</trxn>
+<!--
+	<trxn type='purchase' description='DCC Purchase without DE48 declined' card='VISA Off-Us #25' icc='false'>
+		<amount>15300</amount>
+		<currency>RUB</currency>
+		<PIN>1234</PIN>
+		<field54>1057826C000000000202</field54>
+		<response_code>904</response_code>
+	</trxn>
+	<trxn type='purchase' description='DCC Purchase without proper DE54 declined' card='VISA Off-Us #25' icc='false'>
+		<amount>15300</amount>
+		<currency>RUB</currency>
+		<PIN>1234</PIN>
+		<field48 tag='038'>000000178706</field48>
+		<field54>1056826C000000000202</field54>
+		<response_code>904</response_code>
+	</trxn>
+
 
 	<trxn type='pin change' description='PIN change request' card='8990011234567890' icc='false'>		
 		<PIN>1234</PIN>
 	</trxn>
--->
 	<trxn type='pin change' description='PIN change request' card='8990011234567890' icc='false'>		
 		<PIN>1234</PIN>
 		<STAN>745321</STAN>
@@ -79,7 +108,6 @@
 		<PIN>1234</PIN>
 		<STAN>745321</STAN>
 	</trxn>
-<!--
 	<trxn type='purchase' description='630 RUB purchase with PIN approved' card='8990011234567890' icc='false'>
 		<amount min='100' max='700' step='10' exponent='100'>random</amount>
 		<currency>RUB</currency>

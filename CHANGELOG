@@ -1,4 +1,5 @@
 August 2017
+	1.57 DCC Check transaction type
 	1.56 Transaction timeout support
 	1.55 Transaction <STAN></STAN> support
 	1.54 PIN Change transaction support (processing code 760000)
