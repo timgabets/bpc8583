@@ -379,6 +379,8 @@ class Transaction():
             trxn_type_code = '31'
         elif self.type in ['pin change', 'pin change reversal']:
             trxn_type_code = '76'
+        elif self.type in ['create virtual card']:
+            trxn_type_code = '87'
         elif self.type in ['logon', 'echo', 'key change']:
             trxn_type_code = '99'
         else:
