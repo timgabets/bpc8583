@@ -21,6 +21,23 @@
 		<PVV>3843</PVV>
 		<CVV>640</CVV>
 	</card>
+	<card description='VISA On-Us 433825'>
+		<pan>4338259918748135</pan>
+		<expiry_date>2006</expiry_date>
+		<service_code>221</service_code>
+		<PVVKi>1</PVVKi>
+		<PVV>0016</PVV>
+		<CVV>686</CVV>
+		<discr_data>00001</discr_data>
+	</card>
+	<card description='Melli Test'>
+		<pan>6037991012345674</pan>
+		<expiry_date>2003</expiry_date>
+		<service_code>101</service_code>
+		<PVVKi>1</PVVKi>
+		<PVV>1549</PVV>
+		<CVV>579</CVV>
+	</card>
 	<card description='VISA Off-Us #25'>
 		<pan>4005520000000129</pan>
 		<expiry_date>1712</expiry_date>
@@ -63,10 +80,8 @@
 		<amount>7300</amount>
 		<PIN>1234</PIN>
 	</trxn>
-
 	<trxn type='key change' description='Terminal key change'/>
 
--->
 	<trxn type='dcc check' description='DCC Availability Check' card='VISA Off-Us #25' icc='false'>
 		<amount>15300</amount>
 		<account_from>10</account_from>
@@ -78,9 +93,10 @@
 		<amount>202</amount>
 		<currency>GBP</currency>
 		<PIN>1234</PIN>
-		<field48 tag='038'>000000179025</field48>
+		<field48 tag='038'>000000179775</field48>
 		<field54>1057643C000000015300</field54>
 	</trxn>
+-->
 <!--
 	<trxn type='purchase' description='DCC Purchase without DE48 declined' card='VISA Off-Us #25' icc='false'>
 		<amount>15300</amount>
@@ -121,10 +137,10 @@
 		<PIN>1234</PIN>
 		<response_code>123</response_code>
 	</trxn>
-	<trxn type='balance' description='Balance Inquiry in GBP' card='VISA On-Us #10' icc='false'>
+	<trxn type='balance' description='Balance Inquiry in GBP' card='VISA Off-Us #25' icc='false'>
 		<currency>GBP</currency>
+		<PIN>1234</PIN>
 	</trxn>
-
 	<trxn type='purchase' description='Them-On-Us purchase' card='VISA Off-Us #25' icc='false'>
 		<amount>977</amount>
 		<PIN>1234</PIN>
@@ -140,18 +156,18 @@
 		<currency>RUB</currency>
 		<PIN>1234</PIN>
 	</trxn>
-	<trxn type='purchase' description='Random amount RUB purchase with PIN approved' card='VISA On-Us #10' icc='false' repeat='1'>
-		<amount min='10000' max='100000' step='10'>random</amount>
-		<currency>RUB</currency>
-		<PIN>1234</PIN>
+	<trxn type='create virtual card' description='Create virtual card transaction' card='VISA On-Us 433825' icc='false' repeat='1'>
+		<PIN>5555</PIN>
+		<field48 tag='003'>NEWVIRT</field48>
+		<field48 tag='062'>9295959173</field48>
 	</trxn>
-	<trxn type='purchase' description='Random amount purchase with PIN approved' card='8990011234567890' icc='false'>
-		<amount min='1' max='1000' exponent='100'>random</amount>
-		<currency>USD</currency>
-		<PIN>1234</PIN>
+-->
+	<trxn type='purchase' description='Random amount purchase with PIN approved' card='Melli Test' icc='false'>
+		<amount min='100' max='10000' exponent='100'>random</amount>
+		<currency>IRR</currency>
+		<PIN>5555</PIN>
 	</trxn>
-
-
+<!--	
 	<trxn type='virtual purchase' description='Param 1: Amount and Currency match'>
 		<amount>25800</amount>
 		<currency>RUB</currency>
@@ -207,8 +223,11 @@
 		<field48 tag='003'>OTPSRV</field48>
 		<response_code>121</response_code>
 	</trxn>
-
 	<trxn type='balance' description='Balance Inquiry without PIN approved' card='8990011234567890' icc='false'/>
+	<trxn type='balance' description='Balance Inquiry without PIN approved' card='Melli Test' icc='false'/>
+-->
+<!--	
+	
 	<trxn type='virtual purchase' description='Param 3: $4 purchase approved'>
 		<amount>400</amount>
 		<currency>USD</currency>
