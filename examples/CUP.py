@@ -7,8 +7,8 @@ import struct
 from time import sleep
 
 from bpc8583.ISO8583 import ISO8583, MemDump, ParseError
-from bpc8583.spec import IsoSpec, IsoSpec1987BPC
-from bpc8583.tools import get_response, get_stan, get_datetime_with_year
+from bpc8583.spec import IsoSpec, IsoSpec1987CUP
+from bpc8583.tools import get_response, get_stan, get_time, trace_passed, trace_failed
 from tracetools.tracetools import trace
 
 
@@ -70,24 +70,43 @@ class CUP:
         """
         while True:            
             data = self.recv()
-            request = ISO8583(data, IsoSpec1987BPC())
+            request = ISO8583(data, IsoSpec1987CUP())
             request.Print()
     
             if request.get_MTI() != '0820' or request.FieldData(70) != 1:
                 print('\tLogon failed')
                 sleep(5)
             else:
+                trace_passed("Sending SIGNON response", show_colored_description=True)
+
                 response = self.init_response_message(request)
                 MTI = str(request.get_MTI()).zfill(4)[-3:]
                 response.Print()
                 self.send(response.BuildIso())
                 break
 
+    def send_key_reset_request(self):
+        trace_passed("Sending Key Reset request", show_colored_description=True)
+        request = ISO8583(None, IsoSpec1987CUP())
+
+        request.MTI('0800')
+        request.FieldData(11, get_stan())
+        request.FieldData(12, get_time())
+        # Table 41. Field 53- Key Management Message Data Structure Definition
+        # Key Type (n1): 1 - PIK, 2 - MAK
+        # Encryption Method (n2): 0 - single length DES, 6 - double length DES
+        # Reserved (n14): all set to 0
+        request.FieldData(53, '1600000000000000')
+        request.FieldData(70, 101)  # Union Pay resets the key
+        
+        request.Print()
+        self.send(request.BuildIso())
+
 
     def init_response_message(self, request):
         """
         """
-        response = ISO8583(None, IsoSpec1987BPC())
+        response = ISO8583(None, IsoSpec1987CUP())
         response.MTI(get_response(request.get_MTI()))
 
         # Copy some key fields from original message:
@@ -103,13 +122,14 @@ class CUP:
             try:
                 self.connect()
                 self.recv_logon_handshake()
+                self.send_key_reset_request()
 
                 while True:
                     data = self.recv() 
                     if not data:
                         raise ParseError
 
-                    request = ISO8583(data, IsoSpec1987BPC())
+                    request = ISO8583(data, IsoSpec1987CUP())
                     request.Print()
 
                     response = self.init_response_message(request)
@@ -117,7 +137,7 @@ class CUP:
                     MTI = str(request.get_MTI()).zfill(4)[-3:]
                     response.Print()
                     self.send(response.BuildIso())
-        
+                
             except ParseError:
                 print('Connection closed')
                 conn.close()

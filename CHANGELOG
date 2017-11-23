@@ -1,3 +1,6 @@
+November 2017
+	1.60 Added IsoSpec1987CUP spec for Chine Union Pay network 
+
 August 2017
 	1.59 <account_to/> and <account_from/> support
 	1.58 trxn.set_processing_code()
