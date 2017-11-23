@@ -226,7 +226,7 @@ class IsoSpec1987CUP(IsoSpec1987):
         try:
             return self.RespCodeDescriptions[response_code ]
         except KeyError:
-            return ''
+            return 'UNKNOWN RESPONSE'
 
 
 class IsoSpec1987BCD(IsoSpec1987):
@@ -580,7 +580,7 @@ ContentTypes['CUP'] = {
     36 :  { 'ContentType':'n',     'MaxLen': 104, 'LenType': LT.LLLVAR,  'Description': 'Track 3 data' },
     37 :  { 'ContentType':'an',    'MaxLen': 12,  'LenType': LT.FIXED,   'Description': 'Retrieval reference number' },
     38 :  { 'ContentType':'an',    'MaxLen': 6,   'LenType': LT.FIXED,   'Description': 'Authorization identification response' },
-    39 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED,   'Description': 'Response code' },
+    39 :  { 'ContentType':'an',    'MaxLen': 2,   'LenType': LT.FIXED,   'Description': 'Response code' },
     40 :  { 'ContentType':'an',    'MaxLen': 3,   'LenType': LT.FIXED,   'Description': 'Service restriction code' },
     41 :  { 'ContentType':'ans',   'MaxLen': 8,   'LenType': LT.FIXED,   'Description': 'Terminal ID' },
     42 :  { 'ContentType':'ans',   'MaxLen': 15,  'LenType': LT.FIXED,   'Description': 'Merchant number' },

@@ -96,8 +96,10 @@ class CUP:
         # Key Type (n1): 1 - PIK, 2 - MAK
         # Encryption Method (n2): 0 - single length DES, 6 - double length DES
         # Reserved (n14): all set to 0
+        request.FieldData(48, 'NKF4EDC8DEB67F6E28')
         request.FieldData(53, '1600000000000000')
         request.FieldData(70, 101)  # Union Pay resets the key
+        request.FieldData(96, 0)
         
         request.Print()
         self.send(request.BuildIso())
@@ -118,32 +120,30 @@ class CUP:
     def run(self):
         """
         """
-        while True:
-            try:
-                self.connect()
-                self.recv_logon_handshake()
-                self.send_key_reset_request()
+        try:
+            self.connect()
+            self.recv_logon_handshake()
+            self.send_key_reset_request()
 
-                while True:
-                    data = self.recv() 
-                    if not data:
-                        raise ParseError
+            while True:
+                data = self.recv() 
+                if not data:
+                    raise ParseError
 
-                    request = ISO8583(data, IsoSpec1987CUP())
-                    request.Print()
+                request = ISO8583(data, IsoSpec1987CUP())
+                request.Print()
+                break
 
-                    response = self.init_response_message(request)
+                response = self.init_response_message(request)
 
-                    MTI = str(request.get_MTI()).zfill(4)[-3:]
-                    response.Print()
-                    self.send(response.BuildIso())
+                MTI = str(request.get_MTI()).zfill(4)[-3:]
+                response.Print()
+                self.send(response.BuildIso())
                 
-            except ParseError:
-                print('Connection closed')
-                conn.close()
+        except ParseError:
+            print('Connection closed')
 
         self.sock.close()
-        conn.close()
 
 
 def show_help(name):
