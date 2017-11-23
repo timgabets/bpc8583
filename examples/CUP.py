@@ -9,6 +9,7 @@ from bpc8583.ISO8583 import ISO8583, MemDump, ParseError
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from bpc8583.tools import get_response, get_stan, get_datetime_with_year
 from tracetools.tracetools import trace
+from time import sleep
 
 
 class CUP:
@@ -62,30 +63,35 @@ class CUP:
         print('Connected to {}:{}'.format(self.host, self.port))
 
 
-    def send_logon_handshake(self):
+    def recv_logon_handshake(self):
         """
         """
-        while True:
-            request = ISO8583(None, IsoSpec1987BPC())
-    
-            request.MTI('0820')
-            request.FieldData(11, get_stan())
-            request.FieldData(12, get_datetime_with_year())
-            request.FieldData(70, 1)
-    
-            request.Print()
-            data = request.BuildIso()
-            self.send(data)
-    
+        while True:            
             data = self.recv()
-            response = ISO8583(data, IsoSpec1987BPC())
-            response.Print()
+            request = ISO8583(data, IsoSpec1987BPC())
+            request.Print()
     
-            if response.get_MTI() != '0814' or response.FieldData(24) != 801 or response.FieldData(39) != '000':
+            if request.get_MTI() != '0820' or request.FieldData(70) != 1:
                 print('\tLogon failed')
                 sleep(5)
             else:
+                response = self.init_response_message(request)
+                MTI = str(request.get_MTI()).zfill(4)[-3:]
+                response.Print()
+                self.send(response.BuildIso())
                 break
+
+
+    def init_response_message(self, request):
+        """
+        """
+        response = ISO8583(None, IsoSpec1987BPC())
+        response.MTI(get_response(request.get_MTI()))
+
+        # Copy some key fields from original message:
+        for field in [2, 3, 4, 5, 6, 11, 12, 14, 15, 17, 24, 32, 33, 37, 48, 49, 50, 51, 70, 102]:
+            response.FieldData(field, request.FieldData(field))
+        return response
 
 
     def run(self):
@@ -94,67 +100,21 @@ class CUP:
         while True:
             try:
                 self.connect()
-                self.send_logon_handshake()
+                self.recv_logon_handshake()
 
                 while True:
                     data = self.recv() 
                     if not data:
                         raise ParseError
 
-                    """
                     request = ISO8583(data, IsoSpec1987BPC())
                     request.Print()
 
                     response = self.init_response_message(request)
 
                     MTI = str(request.get_MTI()).zfill(4)[-3:]
-                    trxn_type = self.get_transaction_type(request)
-                    card_number = request.FieldData(2)
-                    currency_code = request.FieldData(51)
-
-                    if MTI in ['100', '200']:
-                        # Authorization request or financial request
-                        if not self.db.card_exists(card_number):
-                            # TODO: command line option to add cards autmatically
-                            print('\nWARNING: Card {} does not exist!\n'.format(card_number));
-                            self.db.insert_card_record(card_number, currency_code, 0);
-
-                        if trxn_type == '31':
-                            # Balance
-                            self.process_trxn_balance_inquiry(request, response)
-                        elif trxn_type in ['00', '01', '50']:
-                            # Purchase or ATM Cash
-                            self.process_trxn_debit_account(request, response)
-                        elif trxn_type == '39':
-                            # Ministatement
-                            self.process_statement_request(request, response)
-                        elif trxn_type == '88':
-                            # Cardholder name inquiry
-                            self.process_cardholder_name_inquiry(request, response)
-                        else:
-                            print('Unsupported transaction type {}. Responding APPROVAL by default'.format(trxn_type))
-                            response.FieldData(39, self.responses['Approval'])
-
-                    elif MTI in ['120']:
-                        # Authorization advice
-                        if trxn_type in ['00', '01']:
-                            # Purchase or ATM Cash
-                            self.settle_auth_advice(request, response)
-                        else:
-                            response.FieldData(39, self.responses['Approval'])
-
-                    elif MTI in ['400', '420']:
-                        # Reversal
-                        if trxn_type in ['00', '01']:
-                            # Purchase or ATM Cash
-                            self.settle_reversal(request, response)
-
                     response.Print()
-                    
-                    data = response.BuildIso()
-                    data = self.get_message_length(data) + data
-                    self.send(data)
-                    """
+                    self.send(response.BuildIso())
         
             except ParseError:
                 print('Connection closed')
@@ -162,6 +122,7 @@ class CUP:
 
         self.sock.close()
         conn.close()
+
 
 def show_help(name):
     """
