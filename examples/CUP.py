@@ -4,12 +4,12 @@ import getopt
 import sys
 import socket
 import struct
+from time import sleep
 
 from bpc8583.ISO8583 import ISO8583, MemDump, ParseError
 from bpc8583.spec import IsoSpec, IsoSpec1987BPC
 from bpc8583.tools import get_response, get_stan, get_datetime_with_year
 from tracetools.tracetools import trace
-from time import sleep
 
 
 class CUP:
@@ -44,8 +44,10 @@ class CUP:
         """
         """
         self.data = self.header.encode('latin') + data
-        self.sock.send(struct.pack("!H", int(str(len(self.data)), 16)) + self.data)
-        trace(title='>> {} bytes sent:'.format(len(data)), data=self.data)
+        self.data = struct.pack("!H", int(str(len(self.data)), 16)) + self.data
+        self.sock.send(self.data)
+
+        trace(title='>> {} bytes sent:'.format(len(self.data)), data=self.data)
 
 
     def connect(self):
@@ -89,7 +91,7 @@ class CUP:
         response.MTI(get_response(request.get_MTI()))
 
         # Copy some key fields from original message:
-        for field in [2, 3, 4, 5, 6, 11, 12, 14, 15, 17, 24, 32, 33, 37, 48, 49, 50, 51, 70, 102]:
+        for field in [2, 3, 4, 5, 6, 7, 11, 12, 14, 15, 17, 24, 32, 33, 37, 48, 49, 50, 51, 70, 102]:
             response.FieldData(field, request.FieldData(field))
         return response
 
